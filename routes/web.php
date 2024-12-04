@@ -15,7 +15,9 @@ Route::middleware(['RoleGuard:superadmin'])->group(function (){
         return view('dashboard');
     });
 });
-
+Route::get("/invoice", function(){
+    return view('invoice');
+})->name("page.invoice");
 Route::fallback(function () {
     return view('404');
 })->name('fallback');

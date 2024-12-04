@@ -1,5 +1,5 @@
-@extends('layouts.app')
-@section('app')
+@extends('layouts.dashboard')
+@section('content')
     <div class="grid grid-cols-4 gap-6 xl:grid-cols-1">
 
 
