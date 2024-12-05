@@ -2,14 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
-
-class AppServiceProvider extends ServiceProvider
+class UserServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register services.
      */
     public function register(): void
     {
@@ -17,10 +15,10 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      */
     public function boot(): void
     {
-        Schema::defaultStringLength(191);
+        //
     }
 }
