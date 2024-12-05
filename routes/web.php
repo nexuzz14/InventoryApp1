@@ -18,6 +18,10 @@ Route::middleware(['RoleGuard:superadmin'])->group(function (){
 Route::get("/invoice", function(){
     return view('invoice');
 })->name("page.invoice");
+Route::get("dashboard/kategori", function(){
+    return view('dashboard.kategori');
+})->name("kategory");
+
 Route::fallback(function () {
     return view('404');
 })->name('fallback');

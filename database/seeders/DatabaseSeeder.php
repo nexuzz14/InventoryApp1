@@ -20,12 +20,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password'=>'asdasdasd'
         ]);
+        
         // administrator::factory()->create([
         //     'username' => "suminto",
         //     "password" => "asdasdasd",
         //     "level" => "admin",
         // ]);
-
         // User::factory(1)->create();
     }
 }
