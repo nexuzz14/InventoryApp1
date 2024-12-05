@@ -21,7 +21,13 @@ Route::get("/invoice", function(){
 Route::get("dashboard/kategori", function(){
     return view('dashboard.kategori');
 })->name("kategory");
+Route::get("dashboard/supplier", function(){
+    return view("dashboard.supplier");
+})->name("page.supplier");
 
+Route::get("dashboard/barang", function(){
+    return view("dashboard.barang");
+})->name("barang");
 Route::fallback(function () {
     return view('404');
 })->name('fallback');

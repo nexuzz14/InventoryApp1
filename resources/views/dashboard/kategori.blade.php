@@ -2,7 +2,8 @@
 @section('content')
 <!-- Start Recent Sales -->
 <div class="flex flex-wrap">
-    <div class="box flex-1   px-3 py-2" >
+    <div class="box flex-1  px-3 py-2" >
+       
         <div class="card col-span-2 xl:col-span-1">
             <div class="card-header">Kategori</div>
         
