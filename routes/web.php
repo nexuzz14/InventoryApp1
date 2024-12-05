@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
@@ -10,20 +11,19 @@ Route::get('/', function () {
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
-Route::middleware(['RoleGuard:superadmin'])->group(function (){
+Route::middleware(['RoleGuard:superadmin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     });
+    Route::get("dashboard/category", [CategoryController::class, 'index'])->name("category");
+    Route::post("category/create", [CategoryController::class, 'create'])->name("category.create");
+    Route::get("category/delete/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
 });
-Route::get("/invoice", function(){
+
+Route::get("/invoice", function () {
     return view('invoice');
 })->name("page.invoice");
-Route::get("dashboard/kategori", function(){
-    return view('dashboard.kategori');
-})->name("kategory");
-Route::get("dashboard/supplier", function(){
-    return view("dashboard.supplier");
-})->name("page.supplier");
+
 
 Route::get("dashboard/barang", function(){
     return view("dashboard.barang");

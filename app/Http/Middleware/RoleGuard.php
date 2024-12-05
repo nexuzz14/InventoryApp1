@@ -17,7 +17,7 @@ class RoleGuard
     public function handle(Request $request, Closure $next, $role): Response
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect('/');
         }
 
         if (Auth::user()->role !== $role) {
