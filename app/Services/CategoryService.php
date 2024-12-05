@@ -9,7 +9,7 @@ class CategoryService {
         return Category::all();
     }
 
-    public function storeCategory($data){
+    public function createCategory(array $data){
         return Category::create($data);
     }
 
