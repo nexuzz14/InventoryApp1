@@ -137,22 +137,7 @@
 
     <div class="flex flex-wrap z-0" x-data="{ show: false, editData: { name: '', supplier: '', source: '', lokasi: '', status: '', gambar: '', harga: '' } }">
         <div class="box flex-1  px-3 py-2">
-            <div class="searchBox flex gap-2 w-full  border py-2 px-3 border-1 rounded bg-white">
-                <svg class="w-6 h-6  mt-1 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z" />
-                    <path fill-rule="evenodd"
-                        d="M21.707 21.707a1 1 0 0 1-1.414 0l-3.5-3.5a1 1 0 0 1 1.414-1.414l3.5 3.5a1 1 0 0 1 0 1.414Z"
-                        clip-rule="evenodd" />
-                </svg>
-                <form action="" class="w-full gap-2 flex">
-                    <input type="text"
-                        class="pl-2 bg-gray-200 active:ring-0 flex-1 active:outline-none focus:outline-none focus-within:ring-0 w-full py-2 rounded-md"
-                        placeholder="Cari Supplier..">
-                    <button class="flex-0 w-20 bg-blue-400 rounded-md text-white px-2">Cari</button>
-                </form>
-            </div>
-            <div class="card col-span-2 xl:col-span-1 mt-3 px-2">
+            <div class="card col-span-2 xl:col-span-1 px-2">
                 <div class="card-header">Kategori</div>
 
                 <table id="table" class="">

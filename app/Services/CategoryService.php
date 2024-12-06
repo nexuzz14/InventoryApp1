@@ -30,9 +30,14 @@ class CategoryService
 
     public function updateCategory($id, $data)
     {
-        $category = Category::find($id);
-        $category->update($data);
-        return $category;
+        $category = Category::find(Crypt::decrypt($id));
+        $category->update([
+            "name" => $data
+        ]);
+        if ($category) {
+            return true;
+        }
+        return false;
     }
 
     public function deleteCategory($id)

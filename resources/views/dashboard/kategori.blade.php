@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 @section('content')
-    <div  x-data="{ show: false , editData:{id:'', name:''}}" class="tailwind-scope">
+    <div x-data="{ show: false, name: '', id: '' }" class="tailwind-scope">
         <div class="flex flex-wrap">
             <div class="flex-1 px-3 py-2 w-full bg-white shadow rounded-md">
                 <table id="table" class="mt-10">
@@ -20,9 +20,15 @@
                                 <td class="text-xs lg:text-md">{{ $no++ }}</td>
                                 <td class="text-xs lg:text-md">{{ $item->name }}</td>
                                 <td class="flex space-x-2">
-                                    <button @click="show=true, editData={name:'{{ $item->name }}', id: '{{$item->id}}'}" class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
-                                    <a href="{{ route('category.delete', ['id' =>  Crypt::encrypt($item->id)]) }}"
-                                        class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</a>
+                                    <button
+                                        @click="show=true, name='{{ $item->name }}', id='{{ Crypt::encrypt($item->id) }}'"
+                                        class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
+                                    <form action="{{ route('category.delete', ['id' => Crypt::encrypt($item->id)]) }}" method="POST">
+                                        @csrf
+                                        @method("DELETE")
+                                        <button type="submit"
+                                            class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -51,24 +57,21 @@
         </div>
 
         {{-- ! popup --}}
-        <div x-show="show"
-            x-transition:enter="animate__animated animate__fadeIn animate__faster"
+        <div x-show="show" x-transition:enter="animate__animated animate__fadeIn animate__faster"
             x-transition:leave="animate__animated animate__fadeOut animate__faster"
-
             class="fixed w-screen h-screen bg-black bg-opacity-10 backdrop-blur-sm top-0 left-0 flex items-center justify-center">
-            <div
-            x-show="show"
-             x-transition:enter="animate__animated animate__fadeInUp animate__faster"
-            x-transition:leave="animate__animated animate__fadeOutDown animate__faster"
-             class="flex-0   px-3 py-2 w-full max-w-96">
+            <div x-show="show" x-transition:enter="animate__animated animate__fadeInUp animate__faster"
+                x-transition:leave="animate__animated animate__fadeOutDown animate__faster"
+                class="flex-0   px-3 py-2 w-full max-w-96">
                 <div class="form  w-full  bg-white border border-1  px-3 py-2">
                     <p class="text-lg font-bold py-2 border-b border-1">Edit Kategori</p>
-                    <form action="{{ route('category.create') }}" method="POST" class="flex mt-3 flex-col">
+                    <form action="{{ route('category.update') }}" method="POST" class="flex mt-3 flex-col">
                         @csrf
+                        @method('PATCH')
                         <label for="namaKategori">Nama Kategori</label>
 
-                        <input type="hidden" x-model="editItem.id">
-                        <input type="text" name="name" x-model="editItem.name"
+                        <input type="hidden" x-model="id" name="id">
+                        <input type="text" name="name" x-model="name"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="name">
 
@@ -86,17 +89,4 @@
 
         </div>
     </div>
-
-
-    {{-- <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $('#table').DataTable({
-                columnDefs: [{
-                    "defaultContent": "-",
-                    "targets": "_all"
-                }]
-            });
-        });
-    </script> --}}
 @endsection

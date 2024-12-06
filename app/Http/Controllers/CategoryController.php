@@ -31,7 +31,7 @@ class CategoryController extends Controller
                 "Terjadi kesalahan saat membuat kategori"
             ]);
         }
-        return redirect()->route('category');
+        return redirect()->route('dashboard.category');
     }
 
     /**
@@ -47,15 +47,21 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        // dd($category);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request)
     {
-        //
+       $result =  $this->categoryServices->updateCategory($request->id, $request->name);
+       if (!$result) {
+           return back()->withErrors([
+               "Terjadi kesalahan saat mengubah kategori"
+           ]);
+       }
+       return redirect()->route('dashboard.category');
     }
 
     public function destroy( $id)
