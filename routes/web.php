@@ -21,7 +21,7 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     })->name("category");
     Route::get("dashboard/satuan", function(){
         return view("dashboard.satuan");
-    })->name("category");
+    })->name("satuan");
     Route::post("category/create", [CategoryController::class, 'create'])->name("category.create");
     Route::get("category/delete/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
 });

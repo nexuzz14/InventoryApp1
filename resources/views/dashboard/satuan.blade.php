@@ -1,102 +1,102 @@
 @extends('layouts.dashboard')
 @section('content')
-    <!-- Start Recent Sales -->
-    <div class="flex flex-wrap">
-        <div class="box flex-1  px-3 py-2">
-            <div class="searchBox flex gap-2 w-full  border py-2 px-3 border-1 rounded bg-white">
-                <svg class="w-6 h-6  mt-1 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z" />
-                    <path fill-rule="evenodd"
-                        d="M21.707 21.707a1 1 0 0 1-1.414 0l-3.5-3.5a1 1 0 0 1 1.414-1.414l3.5 3.5a1 1 0 0 1 0 1.414Z"
-                        clip-rule="evenodd" />
-                </svg>
-                <form action="" class="w-full gap-2 flex">
-                    <input type="text"
-                        class="pl-2 bg-gray-200 active:ring-0 flex-1 active:outline-none focus:outline-none focus-within:ring-0 w-full py-1 rounded-md"
-                        placeholder="Cari Supplier..">
-                    <button class="flex-0 w-20 bg-blue-400 rounded-md text-white px-2">Cari</button>
-                </form>
-            </div>
-            <div class="card col-span-2 xl:col-span-1 mt-3">
-                <div class="card-header">Kategori</div>
-
-                <table class="table-auto w-full text-left">
+    <div  x-data="{ show: false , editData:{name:'', id:''}}" class="tailwind-scope">
+        <div class="flex flex-wrap">
+            <div class="flex-1 px-3 py-2 w-full bg-white shadow rounded-md">
+                <table id="table" class="mt-10">
                     <thead>
                         <tr>
-                            <th class="px-4 py-2 border border-l-0">No</th>
-
-                            <th class="px-4 py-2 border-r">Nama Supplier</th>
-                            <th class="px-4 py-2 border-r">Alamat</th>
-
-                            <th colspan="2" class=" py-2 text-center border-r">Aksi</th>
+                            <th class="w-14 text-xs lg:text-md">#</th>
+                            <th class="text-xs lg:text-md">Satuan</th>
+                            <th class="w-20 pl-4 text-xs lg:text-md">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-600">
-
-                        <tr class="hover:bg-gray-200  duration-200">
-                            <td class="px-4 py-2 border border-l-0">
-                                1
-                            </td>
-                            <td class="border  px-4 py-2">
-                                <p class="line-clamp-1">Gus miftah asdasdas asdas asda asd asd </p>
-                            </td>
-                            <td class="border px-4 py-2 ">
-                                <p class="line-clamp-1">Gus miftah asdasdas asdas asda asd asd </p>
-                            </td>
-
-
-                            <td class="border border-l-0 border-r-0 text-center  px-4 py-2">
-                                <svg class="w-6 h-6 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
-                                        clip-rule="evenodd" />
-                                    <path fill-rule="evenodd"
-                                        d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-
-                            </td>
-                            <td class="border text-center border-l-0 px-4 py-2">
-                                <svg class="w-6 h-6 text-red-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-
-                            </td>
-
-                        </tr>
-
-
+                    <tbody>
+                        @php
+                            $no = 1;
+                        @endphp
+                        {{-- @foreach ($categories as $item) --}}
+                            <tr class="bg-white border-b hover:bg-gray-50">
+                                <td class="text-xs lg:text-md">1</td>
+                                <td class="text-xs lg:text-md">Kilo</td>
+                                <td class="flex space-x-2">
+                                    <button @click="show=true, editData={name: 'Kilo', id: '1'}" class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
+                                    <a href=""
+                                        class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</a>
+                                </td>
+                            </tr>
+                        {{-- @endforeach --}}
                     </tbody>
                 </table>
             </div>
+            <div class="flex-0   px-3 py-2 w-full max-w-96">
+                <div class="form  w-full  bg-white border border-1  px-3 py-2">
+                    <p class="text-lg font-bold py-2 border-b border-1">Tambah Satuan</p>
+                    <form action="{{ route('category.create') }}" method="POST" class="flex mt-3 flex-col">
+                        @csrf
+                        <label for="namaKategori">Nama Kategori</label>
+                        <input type="text" name="name"
+                            class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
+                            id="name">
+
+
+                        <div class="flex items-end w-full justify-end">
+                            <input type="submit"
+                                class="hover:cursor-pointer bg-blue-400 capitalize text-white px-2 hover:px-4 duration-200 py-1 rounded">
+                            </input>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
 
-        <div class="flex-0   px-3 py-2 w-full max-w-96">
-            <div class="form  w-full  bg-white border border-1  px-3 py-2">
-                <p class="text-lg font-bold py-2 border-b border-1">Tambah Satuan</p>
-                <form action="" class="flex mt-3 flex-col">
-                    <label for="namaKategori">Nama Satuan</label>
-                    <input type="text"
-                        class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
-                        id="namaKategori" oninput="validateForm()" required />
+        {{-- ! popup --}}
+        <div x-show="show"
+            x-transition:enter="animate__animated animate__fadeIn animate__faster"
+            x-transition:leave="animate__animated animate__fadeOut animate__faster"
 
-                   
+            class="fixed w-screen h-screen bg-black bg-opacity-10 backdrop-blur-sm top-0 left-0 flex items-center justify-center">
+            <div
+            x-show="show"
+             x-transition:enter="animate__animated animate__fadeInUp animate__faster"
+            x-transition:leave="animate__animated animate__fadeOutDown animate__faster"
+             class="flex-0   px-3 py-2 w-full max-w-96">
+                <div class="form  w-full  bg-white border border-1  px-3 py-2">
+                    <p class="text-lg font-bold py-2 border-b border-1">Edit Satuan</p>
+                    <form action="{{ route('category.create') }}" method="POST" class="flex mt-3 flex-col">
+                        @csrf
+                        <label for="namaKategori">Nama Satuan</label>
 
-                    <div class="flex items-end w-full justify-end">
-                        <button id="submit-button"
-                            class="bg-blue-400 capitalize text-white px-2 hover:px-4 duration-200 py-1 rounded" >
-                            tambah
-                        </button>
-                    </div>
+                        <input type="hidden" x-model="editData.id">
+                        <input type="text" name="name"  x-model="editData.name"
+                            class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
+                            id="name">
 
-                </form>
+
+                        <div class="flex gap-2 items-end w-full justify-end">
+                            <button @click="show=!show" type="button"
+                                class=" bg-red-400 text-white rounded px-2 hover:px-4 py-1 duration-200">Batal</button>
+                            <input type="submit"
+                                class="hover:cursor-pointer bg-blue-400 capitalize text-white px-2 hover:px-4 duration-200 py-1 rounded">
+                            </input>
+                        </div>
+                    </form>
+                </div>
             </div>
+
         </div>
     </div>
 
+
+    {{-- <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#table').DataTable({
+                columnDefs: [{
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }]
+            });
+        });
+    </script> --}}
 @endsection

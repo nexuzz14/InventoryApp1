@@ -33,7 +33,7 @@
         </a>
         <!-- end link -->
         <!-- link -->
-        <a href="/dashboard/category"
+        <a href="{{route("satuan")}}"
             class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
             <i class="fad fa-envelope-open-text text-xs mr-2"></i>
             Satuan
