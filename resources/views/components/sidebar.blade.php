@@ -64,7 +64,7 @@
 
         <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">User Managemen</p>
         <!-- link -->
-        <a href="./alert.html"
+        <a href="{{route('pengguna')}}"
             class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
             <x-mdi-account class="mr-2 w-6 h-6" />
             Account

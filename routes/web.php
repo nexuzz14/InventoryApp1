@@ -23,20 +23,23 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get("dashboard/satuan", function(){
         return view("dashboard.satuan");
     })->name("satuan");
-<<<<<<< HEAD
 
     Route::get("dashboard/lokasi", function () {
         return view("dashboard.lokasi");
     })->name("lokasi");
 
+    Route::get("dashboard/pengguna", function () {
+        return view("dashboard.pengguna");
+    })->name("pengguna");
+   
 
     Route::delete("category/delete/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
     Route::patch("category/update", [CategoryController::class, 'update'])->name("category.update");
-=======
+
     Route::get("dashboard/user", function(){
         return view("dashboard.user");
     })->name("user");
->>>>>>> e4f083a492aa416c2feb8de0e94e6689da7adb71
+
     Route::post("category/create", [CategoryController::class, 'create'])->name("category.create");
     Route::get("category/delete/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
 });
