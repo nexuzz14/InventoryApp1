@@ -17,14 +17,26 @@
 
     <div class="h-screen flex flex-row flex-wrap">
 
-       @include('components.sidebar')
+        @include('components.sidebar')
         <div class="bg-gray-100 flex-1 p-6 md:mt-16">
             @yield('content')
         </div>
 
     </div>
 
-
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            if (window.innerWidth < 768) {
+                overlay.classList.toggle('hidden');
+                sidebar.classList.toggle('md:-ml-64');
+                sidebar.classList.toggle('lg:ml-0');
+                sidebar.classList.toggle('md:slideOutLeft');
+                sidebar.classList.toggle('md:slideInLeft');
+            }
+        }
+    </script>
     <x-script-pack></x-script-pack>
 </body>
 

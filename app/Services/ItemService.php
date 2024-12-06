@@ -16,6 +16,7 @@ class ItemService
         return true;
     }
 
+
     public function getAllItems()
     {
         $Item = Item::all();
@@ -38,6 +39,10 @@ class ItemService
         return $data;
     }
 
+    public function getTotalItems(): int
+    {
+        return Item::count();
+    }
     public function getItemsByCategoryId($categoryId)
     {
         return Item::where('category_id', $categoryId)->get();

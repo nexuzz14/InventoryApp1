@@ -24,11 +24,11 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'admin',
-            'username' => 'admin',
-            'email' => 'admin@gmail.com',
-            'role' => 'superadmin',
-            'password' => bcrypt('admin123'),
+            'name' => 'user',
+            'username' => 'user',
+            'email' => 'user@gmail.com',
+            'role' => 'user',
+            'password' => bcrypt('user123'),
             'remember_token' => Str::random(10),
         ];
     }

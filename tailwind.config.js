@@ -5,6 +5,7 @@ export default {
     content: [
         "./resources/views/dashboard/kategori.blade.php",
         "./resources/views/auth/login.blade.php",
+        "./resources/views/layouts/navigation.blade.php",
     ],
     safelist: [
         {

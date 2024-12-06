@@ -20,7 +20,9 @@ class RoleGuard
             return redirect('/');
         }
 
-        if (Auth::user()->role !== $role) {
+        $allowedRoles = explode(',', $role);
+
+        if (!in_array(Auth::user()->role, $allowedRoles)) {
             return redirect()->route('fallback');
         }
         return $next($request);

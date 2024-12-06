@@ -18,12 +18,12 @@
                             $no = 1;
                         @endphp
                         @foreach ($categories as $item)
-                            <tr>
+                            <tr class="bg-white border-b hover:bg-gray-50">
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td class="flex space-x-2">
                                     <a href="" class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</a>
-                                    <a href="{{ route('category.delete', ['id' => $item->id]) }}"
+                                    <a href="{{ route('category.delete', ['id' =>  Crypt::encrypt($item->id)]) }}"
                                         class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</a>
                                 </td>
                             </tr>

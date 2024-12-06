@@ -9,7 +9,12 @@ class SupplierService {
         return Supplier::all();
     }
 
-    public function storeSupplier($data){
+    public function getTotalSuppliers(): int
+    {
+        return Supplier::count();
+    }
+
+    public function storeSupplier(array $data){
         return Supplier::create($data);
     }
 
