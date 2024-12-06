@@ -14,8 +14,8 @@
                         <div class="flex items-center ">
                             <div class="flex-shrink-0 w-8 h-8 rounded-full">
                                 <div
-                                    class="bg-red-100 w-full h-full rounded-full flex items-center justify-center text-white text-sm">
-                                    1
+                                    class="w-full h-full rounded-full flex items-center justify-center text-white text-sm">
+                                    <x-mdi-alpha-o-box class="text-red-500"/>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0 ms-4 ml-2">

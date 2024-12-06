@@ -12,12 +12,13 @@
 
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased" x-data="{ openNav: false }">
     @include('layouts.navigation')
 
-    <div class="h-screen flex flex-row flex-wrap">
+    <div class="h-screen flex flex-row flex-wrap absolute w-full" style="margin-top: 4rem">
 
         @include('components.sidebar')
+        <div id="overlay" x-show="openNav" @click="openNav = false" class="fixed inset-0 bg-black/40"></div>
         <div class="bg-gray-100 flex-1 p-6 md:mt-16">
             @yield('content')
         </div>

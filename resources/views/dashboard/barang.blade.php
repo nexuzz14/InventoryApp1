@@ -1,7 +1,25 @@
 @extends('layouts.dashboard')
 @section('content')
     {{-- ! popup --}}
-    <div class="popup fixed w-screen h-screen top-0 left-0" x-data="{ show: false }">
+    <style>
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Warna overlay */
+            z-index: 1040;
+            /* Pastikan lebih tinggi dari elemen lain */
+        }
+
+        .modal {
+            z-index: 1050;
+            /* Modal harus berada di atas overlay */
+        }
+    </style>
+    <div class="popup fixed w-screen h-screen top-0 left-0 z-30" x-data="{ show: false }">
         {{-- ! popup tambah  --}}
         <div x-show="show" x-transition:enter="animate__fadeIn animate__animated"
             x-transition:leave="animate__fadeOut animate__animated"
