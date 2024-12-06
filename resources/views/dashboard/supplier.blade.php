@@ -2,7 +2,7 @@
 @section('content')
     <div class="flex flex-wrap" x-data="{show:false, editData: {nama: '', alamat:'', no:'', id:''}}">
         <div class="box flex-1  px-3 py-2">
-            <div class="searchBox flex gap-2 w-full  border py-2 px-3 border-1 rounded bg-white">
+            {{-- <div class="searchBox flex gap-2 w-full  border py-2 px-3 border-1 rounded bg-white">
                 <svg class="w-6 h-6  mt-1 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                     height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z" />
@@ -16,7 +16,7 @@
                         placeholder="Cari Supplier..">
                     <button class="flex-0 w-20 bg-blue-400 rounded-md text-white px-2">Cari</button>
                 </form>
-            </div>
+            </div> --}}
             <div class="card col-span-2 xl:col-span-1 mt-3 px-4">
                 <div class="card-header">Kategori</div>
 
@@ -72,7 +72,7 @@
                         </button>
                     </div>
 
-                    
+
 
                     <script>
                         function validateForm() {
@@ -103,7 +103,7 @@
             </div>
         </div>
 
-        <div x-show="show" 
+        <div x-show="show"
             x-transition:enter="animate__animated animate__fadeIn animate__faster"
             x-transition:leave="animate__animated animate__fadeOut animate__faster"
          class="popupEdit z-40 w-screen h-screen bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center fixed top-0 left-0">
@@ -120,19 +120,19 @@
                         <input type="text"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="namaEdit" oninput="validateFormEdit()" required x-model="editData.nama" />
-    
+
                         <label for="notelpEdit">No. Telepon Supplier</label>
                         <input type="text"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="notelpEdit" oninput="validateForm()" required x-model="editData.no" />
                         <small id="error-messageEdit" style="color: red; display: none;">Nomor telepon tidak valid. Harus berupa
                             angka dengan panjang 10-15 karakter.</small>
-    
+
                         <label for="alamatEdit">Alamat Supplier</label>
                         <input type="text"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="alamatEdit" x-model="editData.alamat" oninput="validateForm()" required />
-    
+
                         <div class="flex items-end w-full justify-end gap-2">
                             <button type="reset" @click="show=false" class="bg-red-400 px-2 hover:px-4 duration-200 py-1 text-white rounded">Batal </button>
                             <button id="submit-buttonEdit"
@@ -140,9 +140,9 @@
                                 tambah
                             </button>
                         </div>
-    
-                        
-    
+
+
+
                         <script>
                             function validateFormEdit() {
                                 const namaKategori = document.getElementById('namaKategoriEdit').value.trim();
@@ -151,14 +151,14 @@
                                 const errorMessage = document.getElementById('error-messageEdit');
                                 const submitButton = document.getElementById('submit-buttonEdit');
                                 const phoneRegex = /^[0-9]{10,15}$/; // Hanya angka, panjang 10-15 karakter
-    
+
                                 // Validasi nomor telepon
                                 if (!phoneRegex.test(notelp)) {
                                     errorMessage.style.display = 'block';
                                 } else {
                                     errorMessage.style.display = 'none';
                                 }
-    
+
                                 // Aktifkan tombol jika semua input valid
                                 if (namaKategori && phoneRegex.test(notelp) && alamat) {
                                     submitButton.disabled = false;
@@ -167,7 +167,7 @@
                                 }
                             }
                         </script>
-    
+
                     </form>
                 </div>
             </div>

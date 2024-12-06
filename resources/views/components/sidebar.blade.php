@@ -19,7 +19,7 @@
         <!-- link -->
         <a href="/dashboard/category"
             class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
-            <x-mdi-folder-outline class="mr-2 w-6 h-6" />
+            <x-mdi-vector-arrange-below class="mr-2 w-6 h-6" />
             Kategori
         </a>
         <!-- link -->
@@ -52,7 +52,7 @@
         <!-- link -->
         <a href="./alert.html"
             class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
-            <x-mdi-truck-fast class="mr-2 w-6 h-6" />
+            <x-mdi-cart-minus class="mr-2 w-6 h-6" />
             Barang Keluar
         </a>
 
