@@ -24,8 +24,8 @@
         </a>
         <!-- link -->
         <a href="{{route("satuan")}}"
-            class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-envelope-open-text text-xs mr-2"></i>
+            class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
+            <x-mdi-scale class="mr-2 w-6 h-6" />
             Satuan
         </a>
         <!-- link -->
@@ -39,6 +39,12 @@
             class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
             <x-mdi-cube-outline class="mr-2 w-6 h-6" />
             Barang
+        </a>
+        <!-- link -->
+        <a href="/dashboard/lokasi"
+            class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
+            <x-mdi-cube-outline class="mr-2 w-6 h-6" />
+            Lokasi
         </a>
 
         <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Transaksi</p>
@@ -60,14 +66,8 @@
         <!-- link -->
         <a href="./alert.html"
             class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
-            <x-mdi-shield-key-outline class="mr-2 w-6 h-6" />
-            Akses / Permission
-        </a>
-        <!-- link -->
-        <a href="./alert.html"
-            class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
-            <x-mdi-account-key-outline class="mr-2 w-6 h-6" />
-            Role
+            <x-mdi-account class="mr-2 w-6 h-6" />
+            Account
         </a>
     </div>
 </div>
