@@ -240,7 +240,7 @@
     {{-- ! popup Edit  --}}
     <div x-show="show" x-transition:enter="animate__fadeIn animate__animated"
         x-transition:leave="animate__fadeOut animate__animated"
-        class="box hidden fixed top-0 left-0 py-4 flex items-center px-2 justify-center backdrop-blur-sm w-screen h-screen bg-black bg-opacity-10  ">
+        class="box hidden fixed top-0 left-0 py-4 flex items-center px-2 justify-center backdrop-blur-sm w-screen h-screen bg-black bg-opacity-10 ">
         <div class=" border border-1  bg-white flex flex-col md:h-auto h-5/6 px-3 py-2 w-full max-w-[700px]"
             x-show="show" x-transition:enter="animate__fadeInUp animate__animated"
             x-transition:leave="animate__fadeOutDown animate__animated">

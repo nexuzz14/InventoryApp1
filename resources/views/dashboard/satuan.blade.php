@@ -78,24 +78,14 @@
 
         <div class="flex-0   px-3 py-2 w-full max-w-96">
             <div class="form  w-full  bg-white border border-1  px-3 py-2">
-                <p class="text-lg font-bold py-2 border-b border-1">Tambah Supllier</p>
+                <p class="text-lg font-bold py-2 border-b border-1">Tambah Satuan</p>
                 <form action="" class="flex mt-3 flex-col">
-                    <label for="namaKategori">Nama Supplier</label>
+                    <label for="namaKategori">Nama Satuan</label>
                     <input type="text"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                         id="namaKategori" oninput="validateForm()" required />
 
-                    <label for="notelp">No. Telepon Supplier</label>
-                    <input type="text"
-                        class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
-                        id="notelp" oninput="validateForm()" required />
-                    <small id="error-message" style="color: red; display: none;">Nomor telepon tidak valid. Harus berupa
-                        angka dengan panjang 10-15 karakter.</small>
-
-                    <label for="alamat">Alamat Supplier</label>
-                    <input type="text"
-                        class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
-                        id="alamat" oninput="validateForm()" required />
+                   
 
                     <div class="flex items-end w-full justify-end">
                         <button id="submit-button"
@@ -109,5 +99,4 @@
         </div>
     </div>
 
-    <!-- End Recent Sales -->
 @endsection
