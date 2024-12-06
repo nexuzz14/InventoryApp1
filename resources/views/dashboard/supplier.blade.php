@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 @section('content')
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap" x-data="{show:false, editData: {nama: '', alamat:'', no:'', id:''}}">
         <div class="box flex-1  px-3 py-2">
             <div class="searchBox flex gap-2 w-full  border py-2 px-3 border-1 rounded bg-white">
                 <svg class="w-6 h-6  mt-1 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -23,10 +23,10 @@
                 <table id="table" class="">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th class="w-14">#</th>
                             <th>Nama Supplier</th>
                             <th>Alamat</th>
-                            <th>Action</th>
+                            <th class="w-20 "><p class="w-full text-center">Aksi</p></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,7 +35,7 @@
                             <td>Gus Miftah</td>
                             <td>Jl. Kaliurang</td>
                             <td class="flex items-center justify-center space-x-2">
-                                <a href="" class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</a>
+                                <button @click="show=true, editData={nama: 'Gus Miftah', alamat:'godean', no:'12312399474', id:'2'}" class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
                                 <a href="" class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</a>
                             </td>
                         </tr>
@@ -100,6 +100,76 @@
                     </script>
 
                 </form>
+            </div>
+        </div>
+
+        <div x-show="show" 
+            x-transition:enter="animate__animated animate__fadeIn animate__faster"
+            x-transition:leave="animate__animated animate__fadeOut animate__faster"
+         class="popupEdit z-40 w-screen h-screen bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center fixed top-0 left-0">
+            <div class="flex-0   px-3 py-2 w-full max-w-96">
+                <div
+                    x-show="show"
+                     x-transition:enter="animate__animated animate__fadeInUp animate__faster"
+            x-transition:leave="animate__animated animate__fadeOutDown animate__faster"
+                     class="form  w-full  bg-white border border-1  px-3 py-2">
+                    <p class="text-lg font-bold py-2 border-b border-1">Edit Supllier</p>
+                    <form action="" class="flex mt-3 flex-col">
+                        <label for="namaEdit">Nama Supplier</label>
+                        <input type="hidden" x-model='editData.id'>
+                        <input type="text"
+                            class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
+                            id="namaEdit" oninput="validateFormEdit()" required x-model="editData.nama" />
+    
+                        <label for="notelpEdit">No. Telepon Supplier</label>
+                        <input type="text"
+                            class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
+                            id="notelpEdit" oninput="validateForm()" required x-model="editData.no" />
+                        <small id="error-messageEdit" style="color: red; display: none;">Nomor telepon tidak valid. Harus berupa
+                            angka dengan panjang 10-15 karakter.</small>
+    
+                        <label for="alamatEdit">Alamat Supplier</label>
+                        <input type="text"
+                            class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
+                            id="alamatEdit" x-model="editData.alamat" oninput="validateForm()" required />
+    
+                        <div class="flex items-end w-full justify-end gap-2">
+                            <button type="reset" @click="show=false" class="bg-red-400 px-2 hover:px-4 duration-200 py-1 text-white rounded">Batal </button>
+                            <button id="submit-buttonEdit"
+                                class="bg-blue-400 capitalize text-white px-2 hover:px-4 duration-200 py-1 rounded" >
+                                tambah
+                            </button>
+                        </div>
+    
+                        
+    
+                        <script>
+                            function validateFormEdit() {
+                                const namaKategori = document.getElementById('namaKategoriEdit').value.trim();
+                                const notelp = document.getElementById('notelpEdit').value.trim();
+                                const alamat = document.getElementById('alamatEdit').value.trim();
+                                const errorMessage = document.getElementById('error-messageEdit');
+                                const submitButton = document.getElementById('submit-buttonEdit');
+                                const phoneRegex = /^[0-9]{10,15}$/; // Hanya angka, panjang 10-15 karakter
+    
+                                // Validasi nomor telepon
+                                if (!phoneRegex.test(notelp)) {
+                                    errorMessage.style.display = 'block';
+                                } else {
+                                    errorMessage.style.display = 'none';
+                                }
+    
+                                // Aktifkan tombol jika semua input valid
+                                if (namaKategori && phoneRegex.test(notelp) && alamat) {
+                                    submitButton.disabled = false;
+                                } else {
+                                    submitButton.disabled = true;
+                                }
+                            }
+                        </script>
+    
+                    </form>
+                </div>
             </div>
         </div>
     </div>

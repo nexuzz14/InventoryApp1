@@ -27,6 +27,7 @@
     <script>
         $(document).ready(function() {
             $('#table').DataTable({
+                fixedHeader: true,
                 columnDefs: [{
                     "defaultContent": "-",
                     "targets": "_all"

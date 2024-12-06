@@ -597,7 +597,6 @@ div.dt-container div.dt-layout-table > div {
  * Control feature layout
  */
 div.dt-container {
-  position: relative;
   clear: both;
 }
 div.dt-container .dt-search input {

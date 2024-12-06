@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 @section('content')
-    <div  x-data="{ show: false , editItem:{id:'', name:''}}" class="tailwind-scope">
+    <div  x-data="{ show: false , editData:{id:'', name:''}}" class="tailwind-scope">
         <div class="flex flex-wrap">
             <div class="flex-1 px-3 py-2 w-full bg-white shadow rounded-md">
                 <table id="table" class="mt-10">
@@ -20,7 +20,7 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td class="flex space-x-2">
-                                    <a href="" class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</a>
+                                    <button @click="show=true, editData={name:'{{ $item->name }}', id: '{{$item->id}}'}" class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
                                     <a href="{{ route('category.delete', ['id' =>  Crypt::encrypt($item->id)]) }}"
                                         class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</a>
                                 </td>
@@ -52,14 +52,14 @@
 
         {{-- ! popup --}}
         <div x-show="show"
-            x-transition:enter="animate__animated animate__fadeIn"
-            x-transition:leave="animate__animated animate__fadeOut"
+            x-transition:enter="animate__animated animate__fadeIn animate__faster"
+            x-transition:leave="animate__animated animate__fadeOut animate__faster"
 
             class="fixed w-screen h-screen bg-black bg-opacity-10 backdrop-blur-sm top-0 left-0 flex items-center justify-center">
             <div
             x-show="show"
-             x-transition:enter="animate__animated animate__fadeInUp"
-            x-transition:leave="animate__animated animate__fadeOutDown"
+             x-transition:enter="animate__animated animate__fadeInUp animate__faster"
+            x-transition:leave="animate__animated animate__fadeOutDown animate__faster"
              class="flex-0   px-3 py-2 w-full max-w-96">
                 <div class="form  w-full  bg-white border border-1  px-3 py-2">
                     <p class="text-lg font-bold py-2 border-b border-1">Edit Kategori</p>
