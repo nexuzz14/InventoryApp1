@@ -88,7 +88,7 @@
     </div>
 
 
-    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+    {{-- <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#table').DataTable({
@@ -98,5 +98,5 @@
                 }]
             });
         });
-    </script>
+    </script> --}}
 @endsection

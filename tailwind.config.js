@@ -6,6 +6,7 @@ export default {
         "./resources/views/dashboard/*",
         "./resources/views/auth/login.blade.php",
         "./resources/views/layouts/navigation.blade.php",
+        "./resources/views/dashboard/supplier.blade.php"
     ],
     safelist: [
         {
