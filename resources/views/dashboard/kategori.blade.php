@@ -6,9 +6,9 @@
                 <table id="table" class="mt-10">
                     <thead>
                         <tr>
-                            <th class="w-14">#</th>
-                            <th>Nama Kategori</th>
-                            <th class="w-20 pl-4">Action</th>
+                            <th class="w-14 text-xs lg:text-md">#</th>
+                            <th class="text-xs lg:text-md">Nama Kategori</th>
+                            <th class="w-20 pl-4 text-xs lg:text-md">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -17,8 +17,8 @@
                         @endphp
                         @foreach ($categories as $item)
                             <tr class="bg-white border-b hover:bg-gray-50">
-                                <td>{{ $no++ }}</td>
-                                <td>{{ $item->name }}</td>
+                                <td class="text-xs lg:text-md">{{ $no++ }}</td>
+                                <td class="text-xs lg:text-md">{{ $item->name }}</td>
                                 <td class="flex space-x-2">
                                     <button @click="show=true, editData={name:'{{ $item->name }}', id: '{{$item->id}}'}" class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
                                     <a href="{{ route('category.delete', ['id' =>  Crypt::encrypt($item->id)]) }}"

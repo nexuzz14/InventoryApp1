@@ -2,7 +2,7 @@
 <div id="sidebar" class="relative flex flex-col flex-wrap bg-white border-r border-gray-300 p-6 flex-none w-64 lg:ml-0 md:-ml-64 md:fixed md:top-0 md:z-30 md:h-screen md:shadow-xl animated faster">
 
     <!-- sidebar content -->
-    <div class="flex flex-col">
+    <div class="flex flex-col fixed">
 
         <!-- sidebar toggle -->
         <div class="text-right hidden md:block mb-4">
