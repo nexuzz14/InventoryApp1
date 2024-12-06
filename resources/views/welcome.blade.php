@@ -63,28 +63,24 @@
                     <img src="https://via.placeholder.com/150" alt="Product 1" class="w-full h-40 object-cover">
                     <div class="p-4">
                         <h4 class="text-lg font-medium">Product 1</h4>
-                        <p class="text-gray-400 mt-1">$19.99</p>
                     </div>
                 </div>
                 <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
                     <img src="https://via.placeholder.com/150" alt="Product 2" class="w-full h-40 object-cover">
                     <div class="p-4">
                         <h4 class="text-lg font-medium">Product 2</h4>
-                        <p class="text-gray-400 mt-1">$29.99</p>
                     </div>
                 </div>
                 <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
                     <img src="https://via.placeholder.com/150" alt="Product 3" class="w-full h-40 object-cover">
                     <div class="p-4">
                         <h4 class="text-lg font-medium">Product 3</h4>
-                        <p class="text-gray-400 mt-1">$14.99</p>
                     </div>
                 </div>
                 <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
                     <img src="https://via.placeholder.com/150" alt="Product 4" class="w-full h-40 object-cover">
                     <div class="p-4">
                         <h4 class="text-lg font-medium">Product 4</h4>
-                        <p class="text-gray-400 mt-1">$24.99</p>
                     </div>
                 </div>
             </div>
@@ -92,10 +88,10 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 py-6">
+    {{-- <footer class="bg-gray-800 py-6">
         <div class="max-w-6xl mx-auto text-center text-gray-400">
             &copy; 2024 Inventory. All rights reserved.
         </div>
-    </footer>
+    </footer> --}}
 </body>
 </html>
