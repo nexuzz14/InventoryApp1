@@ -3,7 +3,7 @@ import defaultTheme from "tailwindcss/defaultTheme";
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-        "./resources/views/dashboard/kategori.blade.php",
+        "./resources/views/dashboard/*",
         "./resources/views/auth/login.blade.php",
     ],
     safelist: [
