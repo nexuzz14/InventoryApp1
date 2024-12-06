@@ -27,7 +27,7 @@
                                     <div class="flex-1">
                                         <label for="supplier">Supplier</label>
                                         <select name="supplier" id="supplier"
-                                            class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                            class="border px-3 mt-1 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                             <option value="">Indomater</option>
                                             <option value="">Indomater</option>
                                             <option value="">Indomater</option>
@@ -37,7 +37,7 @@
                                     <div class="flex-1">
                                         <label for="source">Source</label>
                                         <select name="source" id="source"
-                                            class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                            class="border px-3 mt-1 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                             <option value="purchases">Purchases</option>
                                             <option value="manual">Manual</option>
                                         </select>
@@ -45,9 +45,10 @@
                                     </div>
                                 </div>
                                 <label for="lokasi">Lokasi</label>
-                                <input type="text"
-                                    class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                    id="lokasi"  required />
+                                <select name="lokasi" id="lokasi" class="border px-3 mt-2 mb-2 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                    <option value="ringroad">ringroad</option>
+                                    <option value="jayo">jayo</option>
+                                </select>
 
                                 <label for="status">Status</label>
                                 <select
@@ -200,7 +201,7 @@
                                         <div class="flex-1">
                                             <label for="sup">Supplier</label>
                                             <select x-model="editData.supplier" name="supplier" id="sup"
-                                                class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                                class="border mt-1 px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                                 <option value="">Indomater</option>
                                                 <option value="">Indomater</option>
                                                 <option value="">Indomater</option>
@@ -210,7 +211,7 @@
                                         <div class="flex-1">
                                             <label for="sourcei">Source</label>
                                             <select x-model="editData.source" name="source" id="source"
-                                                class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                                class="border mt-1 px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                                 <option value="purchases">Purchases</option>
                                                 <option value="manual">Manual</option>
                                             </select>
@@ -218,9 +219,10 @@
                                         </div>
                                     </div>
                                     <label for="lokasi">Lokasi</label>
-                                    <input x-model="editData.lokasi"  type="text"
-                                        class="bg-gray-200 mb-2  active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                        id="lokasi" required />
+                                    <select name="lokasi" class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md mt-2 mb-2" id="lokasi" x-model="editData.lokasi" >
+                                        <option value="ringroad">ringroad</option>
+                                        <option value="jayo">jayo</option>
+                                    </select>
 
                                     <label for="status">Status</label>
                                     <select x-model="editData.status"

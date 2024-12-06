@@ -22,6 +22,10 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
         return view("dashboard.satuan");
     })->name("satuan");
 
+    Route::get("dashboard/lokasi", function () {
+        return view("dashboard.lokasi");
+    })->name("lokasi");
+
 
     Route::delete("category/delete/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
     Route::patch("category/update", [CategoryController::class, 'update'])->name("category.update");

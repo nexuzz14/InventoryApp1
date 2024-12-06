@@ -16,7 +16,7 @@
                             $no = 1;
                         @endphp
                         {{-- @foreach ($categories as $item) --}}
-                            <tr class="bg-white border-b hover:bg-gray-50">
+                            <tr class="bg-white  hover:bg-gray-50">
                                 <td class="text-xs lg:text-md">1</td>
                                 <td class="text-xs lg:text-md">Kilo</td>
                                 <td class="flex space-x-2">
@@ -34,7 +34,7 @@
                     <p class="text-lg font-bold py-2 border-b border-1">Tambah Satuan</p>
                     <form action="{{ route('category.create') }}" method="POST" class="flex mt-3 flex-col">
                         @csrf
-                        <label for="namaKategori">Nama Kategori</label>
+                        <label for="namaKategori">Nama Satuan</label>
                         <input type="text" name="name"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="name">
