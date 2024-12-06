@@ -25,7 +25,7 @@
         <!-- link -->
         <a href="/dashboard/category"
             class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
-            <x-mdi-format-list-bulleted class="mr-2 w-6 h-6" />
+            <x-mdi-scale class="mr-2 w-6 h-6" />
             Satuan
         </a>
         <!-- link -->
