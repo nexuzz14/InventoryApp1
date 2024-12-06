@@ -75,6 +75,7 @@
 
 
 
+
                     <script>
                         function validateForm() {
                             const namaKategori = document.getElementById('namaKategori').value.trim();
@@ -129,6 +130,7 @@
                             berupa
                             angka dengan panjang 10-15 karakter.</small>
 
+
                         <label for="alamatEdit">Alamat Supplier</label>
                         <input type="text"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
@@ -145,6 +147,9 @@
 
 
 
+
+
+
                         <script>
                             function validateFormEdit() {
                                 const namaKategori = document.getElementById('namaKategoriEdit').value.trim();
@@ -154,12 +159,14 @@
                                 const submitButton = document.getElementById('submit-buttonEdit');
                                 const phoneRegex = /^[0-9]{10,15}$/; // Hanya angka, panjang 10-15 karakter
 
+
                                 // Validasi nomor telepon
                                 if (!phoneRegex.test(notelp)) {
                                     errorMessage.style.display = 'block';
                                 } else {
                                     errorMessage.style.display = 'none';
                                 }
+
 
                                 // Aktifkan tombol jika semua input valid
                                 if (namaKategori && phoneRegex.test(notelp) && alamat) {
@@ -169,6 +176,7 @@
                                 }
                             }
                         </script>
+
 
                     </form>
                 </div>

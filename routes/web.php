@@ -20,7 +20,8 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get("dashboard/supplier", [SupplierController::class, 'index'])->name("category");
     Route::get("dashboard/satuan", function () {
         return view("dashboard.satuan");
-    })->name("category");
+    })->name("satuan");
+
 
     Route::delete("category/delete/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
     Route::patch("category/update", [CategoryController::class, 'update'])->name("category.update");
