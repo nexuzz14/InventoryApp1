@@ -13,10 +13,10 @@ Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get("dashboard/category", [CategoryController::class, 'index'])->name("category");
-    Route::get("dashboard/barang", function(){
+    Route::get("dashboard/barang", function () {
         return view("dashboard.barang");
     })->name("category");
-    Route::get("dashboard/supplier", function(){
+    Route::get("dashboard/supplier", function () {
         return view("dashboard.supplier");
     })->name("category");
     Route::get("dashboard/satuan", function(){
@@ -31,7 +31,7 @@ Route::get("/invoice", function () {
 })->name("page.invoice");
 
 
-Route::get("dashboard/barang", function(){
+Route::get("dashboard/barang", function () {
     return view("dashboard.barang");
 })->name("barang");
 Route::fallback(function () {

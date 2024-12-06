@@ -41,7 +41,7 @@
         <!-- end link -->
 
         <!-- link -->
-        <a href="#"
+        <a href="/dashboard/supplier"
             class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
             <i class="fad fa-comments text-xs mr-2"></i>
             Supplier
@@ -49,7 +49,7 @@
         <!-- end link -->
 
         <!-- link -->
-        <a href="#"
+        <a href="/dashboard/barang"
             class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
             <i class="fad fa-shield-check text-xs mr-2"></i>
            Barang

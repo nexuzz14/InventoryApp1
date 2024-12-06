@@ -23,8 +23,17 @@
         </div>
 
     </div>
-
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            $('#table').DataTable({
+                columnDefs: [{
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }]
+            });
+        });
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
@@ -37,6 +46,7 @@
             }
         }
     </script>
+    {{-- <script></script> --}}
     <x-script-pack></x-script-pack>
 </body>
 
