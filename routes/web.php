@@ -7,7 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AuthController::class, 'checkAuth'])->name('home');
+Route::get('/', function () {
+    return view('welcome');
+})->name("home");
+
+Route::get('/login', [AuthController::class, 'checkAuth'])->name('login');
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
@@ -31,7 +35,7 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get("dashboard/pengguna", function () {
         return view("dashboard.pengguna");
     })->name("pengguna");
-   
+
 
     Route::delete("category/delete/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
     Route::patch("category/update", [CategoryController::class, 'update'])->name("category.update");
