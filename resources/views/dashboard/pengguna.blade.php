@@ -153,7 +153,7 @@
         {{-- ! popup edit  --}}
         <div x-show="show"  x-transition:enter="animate__animated animate__fadeIn animate__faster"
             x-transition:leave="animate__animated animate__fadeOut animate__faster"
-            class="fixed w-screen h-screen px-4 bg-black bg-opacity-10 backdrop-blur-sm top-0 left-0 flex items-center justify-center">
+            class="fixed w-screen z-40 h-screen px-4 bg-black bg-opacity-10 backdrop-blur-sm top-0 left-0 flex items-center justify-center">
 
             <div 
                 x-show="show"
