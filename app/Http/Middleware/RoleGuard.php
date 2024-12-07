@@ -14,15 +14,13 @@ class RoleGuard
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next, ...$role): Response
     {
         if (!Auth::check()) {
             return redirect('/');
         }
 
-        $allowedRoles = explode(',', $role);
-
-        if (!in_array(Auth::user()->role, $allowedRoles)) {
+        if (!in_array(Auth::user()->role, $role)) {
             return redirect()->route('fallback');
         }
         return $next($request);

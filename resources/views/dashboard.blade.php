@@ -1,9 +1,6 @@
 @extends('layouts.dashboard')
 @section('content')
     <div class="grid grid-cols-4 gap-6 xl:grid-cols-1">
-
-
-        <!-- card -->
         <x-card-item :label="'Category'" :value="$category" :color="'teal'"><x-mdi-vector-arrange-below /></x-card-item>
         <x-card-item :label="'Supplier'" :value="$suppliers" :color="'red'"><x-mdi-truck-fast /></x-card-item>
         <x-card-item :label="'Barang'" :value="$items" :color="'red'"><x-mdi-cube-outline/></x-card-item>
