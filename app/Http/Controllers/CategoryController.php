@@ -23,9 +23,9 @@ class CategoryController extends Controller
     }
 
 
-    public function create(StoreCategoryRequest $category)
+    public function store(StoreCategoryRequest $category)
     {
-        $result = $this->categoryServices->createCategory($category->request->all());
+        $result = $this->categoryServices->storeCategory($category->request->all());
         if (!$result) {
             return back()->withErrors([
                 "Terjadi kesalahan saat membuat kategori"
@@ -34,9 +34,8 @@ class CategoryController extends Controller
         return redirect()->route('dashboard.category');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+
     public function show(Category $category)
     {
         //
@@ -50,9 +49,7 @@ class CategoryController extends Controller
         // dd($category);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request)
     {
        $result =  $this->categoryServices->updateCategory($request->id, $request->name);

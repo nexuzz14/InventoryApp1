@@ -4,7 +4,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\MasterController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'checkAuth'])->name('home');
@@ -14,32 +17,34 @@ Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get("dashboard/category", [CategoryController::class, 'index'])->name("dashboard.category");
-    Route::get("dashboard/barang", function () {
-        return view("dashboard.barang");
-    })->name("category");
+    Route::get("dashboard/barang", [ItemController::class, 'index'])->name("dashboard.barang");
     Route::get("dashboard/supplier", [SupplierController::class, 'index'])->name("category");
-    Route::get("dashboard/satuan", function () {
-        return view("dashboard.satuan");
-    })->name("satuan");
+    Route::get("dashboard/satuan", [UnitController::class, 'index'])->name("satuan");
 
 
-    Route::delete("category/delete/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
-    Route::patch("category/update", [CategoryController::class, 'update'])->name("category.update");
-    Route::post("category/create", [CategoryController::class, 'create'])->name("category.create");
+    Route::delete("category/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
+    Route::patch("category", [CategoryController::class, 'update'])->name("category.update");
+    Route::post("category", [CategoryController::class, 'store'])->name("category.store");
 
-    Route::post("supplier/create", [SupplierController::class, 'create'])->name("supplier.create");
-    Route::patch("supplier/update", [SupplierController::class, 'update'])->name("supplier.update");
-    Route::delete("supplier/delete/{id?}", [SupplierController::class, 'destroy'])->name("supplier.delete");
+    Route::post("supplier", [SupplierController::class, 'store'])->name("supplier.store");
+    Route::patch("supplier", [SupplierController::class, 'update'])->name("supplier.update");
+    Route::delete("supplier/{id?}", [SupplierController::class, 'destroy'])->name("supplier.delete");
+
+    Route::post("unit", [UnitController::class, 'store'])->name("unit.store");
+    Route::patch("unit", [UnitController::class, 'update'])->name("unit.update");
+    Route::delete("unit/{id?}", [UnitController::class, 'destroy'])->name("unit.delete");
+
+    Route::get("/form-options", [MasterController::class, 'getAllMasterData'])->name("form-options");
+
+    Route::post("item", [ItemController::class, "store"])->name("item.store");
+    Route::delete("item/{id}", [ItemController::class, "destroy"])->name("item.delete");
+
 });
 
 Route::get("/invoice", function () {
     return view('invoice');
 })->name("page.invoice");
 
-
-Route::get("dashboard/barang", function () {
-    return view("dashboard.barang");
-})->name("barang");
 Route::fallback(function () {
     return view('404');
 })->name('fallback');

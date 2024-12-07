@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 @section('content')
     {{-- ! popup --}}
-    <div class="top-0 left-0 z-40  fixed " x-data="{ show: false }">
+    <div class="top-0 left-0 z-40 fixed " x-data="formData">
         {{-- ! popup tambah  --}}
         <div x-show="show" style="position: fixed" x-transition:enter="animate__fadeIn animate__animated animate__faster"
             x-transition:leave="animate__fadeOut animate__animated animate__faster"
@@ -11,7 +11,10 @@
                 x-transition:leave="animate__fadeOutDown animate__animated animate__faster">
 
 
-                <form action="" class="mt-3  w-full h-full  flex flex-col ">
+                <form action="{{ route('item.store') }}" method="POST" class="mt-3 w-full h-full flex flex-col"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="source" value="manual">
                     <p class="text-lg font-bold py-2 border-b border-1 flex-0 h-14">Tambah Barang</p>
                     <div class=" overflow-y-auto w-full px-2 mt-2 flex-1">
                         <div class="flex md:flex-col flex-row gap-2 pb-4">
@@ -19,43 +22,60 @@
                             {{-- group 1 --}}
                             <div class="section flex flex-col flex-1">
                                 <label for="namaKategori">Nama Barang</label>
-                                <input type="text"
+                                <input type="text" name="name"
                                     class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                    id="namaKategori"  required />
+                                    id="namaKategori" required />
 
                                 <div class="flex gap-2 mb-[10px]">
                                     <div class="flex-1">
                                         <label for="supplier">Supplier</label>
-                                        <select name="supplier" id="supplier"
+                                        <select name="supplier_id" id="supplier"
                                             class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
-                                            <option value="">Indomater</option>
-                                            <option value="">Indomater</option>
-                                            <option value="">Indomater</option>
-
+                                            <template x-for="supplier in suppliers">
+                                                <option :value="supplier.id" x-text="supplier.name"></option>
+                                            </template>
                                         </select>
                                     </div>
                                     <div class="flex-1">
-                                        <label for="source">Source</label>
-                                        <select name="source" id="source"
+                                        <label for="category">Kategori</label>
+                                        <select name="category_id" id="category"
                                             class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
-                                            <option value="purchases">Purchases</option>
-                                            <option value="manual">Manual</option>
+                                            <template x-for="category in categories">
+                                                <option :value="category.id" x-text="category.name"></option>
+                                            </template>
                                         </select>
-
                                     </div>
                                 </div>
                                 <label for="lokasi">Lokasi</label>
-                                <input type="text"
+                                <input type="text" name="location_id"
                                     class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                    id="lokasi"  required />
+                                    id="lokasi" required />
+                                <div class="flex gap-1">
+                                    <div class="flex-1">
+                                        <label for="quantity">Jumlah</label>
+                                        <input type="number"
+                                            class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
+                                            id="quantity" name="quantity" required />
+                                    </div>
+                                    <div class="">
+                                        <label for="unit">Satuan</label>
+                                        <select name="unit_id" id="unit"
+                                            class="border px-2 w-full mt-2 py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                            <template x-for="unit in units">
+                                                <option :value="unit.id" x-text="unit.name"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+
+                                </div>
 
                                 <label for="status">Status</label>
-                                <select
-                                class="border mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                id="status"  required />
-                                    <option value="tersedia">Tersedia</option>
-                                    <option value="tidak">Tidak Tersedia</option>
-                            </select>
+                                <select name="status"
+                                    class="border mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
+                                    id="status" required />
+                                <option value="tersedia">Tersedia</option>
+                                <option value="tidak">Tidak Tersedia</option>
+                                </select>
 
                             </div>
 
@@ -83,15 +103,15 @@
                                         class="hover:pl-2 pl-8 line-clamp-1 z-1 text-white bg-transparent duration-200 hover:bg-blue-400 flex-1 w-full">
                                         Select File</p>
 
-                                    <input id="fileInput" class="absolute w-full h-full opacity-0" type="file"
-                                        accept="image/*" onchange="updateFileName(event)">
+                                    <input id="fileInput" name="image" class="absolute w-full h-full opacity-0"
+                                        type="file" accept="image/*" onchange="updateFileName(event)">
                                 </div>
                                 {{-- end input foto --}}
 
 
 
                                 <label for="namaKategori">harga</label>
-                                <input type="text"
+                                <input type="text" name="price"
                                     class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                     id="namaKategori" oninput="validateForm()" required />
 
@@ -99,7 +119,7 @@
                         </div>
                     </div>
                     <div class="flex gap-2 font-bold justify-end w-full flex-0 h-14 py-2 border-t">
-                        <button type="reset"  @click="show=false" onclick="resetFileName()"
+                        <button type="reset" @click="show=false" onclick="resetFileName()"
                             class="bg-red-400 hover:bg-red-300 duration-200 rounded text-white px-2 py-2">Batal</button>
                         <button
                             class="button bg-green-400 hover:bg-green-300 duration-200 px-2 py-2 rounded text-white">Tambah</button>
@@ -112,15 +132,15 @@
 
 
         {{-- ! popup btn --}}
-        <button @click="show=true" x-show="!show"
+        <button @click="openModal" x-show="!show"
             x-transition:enter="animate__fadeInRight animate__animated animate__faster"
             x-transition:leave="animate__fadeOutRight animate__animated  animate__faster"
             class="fixed group mb-2 flex overflow-hidden bg-blue-400 duration-200 py-2 rounded font-bold text-white bottom-4 right-4 items-center cursor-pointer px-4">
             <div
                 class="icons h-full w-10  bg-blue-400 group-hover:bg-blue-400 group-hover:w-full duration-200 flex items-center justify-center left-0 pl-4 absolute">
-                <svg class="w-6 h-6 group-hover:rotate-90 duration-500 group-hover:scale-125 text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                    viewBox="0 0 24 24">
+                <svg class="w-6 h-6 group-hover:rotate-90 duration-500 group-hover:scale-125 text-white"
+                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    fill="currentColor" viewBox="0 0 24 24">
                     <path fill-rule="evenodd"
                         d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z"
                         clip-rule="evenodd" />
@@ -153,34 +173,42 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Pensil</td>
-                            <td><img src="https://picsum.photos/100/50" alt=""></td>
-                            <td>Gus Miftah</td>
-                            <td>Alat Tulis</td>
-                            <td>Gudang, Jl. Kaliurang</td>
-                            <td>10 pcs</td>
-                            <td>Rp. 10.000 / pcs</td>
-                            <td>Tersedia</td>
-                            <td class="">
-                                <div class="flex h-full items-center justify-center space-x-2">
-                                    <button @click="show = true, editData={name:'pensil', supllier:'indomater', source:'manual', lokasi:'ringroad', status:'tersedia', gambar:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQDE4cJvMUaRNtQKS6pJCi7je2_72uwO5USw&s', harga:'10.000'}" class="text-green-500 px-2 py-2 rounded-md bg-green-100">Edit</button>
-                                    <a href="" class="text-red-500 px-2 py-2 rounded-md bg-red-100">Delete</a>
-                                </div>
-                            </td>
-                        </tr>
+                        @foreach ($data as $item)
+                            <tr>
+                                <td>{{ $item['name'] }}</td>
+                                <td><img src="https://picsum.photos/100/50" alt=""></td>
+                                <td>{{ $item['supplier'] }}</td>
+                                <td>{{ $item['category'] }}</td>
+                                <td>Jl. Kaliurang</td>
+                                <td>{{ $item['quantity'] }} {{ $item['unit'] }}</td>
+                                <td>Rp. {{ $item['price'] }} / pcs</td>
+                                <td>{{ $item['status'] }}</td>
+                                <td class="">
+                                    <div class="flex h-full items-center justify-center space-x-2">
+                                        <button
+                                            @click="show = true, editData={name:'pensil', supllier:'indomater', source:'manual', lokasi:'ringroad', status:'tersedia', gambar:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQDE4cJvMUaRNtQKS6pJCi7je2_72uwO5USw&s', harga:'10.000'}"
+                                            class="text-green-500 px-2 py-2 rounded-md bg-green-100">Edit</button>
+                                            <form action="{{route('item.delete', ['id' => Crypt::encrypt($item['id'])])}}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-500 px-2 py-2 rounded-md bg-red-100">Delete</button>
+                                            </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
-        <div x-show="show" class="popup fixed top-0 left-0 z-40 h-screen w-screen bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center">
+        <div x-show="show"
+            class="popup fixed top-0 left-0 z-40 h-screen w-screen bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center">
             {{-- ! popup Edit  --}}
             <div x-show="show" x-transition:enter="animate__fadeIn animate__animated  animate__faster"
                 x-transition:leave="animate__fadeOut animate__animated  animate__faster"
                 class="box fixed top-0 left-0 py-4 flex items-center px-2 justify-center backdrop-blur-sm w-screen h-screen bg-black bg-opacity-10 ">
                 <div class=" border border-1  bg-white flex flex-col md:h-auto h-5/6 px-3 py-2 w-full max-w-[700px]"
-                    x-show="show" 
-                    x-transition:enter="animate__fadeInUp animate__animated animate__faster"
+                    x-show="show" x-transition:enter="animate__fadeInUp animate__animated animate__faster"
                     x-transition:leave="animate__fadeOutDown animate__animated  animate__faster">
 
 
@@ -194,7 +222,7 @@
                                     <label for="nama">Nama Barang</label>
                                     <input x-model="editData.name" type="text"
                                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                        id="nama"  required />
+                                        id="nama" required />
 
                                     <div class="flex gap-2 mb-[10px]">
                                         <div class="flex-1">
@@ -218,16 +246,16 @@
                                         </div>
                                     </div>
                                     <label for="lokasi">Lokasi</label>
-                                    <input x-model="editData.lokasi"  type="text"
+                                    <input x-model="editData.lokasi" type="text"
                                         class="bg-gray-200 mb-2  active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                         id="lokasi" required />
 
                                     <label for="status">Status</label>
                                     <select x-model="editData.status"
                                         class="border mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                        id="status"  required />
-                                            <option value="tersedia">Tersedia</option>
-                                            <option value="tidak">Tidak Tersedia</option>
+                                        id="status" required />
+                                    <option value="tersedia">Tersedia</option>
+                                    <option value="tidak">Tidak Tersedia</option>
                                     </select>
 
                                 </div>
@@ -236,7 +264,7 @@
                                 <div class="flex flex-col flex-1">
                                     {{-- input foto --}}
                                     <div class="previewImage border border-1 rounded overflow-hidden max-w-full h-[138px] mt-2 mb-2"
-                                        id="previewContainerEdit" >
+                                        id="previewContainerEdit">
                                         <img id="imagePreviewEdit" :src="editData.gambar" alt="Image preview"
                                             class="w-full h-full object-contain">
                                     </div>
@@ -285,6 +313,38 @@
 
     </div>
     <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('formData', () => ({
+                show: false,
+                categories: [],
+                suppliers: [],
+                units: [],
+                openModal() {
+                    this.fetchData()
+                    this.show = true
+                },
+                closeModal() {
+                    this.show = false
+                },
+                fetchData() {
+                    fetch('/form-options', {
+                            method: "GET",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                'Content-Type': 'application/json'
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            this.categories = data.categories
+                            this.suppliers = data.suppliers
+                            this.units = data.units
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            }))
+        })
+
         // Function to update file name when file is selected
         function updateFileName(event) {
             const fileInput = event.target;
@@ -309,6 +369,7 @@
                 previewContainer.style.display = 'none'; // Hide the preview if no valid file is selected
             }
         }
+
         function updateFileNameEdit(event) {
             const fileInput = event.target;
             const fileNameDisplay = document.getElementById('fileNameEdit');
@@ -333,18 +394,19 @@
             }
         }
 
-        function resetFileNameEdit() { 
+        function resetFileNameEdit() {
             const fileNameDisplay = document.getElementById('fileNameEdit');
-            fileNameDisplay.textContent="Select File"
-         }
-         function resetFileName() { 
+            fileNameDisplay.textContent = "Select File"
+        }
+
+        function resetFileName() {
             const fileNameDisplay = document.getElementById('fileName');
             const previewContainer = document.getElementById('previewContainer');
 
             previewContainer.style.display = 'none';
-            fileNameDisplay.textContent="Select File";
+            fileNameDisplay.textContent = "Select File";
 
-         }
+        }
     </script>
 
     <!-- End Recent Sales -->

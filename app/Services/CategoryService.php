@@ -18,7 +18,7 @@ class CategoryService
         return Category::count();
     }
 
-    public function createCategory(array $data)
+    public function storeCategory(array $data)
     {
         return Category::create($data);
     }

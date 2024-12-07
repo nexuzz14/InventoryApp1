@@ -25,9 +25,9 @@ class SupplierController extends Controller
     }
 
 
-    public function create(StoreSupplierRequest $storeSupplierRequest)
+    public function store(StoreSupplierRequest $storeSupplierRequest)
     {
-        $result = $this->supplierService->createSupplier($storeSupplierRequest->all());
+        $result = $this->supplierService->storeSupplier($storeSupplierRequest->all());
         if (!$result) {
             return back()->withErrors([
                 "Terjadi kesalahan saat membuat supplier"
@@ -65,14 +65,6 @@ class SupplierController extends Controller
         return back()->withSuccess([
             "Supplier berhasil dihapus"
         ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**

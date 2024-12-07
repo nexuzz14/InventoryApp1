@@ -38,7 +38,7 @@
             <div class="flex-0   px-3 py-2 w-full max-w-96">
                 <div class="form  w-full  bg-white border border-1  px-3 py-2">
                     <p class="text-lg font-bold py-2 border-b border-1">Tambah Kategori</p>
-                    <form action="{{ route('category.create') }}" method="POST" class="flex mt-3 flex-col">
+                    <form action="{{ route('category.store') }}" method="POST" class="flex mt-3 flex-col">
                         @csrf
                         <label for="namaKategori">Nama Kategori</label>
                         <input type="text" name="name"

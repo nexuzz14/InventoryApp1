@@ -24,8 +24,8 @@
         </a>
         <!-- link -->
         <a href="{{route("satuan")}}"
-            class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-envelope-open-text text-xs mr-2"></i>
+            class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
+            <x-mdi-scale-balance class="mr-2 w-6 h-6"/>
             Satuan
         </a>
         <!-- link -->

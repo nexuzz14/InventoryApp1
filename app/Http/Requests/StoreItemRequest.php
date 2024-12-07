@@ -26,7 +26,7 @@ class StoreItemRequest extends FormRequest
             "supplier_id" => "required|exists:suppliers,id",
             "category_id" => "required|exists:categories,id",
             "unit_id" => "required|exists:units,id",
-            "location_id" => "required|exists:locations,id",
+            // "location_id" => "required|exists:locations,id",
             "quantity" => "required|numeric",
             "status" => "required|in:tersedia, tidak tersedia",
             "image" => "required|image|mimes:jpeg,png,jpg,gif,svg|max:2048",

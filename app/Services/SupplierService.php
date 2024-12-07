@@ -17,7 +17,7 @@ class SupplierService
         return Supplier::count();
     }
 
-    public function createSupplier(array $data)
+    public function storeSupplier(array $data)
     {
         return Supplier::create($data);
     }

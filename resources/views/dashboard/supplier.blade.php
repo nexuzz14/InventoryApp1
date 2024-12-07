@@ -30,9 +30,10 @@
                                     <button
                                         @click="show=true, name='{{ $item->name }}', address='{{ $item->address }}', phone='{{ $item->phone }}', id='{{ Crypt::encrypt($item->id) }}'"
                                         class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
-                                    <form action="{{route('supplier.delete', ['id' => Crypt::encrypt($item->id)])}}" method="post">
+                                    <form action="{{ route('supplier.delete', ['id' => Crypt::encrypt($item->id)]) }}"
+                                        method="post">
                                         @csrf
-                                        @method("DELETE")
+                                        @method('DELETE')
                                         <button type="submit"
                                             class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</button>
                                     </form>
@@ -47,7 +48,7 @@
         <div class="flex-0   px-3 py-2 w-full max-w-96">
             <div class="form  w-full  bg-white border border-1  px-3 py-2">
                 <p class="text-lg font-bold py-2 border-b border-1">Tambah Supllier</p>
-                <form action="{{ route('supplier.create') }}" method="POST" class="flex mt-3 flex-col">
+                <form action="{{ route('supplier.store') }}" method="POST" class="flex mt-3 flex-col">
                     @csrf
                     <label for="namaKategori">Nama Supplier</label>
                     <input type="text" name="name"
