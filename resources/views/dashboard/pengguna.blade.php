@@ -1,6 +1,8 @@
 @extends('layouts.dashboard')
 @section('content')
     <x-notivication-handler :message="session('message')"></x-notivication-handler>
+
+
     <div x-data="{ show: false, editData: { username: '', nama:'', email:'', role:'', id: '' } }" class="tailwind-scope">
 
         <div class="flex flex-wrap">
@@ -8,9 +10,18 @@
 
                 {{-- tombol pisah --}}
                 <div class="btn_group flex gap-2 py-2">
-                    <a href="" class="py-2 px-2 rounded hover:px-3 border duration-200">Customer</a>
-                    <a class="py-2 px-4 border rounded bg-blue-200 text-blue-600" href="">Petugas</a>
+                    <a href="/dashboard/pengguna/user" 
+                        class="py-2 px-2 rounded border duration-200 hover:px-3 
+                        {{ request()->is('dashboard/pengguna/user') ? 'px-4 bg-blue-200 text-blue-600' : '' }}">
+                        Customer
+                    </a>
+                    <a href="/dashboard/pengguna/admin" 
+                        class="py-2 px-2 rounded border duration-200 hover:px-3 
+                        {{ request()->is('dashboard/pengguna/admin') ? 'px-4 bg-blue-200 text-blue-600' : '' }}">
+                        Petugas
+                    </a>
                 </div>
+                
                 {{-- end tombol pisah --}}
 
                 {{-- table --}}
@@ -32,7 +43,7 @@
                             @endphp
                             @foreach ($user as $item)
                             <tr class="bg-white  hover:bg-gray-50">
-                                <td class="text-xs lg:text-md">1</td>
+                                <td class="text-xs lg:text-md">{{$no++}}</td>
                                 <td class="text-xs lg:text-md">{{$item->name}}</td>
                                 <td class="text-xs lg:text-md">{{$item->username}}</td>
                                 <td class="text-xs lg:text-md">{{$item->email}}</td>
@@ -87,7 +98,7 @@
                         <select name="role" id="role" required
                             class="mb-2 border active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0">
                             <option value="admin">Petugas</option>
-                            <option value="customer">pengguna</option>
+                            <option value="user">pengguna</option>
                         </select>
                         @error('role')
                         <div class="text-red-500 text-sm">{{ $message }}</div>
@@ -139,7 +150,7 @@
             {{-- endTambahData --}}
         </div>
 
-        {{-- ! popup  --}}
+        {{-- ! popup edit  --}}
         <div x-show="show"  x-transition:enter="animate__animated animate__fadeIn animate__faster"
             x-transition:leave="animate__animated animate__fadeOut animate__faster"
             class="fixed w-screen h-screen px-4 bg-black bg-opacity-10 backdrop-blur-sm top-0 left-0 flex items-center justify-center">
@@ -153,23 +164,26 @@
                 <p class="text-lg font-bold py-2 border-b border-1">Edit pengguna</p>
                 <form action="" method="POST" class="flex mt-3 flex-col">
                     @csrf
+                    @method("PATCH")
+
+                    <input type="hidden" name="id" x-model="editData.id">
                     <label for="usernameEd">Nama pengguna</label>
-                    <input type="text" name="name" x-model="editData.username"
+                    <input type="text" name="data[username]" x-model="editData.username"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                         id="usernameEd" required>
                     
                     <label for="namaEd">Nama</label>
-                    <input type="text" name="name" x-model="editData.nama"
+                    <input type="text" name="data[name]" x-model="editData.nama"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                         id="namaEd" required>
 
                     <label for="emailEd">Email</label>
-                    <input type="email" name="name" x-model="editData.email"
+                    <input type="email" name="data[email]" x-model="editData.email"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                         id="emailEd" required>
 
                     <label for="roleEd">Role</label>
-                    <select name="role" id="roleEd" required x-model="editData.role"
+                    <select name="data[role]" id="roleEd" required x-model="editData.role"
                         class="mb-2 border active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0">
                         <option value="admin">Petugas</option>
                         <option value="customer">pengguna</option>
@@ -178,9 +192,9 @@
                     <div class="passwordInput" x-data="{ showPass: false }">
                         <label for="passwordEd">Password</label>
                         <div class="inputBox mb-2 flex gap-2 bg-gray-200">
-                            <input :type="showPass ? 'text' : 'password'" name="password"
+                            <input :type="showPass ? 'text' : 'password'" name="data[password]"
                                 class="bg-gray-200 active:ring-0 flex-1 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
-                                id="passwordEd" required>
+                                id="passwordEd" >
                             <button @click="showPass = !showPass" type="button"
                                 class="flex justify-center w-10 flex-0  items-center py-2">
                                 <svg x-show="!showPass" class="w-6 h-6 " aria-hidden="true"

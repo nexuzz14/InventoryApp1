@@ -32,8 +32,8 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
 
     Route::get("dashboard/pengguna/{role?}", [UserController::class, 'index'])->name("pengguna");
     Route::post("dashboard/pengguna/store", [UserController::class, 'store'])->name("pengguna.store");
-    Route::post("dashboard/pengguna/edit", [UserController::class, 'edit'])->name("pengguna.edit");
-    Route::delete("dashboard/pengguna/delete/{id?}", [UserController::class, 'destroy'])->name("pengguna.delete");
+    Route::patch("dashboard/pengguna/{id?}", [UserController::class, 'update'])->name("pengguna.edit");
+    Route::delete("dashboard/pengguna/{id?}", [UserController::class, 'destroy'])->name("pengguna.delete");
 
 
 
