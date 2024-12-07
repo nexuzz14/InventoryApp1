@@ -20,14 +20,9 @@ class RoleGuard
         if (!Auth::check()) {
             return redirect('/')->with('error', 'Silakan login terlebih dahulu.');
         }
-    
-    
-        Log::info('Roles Parameter Raw: ' . json_encode($role));
-    
-        $userRole = Auth::user()->role;
-    
-        if (!in_array($userRole, $role)) {
-            return redirect()->route('fallback')->with('error', 'Akses tidak diizinkan.');
+
+        if (!in_array(Auth::user()->role, $role)) {
+            return redirect()->route('fallback');
         }
     
         return $next($request);
