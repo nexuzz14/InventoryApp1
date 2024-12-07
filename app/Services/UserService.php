@@ -22,6 +22,8 @@ class UserService
     {
         if ($data["password"]) {
             $data["password"] = bcrypt($data["password"]);
+        }else{
+            $data["password"] = User::find($id)->password;
         }
 
         return User::find($id)->update($data);
