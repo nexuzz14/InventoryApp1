@@ -228,7 +228,7 @@
                                         <div class="flex-1">
                                             <label for="sup">Supplier</label>
                                             <select x-model="editData.supplier" name="supplier" id="sup"
-                                                class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                                class="border mt-1 px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                                 <option value="">Indomater</option>
                                                 <option value="">Indomater</option>
                                                 <option value="">Indomater</option>
@@ -238,7 +238,7 @@
                                         <div class="flex-1">
                                             <label for="sourcei">Source</label>
                                             <select x-model="editData.source" name="source" id="source"
-                                                class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                                class="border mt-1 px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                                 <option value="purchases">Purchases</option>
                                                 <option value="manual">Manual</option>
                                             </select>
