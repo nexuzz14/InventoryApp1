@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 
 class UserService
 {
@@ -28,6 +29,7 @@ class UserService
 
     public function deleteUser($id)
     {
+        $id = Crypt::decrypt($id);
         return User::find($id)->delete();
     }
 }

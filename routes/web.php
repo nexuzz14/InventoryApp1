@@ -27,9 +27,11 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
 
     Route::get("dashboard/lokasi", [LocationController::class, "index"])->name("lokasi");
 
-    Route::get("dashboard/pengguna", function () {
-        return view("dashboard.pengguna");
-    })->name("pengguna");
+    Route::get("dashboard/pengguna/{role?}", [UserController::class, 'index'])->name("pengguna");
+    Route::post("dashboard/pengguna/store", [UserController::class, 'store'])->name("pengguna.store");
+    Route::post("dashboard/pengguna/edit", [UserController::class, 'edit'])->name("pengguna.edit");
+    Route::delete("dashboard/pengguna/delete/{id?}", [UserController::class, 'destroy'])->name("pengguna.delete");
+
 
 
     Route::delete("category/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");

@@ -1,6 +1,8 @@
 @extends('layouts.dashboard')
 @section('content')
+    <x-notivication-handler :message="session('message')"></x-notivication-handler>
     <div x-data="{ show: false, editData: { username: '', nama:'', email:'', role:'', id: '' } }" class="tailwind-scope">
+
         <div class="flex flex-wrap">
             <div class="box flex-1 w-full">
 
@@ -28,19 +30,23 @@
                             @php
                                 $no = 1;
                             @endphp
-                            {{-- @foreach ($categories as $item) --}}
+                            @foreach ($user as $item)
                             <tr class="bg-white  hover:bg-gray-50">
                                 <td class="text-xs lg:text-md">1</td>
-                                <td class="text-xs lg:text-md">Kilo</td>
-                                <td class="text-xs lg:text-md">Kilo</td>
-                                <td class="text-xs lg:text-md">Kilo</td>
+                                <td class="text-xs lg:text-md">{{$item->name}}</td>
+                                <td class="text-xs lg:text-md">{{$item->username}}</td>
+                                <td class="text-xs lg:text-md">{{$item->email}}</td>
                                 <td class="flex space-x-2">
-                                    <button @click="show=true, editData={username: 'zizan', nama: 'rusdi', email: 'rusdi@sam.com', role: 'customer', id: '1'}"
+                                    <button @click="show=true, editData={username: '{{$item->username}}', nama: '{{$item->name}}', email: '{{$item->email}}', role: '{{$item->role}}', id: '{{Crypt::encrypt($item->id)}}'}"
                                         class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
-                                    <a href="" class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</a>
+                                    <form method="POST" action="{{route('pengguna.delete', ['id'=> Crypt::encrypt($item->id)])}}">
+                                        @csrf
+                                        @method('DELETE')
+                                    <button type="submit" class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
-                            {{-- @endforeach --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -52,34 +58,45 @@
             <div class="flex-0   px-3 py-2 w-full max-w-96">
                 <div class="form  w-full  bg-white border border-1  px-3 py-2">
                     <p class="text-lg font-bold py-2 border-b border-1">Tambah pengguna</p>
-                    <form action="{{ route('category.create') }}" method="POST" class="flex mt-3 flex-col">
+                    <form action="{{ route('pengguna.store') }}" method="POST" class="flex mt-3 flex-col">
                         @csrf
                         <label for="username">Nama pengguna</label>
-                        <input type="text" name="name"
+                        <input type="text" name="username"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="username" required>
+                            @error('username')
+                            <div class="text-red-500 text-sm">{{ $message }}</div>
+                            @enderror
 
                         <label for="nama">Nama</label>
                         <input type="text" name="name"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="nama" required>
+                            @error('name')
+                            <div class="text-red-500 text-sm">{{ $message }}</div>
+                            @enderror
 
-                        <label for="name">Email</label>
-                        <input type="email" name="name"
+                        <label for="email">Email</label>
+                        <input type="email" name="email"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="email" required>
-
+                            @error('email')
+                            <div class="text-red-500 text-sm">{{ $message }}</div>
+                            @enderror
                         <label for="role">Role</label>
                         <select name="role" id="role" required
                             class="mb-2 border active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0">
                             <option value="admin">Petugas</option>
                             <option value="customer">pengguna</option>
                         </select>
+                        @error('role')
+                        <div class="text-red-500 text-sm">{{ $message }}</div>
+                        @enderror
 
                         <div class="passwordInput" x-data="{ showPass: false }">
                             <label for="password">Password</label>
                             <div class="inputBox mb-2 flex gap-2 bg-gray-200">
-                                <input :type="showPass ? 'text' : 'password'" name="name"
+                                <input :type="showPass ? 'text' : 'password'" name="password"
                                     class="bg-gray-200 active:ring-0 flex-1 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                                     id="password" required>
                                 <button @click="showPass = !showPass" type="button"
@@ -107,7 +124,9 @@
 
                             </div>
                         </div>
-
+                        @error('password')
+                        <div class="text-red-500 text-sm">{{ $message }}</div>
+                        @enderror
                         <div class="flex items-end w-full mt-3 justify-end gap-2">
                             <input type="submit"
                                 class="hover:cursor-pointer bg-blue-400 capitalize text-white px-2 hover:px-4 duration-200 py-1 rounded">
@@ -132,13 +151,13 @@
 
              class="form  w-full max-w-96   bg-white border border-1  px-3 py-2">
                 <p class="text-lg font-bold py-2 border-b border-1">Edit pengguna</p>
-                <form action="{{ route('category.create') }}" method="POST" class="flex mt-3 flex-col">
+                <form action="" method="POST" class="flex mt-3 flex-col">
                     @csrf
                     <label for="usernameEd">Nama pengguna</label>
                     <input type="text" name="name" x-model="editData.username"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                         id="usernameEd" required>
-
+                    
                     <label for="namaEd">Nama</label>
                     <input type="text" name="name" x-model="editData.nama"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
