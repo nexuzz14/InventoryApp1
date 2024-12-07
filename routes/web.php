@@ -12,13 +12,16 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AuthController::class, 'checkAuth'])->name("welcome");
+// Route::get('/', [AuthController::class, 'checkAuth'])->name("welcome");
+Route::get('/', function(){
+    return view('welcome');
+})->name("welcome");
 
 Route::get('/login', [AuthController::class, 'checkAuth'])->name('login');
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
-Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
+Route::middleware(['RoleGuard:admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get("dashboard/category", [CategoryController::class, 'index'])->name("dashboard.category");
     Route::get("dashboard/barang", [ItemController::class, 'index'])->name("dashboard.barang");
