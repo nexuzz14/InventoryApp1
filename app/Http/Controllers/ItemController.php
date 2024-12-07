@@ -26,8 +26,9 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $path = $this->imageService->storeImage($request->file('image'), 'items');
-        $request->merge(['image' => $path]);
-        $result = $this->itemService->store($request->all());
+        $data = $request->all();
+        $data["image"] = $path;
+        $result = $this->itemService->store($data);
         if (!$result) {
             return back()->withErrors([
                 'message' => 'Data gagal disimpan'

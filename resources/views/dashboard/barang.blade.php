@@ -46,10 +46,13 @@
                                         </select>
                                     </div>
                                 </div>
-                                <label for="lokasi">Lokasi</label>
-                                <input type="text" name="location_id"
-                                    class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                    id="lokasi" required />
+                                <label for="location">Lokasi</label>
+                                <select name="location_id" id="location"
+                                    class="border px-2 w-full mt-2 py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                    <template x-for="location in locations">
+                                        <option :value="location.id" x-text="location.name"></option>
+                                    </template>
+                                </select>
                                 <div class="flex gap-1">
                                     <div class="flex-1">
                                         <label for="quantity">Jumlah</label>
@@ -104,7 +107,7 @@
                                         Select File</p>
 
                                     <input id="fileInput" name="image" class="absolute w-full h-full opacity-0"
-                                        type="file" accept="image/*" onchange="updateFileName(event)">
+                                        type="file" accept="image/*" onchange="updateFileName(event)" required>
                                 </div>
                                 {{-- end input foto --}}
 
@@ -155,11 +158,10 @@
     </div>
     {{-- ! end popup --}}
 
-    <div class="flex flex-wrap z-0" x-data="{ show: false, editData: { name: '', supplier: '', source: '', lokasi: '', status: '', gambar: '', harga: '' } }">
-        <div class="box flex-1  px-3 py-2">
+    <div class="flex flex-wrap z-0" x-data="editData">
+        <div class="box flex-1 px-3 py-2">
             <div class="card col-span-2 xl:col-span-1 px-2">
                 <div class="card-header">Kategori</div>
-
                 <table id="table" class="">
                     <thead>
                         <th>Nama Barang</th>
@@ -176,23 +178,25 @@
                         @foreach ($data as $item)
                             <tr>
                                 <td>{{ $item['name'] }}</td>
-                                <td><img src="https://picsum.photos/100/50" alt=""></td>
+                                <td><img src="{{ Storage::url($item['image']) }}" style="width: 100px; height: 50px"
+                                        alt=""></td>
                                 <td>{{ $item['supplier'] }}</td>
                                 <td>{{ $item['category'] }}</td>
                                 <td>Jl. Kaliurang</td>
                                 <td>{{ $item['quantity'] }} {{ $item['unit'] }}</td>
-                                <td>Rp. {{ $item['price'] }} / pcs</td>
+                                <td>Rp. {{ $item['price'] }}</td>
                                 <td>{{ $item['status'] }}</td>
                                 <td class="">
                                     <div class="flex h-full items-center justify-center space-x-2">
-                                        <button
-                                            @click="show = true, editData={name:'pensil', supllier:'indomater', source:'manual', lokasi:'ringroad', status:'tersedia', gambar:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQDE4cJvMUaRNtQKS6pJCi7je2_72uwO5USw&s', harga:'10.000'}"
+                                        <button @click="show = true, editData.name = '{{ $item['name'] }}'"
                                             class="text-green-500 px-2 py-2 rounded-md bg-green-100">Edit</button>
-                                            <form action="{{route('item.delete', ['id' => Crypt::encrypt($item['id'])])}}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-500 px-2 py-2 rounded-md bg-red-100">Delete</button>
-                                            </form>
+                                        <form action="{{ route('item.delete', ['id' => Crypt::encrypt($item['id'])]) }}"
+                                            method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="text-red-500 px-2 py-2 rounded-md bg-red-100">Delete</button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -203,7 +207,6 @@
         </div>
         <div x-show="show"
             class="popup fixed top-0 left-0 z-40 h-screen w-screen bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center">
-            {{-- ! popup Edit  --}}
             <div x-show="show" x-transition:enter="animate__fadeIn animate__animated  animate__faster"
                 x-transition:leave="animate__fadeOut animate__animated  animate__faster"
                 class="box fixed top-0 left-0 py-4 flex items-center px-2 justify-center backdrop-blur-sm w-screen h-screen bg-black bg-opacity-10 ">
@@ -216,42 +219,60 @@
                         <p class="text-lg font-bold py-2 border-b border-1 flex-0 h-14">Tambah Barang</p>
                         <div class=" overflow-y-auto w-full px-2 mt-2 flex-1">
                             <div class="flex md:flex-col flex-row gap-2 pb-4">
-
-                                {{-- group 1 --}}
                                 <div class="section flex flex-col flex-1">
-                                    <label for="nama">Nama Barang</label>
-                                    <input x-model="editData.name" type="text"
+                                    <label for="namaKategori">Nama Barang</label>
+                                    <input type="text" name="name"
                                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                        id="nama" required />
+                                        id="namaKategori" required />
 
                                     <div class="flex gap-2 mb-[10px]">
                                         <div class="flex-1">
-                                            <label for="sup">Supplier</label>
-                                            <select x-model="editData.supplier" name="supplier" id="sup"
-                                                class="border mt-1 px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
-                                                <option value="">Indomater</option>
-                                                <option value="">Indomater</option>
-                                                <option value="">Indomater</option>
-
+                                            <label for="supplier">Supplier</label>
+                                            <select name="supplier_id" id="supplier"
+                                                class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                                <template x-for="supplier in suppliers">
+                                                    <option :value="supplier.id" x-text="supplier.name"></option>
+                                                </template>
                                             </select>
                                         </div>
                                         <div class="flex-1">
-                                            <label for="sourcei">Source</label>
-                                            <select x-model="editData.source" name="source" id="source"
-                                                class="border mt-1 px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
-                                                <option value="purchases">Purchases</option>
-                                                <option value="manual">Manual</option>
+                                            <label for="category">Kategori</label>
+                                            <select name="category_id" id="category"
+                                                class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                                <template x-for="category in categories">
+                                                    <option :value="category.id" x-text="category.name"></option>
+                                                </template>
                                             </select>
-
                                         </div>
                                     </div>
-                                    <label for="lokasi">Lokasi</label>
-                                    <input x-model="editData.lokasi" type="text"
-                                        class="bg-gray-200 mb-2  active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
-                                        id="lokasi" required />
+                                    <label for="location">Lokasi</label>
+                                    <select name="location_id" id="location"
+                                        class="border px-2 w-full mt-2 py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                        <template x-for="location in locations">
+                                            <option :value="location.id" x-text="location.name"></option>
+                                        </template>
+                                    </select>
+                                    <div class="flex gap-1">
+                                        <div class="flex-1">
+                                            <label for="quantity">Jumlah</label>
+                                            <input type="number"
+                                                class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
+                                                id="quantity" name="quantity" required />
+                                        </div>
+                                        <div class="">
+                                            <label for="unit">Satuan</label>
+                                            <select name="unit_id" id="unit"
+                                                class="border px-2 w-full mt-2 py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
+                                                <template x-for="unit in units">
+                                                    <option :value="unit.id" x-text="unit.name"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                    </div>
 
                                     <label for="status">Status</label>
-                                    <select x-model="editData.status"
+                                    <select name="status"
                                         class="border mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                         id="status" required />
                                     <option value="tersedia">Tersedia</option>
@@ -260,9 +281,7 @@
 
                                 </div>
 
-                                {{-- group 2 --}}
                                 <div class="flex flex-col flex-1">
-                                    {{-- input foto --}}
                                     <div class="previewImage border border-1 rounded overflow-hidden max-w-full h-[138px] mt-2 mb-2"
                                         id="previewContainerEdit">
                                         <img id="imagePreviewEdit" :src="editData.gambar" alt="Image preview"
@@ -279,7 +298,6 @@
                                                 clip-rule="evenodd" />
                                         </svg>
 
-                                        <!-- Text will be replaced with file name -->
                                         <p style="" id="fileNameEdit"
                                             class="hover:pl-2 pl-8 line-clamp-1 z-1 text-white bg-transparent duration-200 hover:bg-blue-400 flex-1 w-full">
                                             Select File</p>
@@ -287,7 +305,6 @@
                                         <input id="fileInput" class="absolute w-full h-full opacity-0" type="file"
                                             accept="image/*" onchange="updateFileNameEdit(event)">
                                     </div>
-                                    {{-- end input foto --}}
 
 
 
@@ -308,7 +325,6 @@
                     </form>
                 </div>
             </div>
-            {{-- ! end popup EDIT  --}}
         </div>
 
     </div>
@@ -319,6 +335,7 @@
                 categories: [],
                 suppliers: [],
                 units: [],
+                locations: [],
                 openModal() {
                     this.fetchData()
                     this.show = true
@@ -339,6 +356,49 @@
                             this.categories = data.categories
                             this.suppliers = data.suppliers
                             this.units = data.units
+                            this.locations = data.locations
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            }))
+            Alpine.data('editData', () => ({
+                show: false,
+                editData: {
+                    name: '',
+                    image: '',
+                    supplier: '',
+                    category: '',
+                    location: '',
+                    quantity: '',
+                    unit: '',
+                    price: '',
+                    status: ''
+                },
+                categories: [],
+                suppliers: [],
+                units: [],
+                locations: [],
+                openModal() {
+                    this.fetchData()
+                    this.show = true
+                },
+                closeModal() {
+                    this.show = false
+                },
+                fetchData() {
+                    fetch('/form-options', {
+                            method: "GET",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                'Content-Type': 'application/json'
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            this.categories = data.categories
+                            this.suppliers = data.suppliers
+                            this.units = data.units
+                            this.locations = data.locations
                         })
                         .catch(error => console.error('Error:', error));
                 }

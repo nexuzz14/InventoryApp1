@@ -6,14 +6,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name("home");
+Route::get('/', [AuthController::class, 'checkAuth'])->name("welcome");
 
 Route::get('/login', [AuthController::class, 'checkAuth'])->name('login');
 
@@ -26,9 +25,7 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get("dashboard/supplier", [SupplierController::class, 'index'])->name("category");
     Route::get("dashboard/satuan", [UnitController::class, 'index'])->name("satuan");
 
-    Route::get("dashboard/lokasi", function () {
-        return view("dashboard.lokasi");
-    })->name("lokasi");
+    Route::get("dashboard/lokasi", [LocationController::class, "index"])->name("lokasi");
 
     Route::get("dashboard/pengguna", function () {
         return view("dashboard.pengguna");
@@ -46,6 +43,10 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::post("unit", [UnitController::class, 'store'])->name("unit.store");
     Route::patch("unit", [UnitController::class, 'update'])->name("unit.update");
     Route::delete("unit/{id?}", [UnitController::class, 'destroy'])->name("unit.delete");
+
+    Route::post("location", [LocationController::class, "store"])->name("location.store");
+    Route::delete("location/{id?}", [LocationController::class, "destroy"])->name("location.delete");
+    Route::patch("location", [LocationController::class, "update"])->name("location.update");
 
     Route::get("/form-options", [MasterController::class, 'getAllMasterData'])->name("form-options");
 

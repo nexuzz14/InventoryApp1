@@ -7,6 +7,8 @@ export default {
         "./resources/views/auth/login.blade.php",
         "./resources/views/layouts/navigation.blade.php",
         "./resources/views/dashboard/supplier.blade.php",
+        "./resources/views/welcome.blade.php",
+        "./resources/views/components/sidebar.blade.php"
     ],
     safelist: [
         {

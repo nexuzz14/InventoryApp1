@@ -29,7 +29,7 @@ class ItemService
                 'category' => $Item->category->name,
                 'supplier' => $Item->supplier->name,
                 'unit' => $Item->unit->name,
-                // 'location' => $Item->location->name,
+                'location' => $Item->location->name,
                 'image' => $Item->image,
                 'quantity' => $Item->quantity,
                 'price' => $Item->price,
