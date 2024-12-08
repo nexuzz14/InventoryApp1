@@ -21,7 +21,7 @@ Route::get('/login', [AuthController::class, 'checkAuth'])->name('login');
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
-Route::middleware(['RoleGuard:admin'])->group(function () {
+Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get("dashboard/category", [CategoryController::class, 'index'])->name("dashboard.category");
     Route::get("dashboard/barang", [ItemController::class, 'index'])->name("dashboard.barang");
@@ -32,8 +32,8 @@ Route::middleware(['RoleGuard:admin'])->group(function () {
 
     Route::get("dashboard/pengguna/{role?}", [UserController::class, 'index'])->name("pengguna");
     Route::post("dashboard/pengguna/store", [UserController::class, 'store'])->name("pengguna.store");
-    Route::post("dashboard/pengguna/edit", [UserController::class, 'edit'])->name("pengguna.edit");
-    Route::delete("dashboard/pengguna/delete/{id?}", [UserController::class, 'destroy'])->name("pengguna.delete");
+    Route::patch("dashboard/pengguna/{id?}", [UserController::class, 'update'])->name("pengguna.edit");
+    Route::delete("dashboard/pengguna/{id?}", [UserController::class, 'destroy'])->name("pengguna.delete");
 
 
 
