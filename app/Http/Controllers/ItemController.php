@@ -50,6 +50,26 @@ class ItemController extends Controller
             'message' => 'Data berhasil dihapus'
         ]);
     }
+    public function update(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            $path = $this->imageService->storeImage($request->file('image'), 'items');
+            $data = $request->all();
+            $data["image"] = $path;
+            $result = $this->itemService->updateItem($request->id, $data);
+        } else {
+            $data = $request->except('image');
+            $result = $this->itemService->updateItem($request->id, $data);
+        }
+        if (!$result) {
+            return back()->withErrors([
+                'message' => 'Data gagal diperbarui'
+            ]);
+        }
+        return back()->withSuccess([
+            'message' => 'Data berhasil diperbarui'
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -71,14 +91,6 @@ class ItemController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Item $item)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Item $item)
     {
         //
     }

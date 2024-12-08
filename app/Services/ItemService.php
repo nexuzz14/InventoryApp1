@@ -49,8 +49,18 @@ class ItemService
         return Item::where('category_id', $categoryId)->get();
     }
 
-    public function deleteItem($id){
+    public function deleteItem($id)
+    {
         $item = Item::find(Crypt::decrypt($id))->delete();
+        if (!$item) {
+            return false;
+        }
+        return true;
+    }
+
+    public function updateItem($id, $data)
+    {
+        $item = Item::find(Crypt::decrypt($id))->update($data);
         if (!$item) {
             return false;
         }

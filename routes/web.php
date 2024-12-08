@@ -13,7 +13,7 @@ use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [AuthController::class, 'checkAuth'])->name("welcome");
-Route::get('/', function(){
+Route::get('/', function () {
     return view('welcome');
 })->name("welcome");
 
@@ -57,6 +57,7 @@ Route::middleware(['RoleGuard:admin'])->group(function () {
 
     Route::post("item", [ItemController::class, "store"])->name("item.store");
     Route::delete("item/{id}", [ItemController::class, "destroy"])->name("item.delete");
+    Route::patch("item", [ItemController::class, "update"])->name("item.update");
 
 });
 
