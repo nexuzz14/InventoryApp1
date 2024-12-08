@@ -230,8 +230,8 @@
                     x-transition:leave="animate__fadeOutDown animate__animated  animate__faster">
 
 
-                    <form action="{{ route('item.update') }}" method="POST"
-                        class="mt-3  w-full h-full  flex flex-col ">
+                    <form action="{{ route('item.update') }}" method="POST" class="mt-3  w-full h-full  flex flex-col "
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="id" x-model="editData.id">
@@ -300,7 +300,8 @@
                                         id="status" required />
                                     <option value="tersedia" x-bind:selected="editData.status == 'tersedia'">Tersedia
                                     </option>
-                                    <option value="tidak tersedia" x-bind:selected="editData.status == 'tidak tersedia'">Tidak
+                                    <option value="tidak tersedia" x-bind:selected="editData.status == 'tidak tersedia'">
+                                        Tidak
                                         Tersedia
                                     </option>
                                     </select>
@@ -346,7 +347,7 @@
                             <button type="reset" @click="show=false" onclick="resetFileNameEdit()"
                                 class="bg-red-400 hover:bg-red-300 duration-200 rounded text-white px-2 py-2">Batal</button>
                             <button
-                                class="button bg-green-400 hover:bg-green-300 duration-200 px-2 py-2 rounded text-white">Tambah</button>
+                                class="button bg-green-400 hover:bg-green-300 duration-200 px-2 py-2 rounded text-white">Update</button>
                         </div>
                     </form>
                 </div>

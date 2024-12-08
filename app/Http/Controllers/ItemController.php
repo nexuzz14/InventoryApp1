@@ -52,7 +52,7 @@ class ItemController extends Controller
     }
     public function update(Request $request)
     {
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('image') || $request->image != null) {
             $path = $this->imageService->storeImage($request->file('image'), 'items');
             $data = $request->all();
             $data["image"] = $path;
