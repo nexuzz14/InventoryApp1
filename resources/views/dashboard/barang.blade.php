@@ -159,8 +159,8 @@
     {{-- ! end popup --}}
 
     <div class="flex flex-wrap z-0" x-data="editData">
-        <div class="box flex-1 px-3 py-2">
-            <div class="card col-span-2 xl:col-span-1 px-2">
+        <div class="box flex-1 px-3 py-2 md:max-w-full overflow-x-auto">
+            <div class="card col-span-2 xl:col-span-1 px-2 md:max-w-full overflow-x-auto">
                 <div class="card-header">Kategori</div>
                 <table id="table" class="">
                     <thead>

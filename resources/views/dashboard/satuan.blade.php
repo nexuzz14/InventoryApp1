@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 @section('content')
     <div x-data="{ show: false, name: '', id: '' }" class="tailwind-scope">
-        <div class="flex flex-wrap">
+        <div class="flex flex-wrap gap-4">
             <div class="flex-1 px-3 py-2 w-full bg-white shadow rounded-md">
                 <table id="table" class="mt-10">
                     <thead>
@@ -36,7 +36,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="flex-0   px-3 py-2 w-full max-w-96">
+            <div class="flex-0   w-full lg:max-w-96">
                 <div class="form  w-full  bg-white border border-1  px-3 py-2">
                     <p class="text-lg font-bold py-2 border-b border-1">Tambah Satuan</p>
                     <form action="{{ route('unit.store') }}" method="POST" class="flex mt-3 flex-col">
