@@ -188,7 +188,19 @@
                                 <td>{{ $item['status'] }}</td>
                                 <td class="">
                                     <div class="flex h-full items-center justify-center space-x-2">
-                                        <button @click="show = true, editData.name = '{{ $item['name'] }}'"
+                                        <button
+                                            @click="openModal, 
+                                            editData.name = '{{ $item['name'] }}', 
+                                            editData.image = '{{ $item['image'] }}', 
+                                            editData.quantity = '{{ $item['quantity'] }}', 
+                                            editData.price = '{{ $item['price'] }}',
+                                            editData.supplier = '{{ $item['supplier'] }}',
+                                            editData.category = '{{ $item['category'] }}',
+                                            editData.unit = '{{ $item['unit'] }}',
+                                            editData.location = '{{ $item['location'] }}',
+                                            editData.status = '{{ $item['status'] }}',
+                                            editData.id = '{{ Crypt::encrypt($item['id']) }}'
+                                            "
                                             class="text-green-500 px-2 py-2 rounded-md bg-green-100">Edit</button>
                                         <form action="{{ route('item.delete', ['id' => Crypt::encrypt($item['id'])]) }}"
                                             method="post">
@@ -205,6 +217,9 @@
                 </table>
             </div>
         </div>
+        {{-- <div x-show="show">
+            <strong x-text="editData.name"></strong>
+        </div> --}}
         <div x-show="show"
             class="popup fixed top-0 left-0 z-40 h-screen w-screen bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center">
             <div x-show="show" x-transition:enter="animate__fadeIn animate__animated  animate__faster"
@@ -215,13 +230,17 @@
                     x-transition:leave="animate__fadeOutDown animate__animated  animate__faster">
 
 
-                    <form action="" class="mt-3  w-full h-full  flex flex-col ">
+                    <form action="{{ route('item.update') }}" method="POST" class="mt-3  w-full h-full  flex flex-col "
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="id" x-model="editData.id">
                         <p class="text-lg font-bold py-2 border-b border-1 flex-0 h-14">Tambah Barang</p>
                         <div class=" overflow-y-auto w-full px-2 mt-2 flex-1">
                             <div class="flex md:flex-col flex-row gap-2 pb-4">
                                 <div class="section flex flex-col flex-1">
                                     <label for="namaKategori">Nama Barang</label>
-                                    <input type="text" name="name"
+                                    <input type="text" name="name" x-model="editData.name"
                                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                         id="namaKategori" required />
 
@@ -231,7 +250,8 @@
                                             <select name="supplier_id" id="supplier"
                                                 class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                                 <template x-for="supplier in suppliers">
-                                                    <option :value="supplier.id" x-text="supplier.name"></option>
+                                                    <option :value="supplier.id" x-text="supplier.name"
+                                                        x-bind:selected="editData.supplier == supplier.name"></option>
                                                 </template>
                                             </select>
                                         </div>
@@ -240,7 +260,8 @@
                                             <select name="category_id" id="category"
                                                 class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                                 <template x-for="category in categories">
-                                                    <option :value="category.id" x-text="category.name"></option>
+                                                    <option :value="category.id" x-text="category.name"
+                                                        x-bind:selected="editData.category == category.name"></option>
                                                 </template>
                                             </select>
                                         </div>
@@ -249,13 +270,14 @@
                                     <select name="location_id" id="location"
                                         class="border px-2 w-full mt-2 py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                         <template x-for="location in locations">
-                                            <option :value="location.id" x-text="location.name"></option>
+                                            <option :value="location.id" x-text="location.name"
+                                                x-bind:selected="editData.location == location.name"></option>
                                         </template>
                                     </select>
                                     <div class="flex gap-1">
                                         <div class="flex-1">
                                             <label for="quantity">Jumlah</label>
-                                            <input type="number"
+                                            <input type="number" x-model="editData.quantity"
                                                 class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                                 id="quantity" name="quantity" required />
                                         </div>
@@ -264,7 +286,8 @@
                                             <select name="unit_id" id="unit"
                                                 class="border px-2 w-full mt-2 py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                                 <template x-for="unit in units">
-                                                    <option :value="unit.id" x-text="unit.name"></option>
+                                                    <option :value="unit.id" x-text="unit.name"
+                                                        x-bind:selected="editData.unit == unit.name"></option>
                                                 </template>
                                             </select>
                                         </div>
@@ -275,8 +298,12 @@
                                     <select name="status"
                                         class="border mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                         id="status" required />
-                                    <option value="tersedia">Tersedia</option>
-                                    <option value="tidak">Tidak Tersedia</option>
+                                    <option value="tersedia" x-bind:selected="editData.status == 'tersedia'">Tersedia
+                                    </option>
+                                    <option value="tidak tersedia" x-bind:selected="editData.status == 'tidak tersedia'">
+                                        Tidak
+                                        Tersedia
+                                    </option>
                                     </select>
 
                                 </div>
@@ -284,8 +311,8 @@
                                 <div class="flex flex-col flex-1">
                                     <div class="previewImage border border-1 rounded overflow-hidden max-w-full h-[138px] mt-2 mb-2"
                                         id="previewContainerEdit">
-                                        <img id="imagePreviewEdit" :src="editData.gambar" alt="Image preview"
-                                            class="w-full h-full object-contain">
+                                        <img id="imagePreviewEdit" :src="'{{ Storage::url('') }}' + editData.image"
+                                            alt="Image preview" class="w-full h-full object-contain">
                                     </div>
                                     <label for="fileInput">Gambar</label>
                                     <div
@@ -303,13 +330,13 @@
                                             Select File</p>
 
                                         <input id="fileInput" class="absolute w-full h-full opacity-0" type="file"
-                                            accept="image/*" onchange="updateFileNameEdit(event)">
+                                            accept="image/*" name="image" onchange="updateFileNameEdit(event)">
                                     </div>
 
 
 
                                     <label for="harga">harga</label>
-                                    <input x-model="editData.harga" type="text"
+                                    <input x-model="editData.price" type="text" name="price"
                                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                         id="harga" oninput="validateForm()" required />
 
@@ -320,7 +347,7 @@
                             <button type="reset" @click="show=false" onclick="resetFileNameEdit()"
                                 class="bg-red-400 hover:bg-red-300 duration-200 rounded text-white px-2 py-2">Batal</button>
                             <button
-                                class="button bg-green-400 hover:bg-green-300 duration-200 px-2 py-2 rounded text-white">Tambah</button>
+                                class="button bg-green-400 hover:bg-green-300 duration-200 px-2 py-2 rounded text-white">Update</button>
                         </div>
                     </form>
                 </div>
@@ -372,7 +399,8 @@
                     quantity: '',
                     unit: '',
                     price: '',
-                    status: ''
+                    status: '',
+                    id: ''
                 },
                 categories: [],
                 suppliers: [],

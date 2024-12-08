@@ -74,11 +74,11 @@
                     </div>
                     <div class="flex items-center mt-4">
                         <x-mdi-broom class="w-14 " />
-                        <p class="ml-2 text-sm text-sm font-medium lg:text-lg">CLEANING TOOLS</p>
+                        <p class="ml-2 text-sm font-medium lg:text-lg">CLEANING TOOLS</p>
                     </div>
                     <div class="flex items-center mt-4">
                         <x-mdi-toothbrush-paste class="w-14" />
-                        <p class="ml-2 text-sm text-sm font-medium lg:text-lg">AND MORE</p>
+                        <p class="ml-2 text-sm font-medium lg:text-lg">AND MORE</p>
                     </div>
                 </div> --}}
             </div>

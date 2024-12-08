@@ -1,5 +1,5 @@
 <!-- start sidebar -->
-<div id="sidebar" class="relative flex flex-col flex-wrap mt-16 lg:mt-0 bg-white border-r border-gray-300 p-6 flex-none w-64 lg:ml-0 md:-ml-64 md:fixed md:top-0 md:z-30 md:h-screen md:shadow-xl animated faster text-sm">
+<div id="sidebar" class="relative flex mt-16 lg:mt-0 bg-white border-r border-gray-300 p-6 flex-none w-64 lg:ml-0 md:-ml-64 md:fixed md:top-0 md:z-30 min-h-screen shadow-xl animated faster text-sm">
     <!-- Semua ikon akan menggunakan ukuran text-sm -->
 
     <!-- sidebar content -->
