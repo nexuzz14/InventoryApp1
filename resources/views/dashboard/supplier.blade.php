@@ -1,14 +1,14 @@
 @extends('layouts.dashboard')
 @section('content')
-    <div class="flex flex-wrap" x-data="{ show: false, name: '', id: '', address: '', phone: '' }">
-        <div class="box flex-1  px-3 py-2">
-            <div class="card col-span-2 xl:col-span-1 px-4">
+    <div class="flex flex-wrap gap-2" x-data="{ show: false, name: '', id: '', address: '', phone: '' }">
+        <div class="box flex-1 w-full">
+            <div class="card col-span-2 xl:col-span-1 px-4 md:max-w-full overflow-x-auto">
                 <div class="card-header">Kategori</div>
                 <table id="table" class="">
                     <thead>
                         <tr>
                             <th class="w-14">#</th>
-                            <th>Nama Supplier</th>
+                            <th class="whitespace-nowrap">Nama Supplier</th>
                             <th>Alamat</th>
                             <th>Phone</th>
                             <th class="w-20 ">
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div class="flex-0   px-3 py-2 w-full max-w-96">
+        <div class="flex-0  w-full lg:max-w-96">
             <div class="form  w-full  bg-white border border-1  px-3 py-2">
                 <p class="text-lg font-bold py-2 border-b border-1">Tambah Supllier</p>
                 <form action="{{ route('supplier.store') }}" method="POST" class="flex mt-3 flex-col">

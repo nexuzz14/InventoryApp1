@@ -15,11 +15,11 @@
 <body class="font-sans antialiased" x-data="{ openNav: false }">
     @include('layouts.navigation')
 
-    <div class="h-screen flex flex-row absolute w-full" style="margin-top: 4rem">
+    <div class="h-screen flex flex-row absolute w-full " style="">
 
         @include('components.sidebar')
         <div id="overlay" x-show="openNav" @click="openNav = false" class="fixed inset-0 bg-black/40"></div>
-        <div class="bg-gray-100 flex-1 p-6 md:mt-16">
+        <div class="bg-gray-100 flex-1 p-6 md:mt-16 overflow-y-auto">
             @yield('content')
         </div>
 
@@ -39,7 +39,7 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
-            if (window.innerWidth < 768) {
+            if (window.innerWidth < 1024) {
                 overlay.classList.toggle('hidden');
                 sidebar.classList.toggle('md:-ml-64');
                 sidebar.classList.toggle('lg:ml-0');

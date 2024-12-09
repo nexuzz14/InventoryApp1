@@ -600,6 +600,7 @@ table.dataTable.compact tbody td {
 div.dt-container div.dt-layout-row {
     display: flex;
     justify-content: space-between;
+    overflow-x: auto;
     align-items: center;
     width: 100%;
     margin: 0.75em 0;
@@ -797,6 +798,9 @@ div.dt-container .dt-info,
 div.dt-container .dt-processing,
 div.dt-container .dt-paging {
     color: inherit;
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 div.dt-container .dataTables_scroll {
     clear: both;

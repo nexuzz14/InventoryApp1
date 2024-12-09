@@ -29,12 +29,12 @@
 
             <div class="h-[200px]">
                 <div class="card py-2">
-                    <div class="py-3 px-4 flex flex-row justify-between absolute">
+                    {{-- <div class="py-3 px-4 flex flex-row justify-between absolute">
                         <div
                             class="bg-teal-200 text-teal-700 border-teal-300 border w-10 h-10 rounded-full flex justify-center items-center">
                             <i class="fad fa-eye"></i>
                         </div>
-                    </div>
+                    </div> --}}
                     {!! $historyRequestChart->container() !!}
                 </div>
 

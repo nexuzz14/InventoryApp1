@@ -19,8 +19,7 @@
                     </svg>
                     <span class="sr-only">Toggle sidebar</span>
                 </button>
-                <a href="https://flowbite.com"  class="flex mr-4" >
-                    <img src="https://flowbite.s3.amazonaws.com/logo.svg" class="mr-3 h-8" alt="FlowBite Logo" />
+                <a href="#"  class="flex mr-4" >
                     <span class="self-center text-2xl font-semibold whitespace-nowrap">Inventory</span>
                 </a>
                 <form action="#" method="GET" class="hidden lg:block lg:pl-2">
