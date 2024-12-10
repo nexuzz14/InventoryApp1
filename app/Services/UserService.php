@@ -20,7 +20,7 @@ class UserService
 
     public function updateUser($id, $data)
     {
-        if ($data["password"]) {
+        if (isset($data["password"])) {
             $data["password"] = bcrypt($data["password"]);
         }else{
             $data["password"] = User::find($id)->password;

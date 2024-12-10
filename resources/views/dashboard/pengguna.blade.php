@@ -1,6 +1,5 @@
 @extends('layouts.dashboard')
 @section('content')
-    <x-notivication-handler :message="session('message')"></x-notivication-handler>
 
 
     <div x-data="{ show: false, editData: { username: '', nama:'', email:'', role:'', id: '' } }" class="tailwind-scope">
@@ -186,7 +185,7 @@
                     <select name="data[role]" id="roleEd" required x-model="editData.role"
                         class="mb-2 border active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0">
                         <option value="admin">Petugas</option>
-                        <option value="customer">pengguna</option>
+                        <option value="user">pengguna</option>
                     </select>
 
                     <div class="passwordInput" x-data="{ showPass: false }">

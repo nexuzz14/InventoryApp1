@@ -65,6 +65,8 @@ Route::get("/invoice", function () {
 })->name("page.invoice");
 Route::get("/barang/{kategori?}", [homeController::class, 'create'])->name("page.home");
 Route::get("/barang/order/{idbarang?}", [UnitsRequestController::class, 'create'])->name('order');
+Route::post("/barang/order/{idbarang?}", [UnitsRequestController::class, 'store'])->name('storeOrder');
+
 Route::fallback(function () {
     return view('404');
 })->name('fallback');

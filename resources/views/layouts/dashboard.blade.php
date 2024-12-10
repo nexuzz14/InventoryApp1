@@ -14,6 +14,7 @@
 
 <body class="font-sans antialiased" x-data="{ openNav: false }">
     @include('layouts.navigation')
+    <x-notivication-handler :message="session('message')"></x-notivication-handler>
 
     <div class="h-screen flex flex-row absolute w-full " style="">
 
