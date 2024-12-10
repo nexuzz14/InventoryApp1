@@ -11,73 +11,57 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 class UnitsRequestController extends Controller
 {
+  protected $itemRequestService;
+
+  public function __construct(RequestItemService $requestService)
+  {
+    $this->itemRequestService = $requestService;
+  }
   public function create($idBarang)
   {
     if ($idBarang == null) {
-      return redirect()->route('page.home');
+      return redirect()->route('home');
     }
     ;
     try {
       $id = Crypt::decrypt($idBarang);
-      $selectedUnit = Item::where('id', $id)->first();
+      $selectedUnit = Item::where('id', $id)->with('category', 'unit')->first();
       if ($selectedUnit) {
         return view('user.request', compact('selectedUnit'));
       } else {
-        return redirect()->route('page.home');
+        return redirect()->route('home');
       }
     } catch (\Exception $e) {
-      return redirect()->route('page.home');
+      return redirect()->route('home');
     }
 
   }
 
-  protected $itemRequestService;
+  public function store(Request $request)
+  {
+    try {
+      $data = $request->validate([
+        'item_id' => 'string|required',
+        'quantity' => 'integer|required',
+      ]);
+      $itemId = Crypt::decrypt($request->item_id);
+      $item = Item::find($itemId);
 
-    public function __construct(RequestItemService  $requestService) {
-      $this->itemRequestService = $requestService;
-    }
-    public function create($idBarang){
-        if($idBarang == null){
-            return redirect()->route('home');
-        };
-        try{
-           $id = Crypt::decrypt($idBarang);
-          $selectedUnit = Item::where('id', $id)->with('category', 'unit')->first();
-          if($selectedUnit){
-            return view('user.request', compact('selectedUnit'));
-          }  else{
-            return redirect()->route('home');
-          }
-        } catch(\Exception $e){
-            return redirect()->route('home');
-        }
+      if ($item && $data['quantity'] <= $item['quantity']) {
+        $chart = new chart();
+        $chart->user_id = Auth::user()->id;
+        $chart->quantity = $data['quantity'];
+        $chart->item_id = $itemId;
+        $chart->save();
+        return redirect()->back()->with("message", "Berhasil Menambahkan Ke Daftar Anda");
 
-    }
-  
-    public function store(Request $request){
-      try{
-        $data = $request->validate([
-          'item_id'=>'string|required',
-          'quantity'=>'integer|required',
-        ]);
-        $itemId = Crypt::decrypt($request->item_id);
-        $item = Item::find($itemId);
-     
-        if($item && $data['quantity'] <= $item['quantity']){
-            $chart = new chart();
-            $chart->user_id = Auth::user()->id;
-            $chart->quantity = $data['quantity'];
-            $chart->item_id = $itemId;
-            $chart->save();
-            return redirect()->back()->with("message", "Berhasil Menambahkan Ke Daftar Anda");
+      } else {
 
-        }else{
-       
-          return redirect()->back()->with("message", "Terjadi Kesalahan saat menambahkan item ke daftar");
-        }
-      }catch(\Exception $e){
-        Log::debug("errornya : \n $e");
-        return redirect()->back()->with("message", "Terjadi Kesalahan saat menambahkan item ke daftar, $e");
+        return redirect()->back()->with("message", "Terjadi Kesalahan saat menambahkan item ke daftar");
       }
+    } catch (\Exception $e) {
+      Log::debug("errornya : \n $e");
+      return redirect()->back()->with("message", "Terjadi Kesalahan saat menambahkan item ke daftar, $e");
     }
+  }
 }
