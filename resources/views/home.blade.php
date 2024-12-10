@@ -10,10 +10,10 @@
                     organized and save time with our powerful tools.</p>
             </div>
             <div class="md:w-1/2 h-96 overflow-hidden flex items-center md:justify-end justify-center">
-                <script  src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-                <dotlottie-player class="w-96 scale-125 h-96" src="https://lottie.host/61b33a14-a550-40b1-939e-fa3bf50da3f0/bvXfIAUAgV.lottie"
-                    background="transparent" speed="1"  loop
-                    autoplay></dotlottie-player>
+                <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+                <dotlottie-player class="w-96 scale-125 h-96"
+                    src="https://lottie.host/61b33a14-a550-40b1-939e-fa3bf50da3f0/bvXfIAUAgV.lottie" background="transparent"
+                    speed="1" loop autoplay></dotlottie-player>
             </div>
         </section>
 
@@ -33,17 +33,21 @@
                 </button>
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach ($barang as $item)
-                    <a href="/barang/order/{{Crypt::encrypt($item->id)}}" class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                        <img src="{{ Storage::url($item->image) }}" class="w-full h-40 object-cover">
-                        <div class="p-4">
-                            <h4 class="text-lg font-medium">{{ $item->name }}</h4>
-                            <h6 class="text-gray-400">
-                                Rp. {{ number_format($item->price, 0, ',', '.') }}
-                            </h6>
-                        </div>
-                    </a>
-                @endforeach
+                @isset($barang)
+                    @foreach ($barang as $item)
+                        <a href="/barang/order/{{ Crypt::encrypt($item['id']) }}"
+                            class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
+                            <img src="{{ Storage::url($item['image']) }}" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-medium">{{ $item['name'] }}</h4>
+                                <h6 class="text-gray-400">
+                                    Rp. {{ number_format($item['price'], 0, ',', '.') }}
+                                </h6>
+                            </div>
+                        </a>
+                    @endforeach
+                @endisset
+
 
 
             </div>
@@ -67,10 +71,12 @@
                     <a href="/barang"
                         class="px-3 py-1 rounded-full capitalize border bg-blue-100 text-blue-700 whitespace-nowrap border-blue-400 hover:shadow-lg duration-200">Semua
                         Kategori</a>
-                    @foreach ($category as $item)
-                        <a href="/barang/{{ Crypt::encrypt($item->id) }}"
-                            class="px-3 py-1 rounded-full capitalize border bg-blue-100 text-blue-700 whitespace-nowrap border-blue-400 hover:shadow-lg duration-200">{{ $item->name }}</a>
-                    @endforeach
+                    @isset($category)
+                        @foreach ($category as $item)
+                            <a href="/barang/{{ Crypt::encrypt($item['id']) }}"
+                                class="px-3 py-1 rounded-full capitalize border bg-blue-100 text-blue-700 whitespace-nowrap border-blue-400 hover:shadow-lg duration-200">{{ $item->name }}</a>
+                        @endforeach
+                    @endisset
                 </div>
             </div>
         </div>

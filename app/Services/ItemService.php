@@ -21,7 +21,6 @@ class ItemService
     public function getAllItems()
     {
         $Item = Item::all();
-
         $data = $Item->map(function ($Item) {
             return [
                 'id' => $Item->id,

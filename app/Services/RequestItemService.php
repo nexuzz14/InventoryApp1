@@ -21,7 +21,7 @@ class RequestItemService
             'status' => 'pending',
         ]);
 
-        DB::table('items_request_details')->insert(
+        $result = DB::table('items_request_details')->insert(
             array_map(
                 function ($item) use ($request_items) {
                     return [
@@ -33,5 +33,7 @@ class RequestItemService
                 $data['items']
             )
         );
+
+        return $request_items;
     }
 }

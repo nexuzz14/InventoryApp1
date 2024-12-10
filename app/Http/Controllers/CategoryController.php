@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -36,9 +37,29 @@ class CategoryController extends Controller
 
 
 
-    public function show(Category $category)
+    public function getData(Request $request)
     {
-        //
+        $draw = $request->get('draw');
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $search = $request->get('search')['value'];
+
+        $totalRecords = DB::table('categories')->count();
+
+        $query = DB::table('categories');
+        if (!empty($search)) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+        $filteredRecords = $query->count();
+
+        $data = $query->offset($start)->limit($length)->get();
+
+        return response()->json([
+            'draw' => $draw,
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -52,16 +73,16 @@ class CategoryController extends Controller
 
     public function update(Request $request)
     {
-       $result =  $this->categoryServices->updateCategory($request->id, $request->name);
-       if (!$result) {
-           return back()->withErrors([
-               "Terjadi kesalahan saat mengubah kategori"
-           ]);
-       }
-       return redirect()->route('dashboard.category');
+        $result = $this->categoryServices->updateCategory($request->id, $request->name);
+        if (!$result) {
+            return back()->withErrors([
+                "Terjadi kesalahan saat mengubah kategori"
+            ]);
+        }
+        return redirect()->route('dashboard.category');
     }
 
-    public function destroy( $id)
+    public function destroy($id)
     {
         $result = $this->categoryServices->deleteCategory($id);
         if (!$result) {

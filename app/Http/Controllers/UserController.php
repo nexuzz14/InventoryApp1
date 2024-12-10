@@ -18,12 +18,13 @@ class UserController extends Controller
 
     protected $userService;
 
-    public function __construct(UserService $userService) {
+    public function __construct(UserService $userService)
+    {
         $this->userService = $userService;
     }
     public function index($role = "admin")
     {
-        $roles =  $role === "admin" ? "admin" : "user";
+        $roles = $role === "admin" ? "admin" : "user";
 
         $user = User::latest()->where("role", $roles)->get();
         return view('dashboard.pengguna', compact('user'));
@@ -84,7 +85,7 @@ class UserController extends Controller
     {
         try {
             $id = Crypt::decrypt($request->id);
-    
+
             $data = $request->validate([
                 "data.username" => [
                     'required',
@@ -101,25 +102,25 @@ class UserController extends Controller
                 "data.role" => 'required|string|in:admin,user',
                 "data.password" => 'nullable|string|max:255',
             ]);
-    
-         
+
+
             $result = $this->userService->updateUser($id, $data);
             if (!$result) {
                 return redirect()->back()->with("message", "Terjadi kesalahan saat mengubah data");
             }
             return redirect()->back()->with("message", "berhasil");
-    
+
         } catch (ValidationException $e) {
             $messages = collect($e->errors())
-            ->flatten()
-            ->join(' '); // Gabungkan error dengan spasi atau karakter lain
+                ->flatten()
+                ->join(' '); // Gabungkan error dengan spasi atau karakter lain
 
             return redirect()->back()->with('message', $messages)->withInput();
         } catch (\Exception $e) {
             return redirect()->back()->with('message', 'Terjadi kesalahan');
         }
-       
-        
+
+
     }
 
     /**
@@ -129,10 +130,10 @@ class UserController extends Controller
     {
         $result = $this->userService->deleteUser($id);
 
-        if(!$result){
-            return redirect()->back()->with("message",  "Terjadi kesalahan saat menghapus");
-        }else{
-            return redirect()->back()->with("message",  "Berhasil menghapus");
+        if (!$result) {
+            return redirect()->back()->with("message", "Terjadi kesalahan saat menghapus");
+        } else {
+            return redirect()->back()->with("message", "Berhasil menghapus");
         }
     }
 }

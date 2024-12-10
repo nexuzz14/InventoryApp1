@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->string('nama_pemohon');
             $table->foreignId('processed_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

@@ -12,7 +12,7 @@
 
 </head>
 
-<body class="font-sans antialiased" x-data="{ openNav: false }">
+<body class="font-sans antialiased" x-data="{ openNav: false }" x-init="openNav = false">
     @include('layouts.navigation')
 
     <div class="w-full pt-16" style="">

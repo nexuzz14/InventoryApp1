@@ -3,9 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\homeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MasterController;
@@ -18,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [AuthController::class, 'checkAuth']);
 
 // Route::get('/login', [AuthController::class, 'checkAuth'])->name('login');
-
+Route::get('/categories-data', [CategoryController::class, 'getData'])->name('categories.data');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
@@ -27,6 +26,9 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get("dashboard/barang", [ItemController::class, 'index'])->name("dashboard.barang");
     Route::get("dashboard/supplier", [SupplierController::class, 'index'])->name("category");
     Route::get("dashboard/satuan", [UnitController::class, 'index'])->name("satuan");
+    Route::get("/permintaan-barang", function () {
+        return view("dashboard.permintaan-barang");
+    });
 
     Route::get("dashboard/lokasi", [LocationController::class, "index"])->name("lokasi");
 
@@ -63,7 +65,7 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
 Route::get("/invoice", function () {
     return view('invoice');
 })->name("page.invoice");
-Route::get("/barang/{kategori?}", [homeController::class, 'create'])->name("page.home");
+Route::get("/barang/{kategori?}", [HomeController::class, 'create'])->name("page.home");
 Route::get("/barang/order/{idbarang?}", [UnitsRequestController::class, 'create'])->name('order');
 Route::fallback(function () {
     return view('404');
