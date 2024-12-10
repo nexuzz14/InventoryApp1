@@ -96,7 +96,7 @@
             </div>
             <div class="flex flex-col mt-3 h-full flex-1 ">
                 <label for="">Nama Lengkap</label>
-                <input type="text" value="Riss Kumala" disabled class="bg-gray-200 mt-1 p-2 rounded">
+                <input type="text" value="{{Auth::check() ? Auth::user()->name : "no name"}}" disabled class="bg-gray-200 mt-1 p-2 rounded">
                 <label for="">Total</label>
                 <div class="box flex gap-2 w-full">
                     <div class="bg-gray-200 flex-1 w-full mt-1 p-2 rounded">{{ $data->count() }} Item /
