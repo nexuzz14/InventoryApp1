@@ -1,6 +1,6 @@
 <!-- start sidebar -->
 <div id="sidebar"
-    class="relative flex lg:mt-0 bg-white border-r border-gray-300 p-6 flex-none w-64 lg:ml-0 md:-ml-64 md:fixed md:top-0 md:z-30 h-full shadow-xl animated faster text-sm overflow-y-auto scrollsimple">
+    class="relative flex lg:mt-0 bg-white border-r border-gray-300 p-6 flex-none w-64 lg:ml-0 md:-ml-64 md:fixed md:top-0 md:z-30 h-full shadow-xl animated faster text-sm overflow-y-auto scrollsimplea">
     <!-- Semua ikon akan menggunakan ukuran text-sm -->
 
     <!-- sidebar content -->

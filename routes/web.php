@@ -5,11 +5,13 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\homeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UnitsRequestController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [AuthController::class, 'checkAuth'])->name("welcome");
@@ -56,13 +58,13 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::post("item", [ItemController::class, "store"])->name("item.store");
     Route::delete("item/{id}", [ItemController::class, "destroy"])->name("item.delete");
     Route::patch("item", [ItemController::class, "update"])->name("item.update");
-
 });
 
 Route::get("/invoice", function () {
     return view('invoice');
 })->name("page.invoice");
-
+Route::get("/barang/{kategori?}", [homeController::class, 'create'])->name("page.home");
+Route::get("/barang/order/{idbarang?}", [UnitsRequestController::class, 'create'])->name('order');
 Route::fallback(function () {
     return view('404');
 })->name('fallback');

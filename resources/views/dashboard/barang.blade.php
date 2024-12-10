@@ -158,8 +158,8 @@
     </div>
     {{-- ! end popup --}}
 
-    <div class="flex flex-wrap z-0" x-data="editData">
-        <div class="box flex-1 px-3 py-2 md:max-w-full overflow-x-auto">
+    <div class="flex flex-wrap  gap-2z-0" x-data="editData">
+        <div class="box flex-1 p-2 md:max-w-full overflow-x-auto">
             <div class="card col-span-2 xl:col-span-1 px-2 md:max-w-full overflow-x-auto">
                 <div class="card-header">Kategori</div>
                 <table id="table" class="">
@@ -221,11 +221,11 @@
             <strong x-text="editData.name"></strong>
         </div> --}}
         <div x-show="show"
-            class="popup fixed top-0 left-0 z-40 h-screen w-screen bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center">
-            <div x-show="show" x-transition:enter="animate__fadeIn animate__animated  animate__faster"
+            class="popup fixed top-0 left-0 z-40 h-screen w-screen p-4 bg-black bg-opacity-10 backdrop-blur-sm flex items-center justify-center">
+            <div x-show="show" x-transition:enter="animate__fadeIn animate__animated animate__faster"
                 x-transition:leave="animate__fadeOut animate__animated  animate__faster"
-                class="box fixed top-0 left-0 py-4 flex items-center px-2 justify-center backdrop-blur-sm w-screen h-screen bg-black bg-opacity-10 ">
-                <div class=" border border-1  bg-white flex flex-col md:h-auto h-5/6 px-3 py-2 w-full max-w-[700px]"
+                class="box fixed top-0 left-0 p-8 flex items-center  justify-center backdrop-blur-sm w-screen h-screen bg-black bg-opacity-10 ">
+                <div class=" border border-1 mt-16  bg-white flex flex-col md:h-auto h-5/6 px-3 py-2 w-full max-w-[700px]"
                     x-show="show" x-transition:enter="animate__fadeInUp animate__animated animate__faster"
                     x-transition:leave="animate__fadeOutDown animate__animated  animate__faster">
 
