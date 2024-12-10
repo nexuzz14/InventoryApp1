@@ -68,7 +68,7 @@
                     </button>
                 </div>
                 <div class="box py-2 flex flex-wrap gap-2">
-                    <a href="/barang"
+                    <a href="/"
                         class="px-3 py-1 rounded-full capitalize border bg-blue-100 text-blue-700 whitespace-nowrap border-blue-400 hover:shadow-lg duration-200">Semua
                         Kategori</a>
                     @isset($category)

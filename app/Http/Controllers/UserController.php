@@ -7,6 +7,7 @@ use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -99,14 +100,16 @@ class UserController extends Controller
                     'email',
                     Rule::unique('users', 'email')->ignore($id),
                 ],
-                "data.role" => 'required|string|in:admin,user',
+                "data.role" => 'required|string|in:user,admin',
                 "data.password" => 'nullable|string|max:255',
             ]);
 
 
             $result = $this->userService->updateUser($id, $data);
             if (!$result) {
+
                 return redirect()->back()->with("message", "Terjadi kesalahan saat mengubah data");
+
             }
             return redirect()->back()->with("message", "berhasil");
 
@@ -117,7 +120,10 @@ class UserController extends Controller
 
             return redirect()->back()->with('message', $messages)->withInput();
         } catch (\Exception $e) {
+            Log::debug("ini eror, $e");
+
             return redirect()->back()->with('message', 'Terjadi kesalahan');
+
         }
 
 
