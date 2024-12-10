@@ -63,9 +63,11 @@ class chartController extends Controller
                     return redirect()->back()->with("message", "Barang gagal dihapus Dari daftar");
                 }
             }
-        } catch (\Exception $e) {
+            Log::debug("ga tau");
+        }
+        catch(\Exception $e){
             return redirect()->back()->with("message", "Barang gagal dihapus Dari daftar");
-
+            
         }
 
     }
