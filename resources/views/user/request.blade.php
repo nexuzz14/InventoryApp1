@@ -44,9 +44,9 @@
                             <input class="shadow-md hover:shadow-lg w-10 text-center" min="0" max="{{$selectedUnit->quantity}}"
                                 type="number" name="quantity" x-model="value" @input="value = Math.max(0, Math.min({{ $selectedUnit->quantity }}, value))"
                                 id="">
-    
+
                         </div>
-                        
+
                     </div>
                     <form action="" method="POST">
                         @method("POST")

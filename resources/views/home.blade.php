@@ -35,7 +35,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @isset($barang)
                     @foreach ($barang as $item)
-                        <a href="/barang/order/{{ Crypt::encrypt($item['id']) }}"
+                        <a href="/order/{{ Crypt::encrypt($item['id']) }}"
                             class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
                             <img src="{{ Storage::url($item['image']) }}" class="w-full h-40 object-cover">
                             <div class="p-4">

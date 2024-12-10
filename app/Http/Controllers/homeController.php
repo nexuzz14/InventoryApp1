@@ -7,7 +7,7 @@ use App\Services\CategoryService;
 use App\Services\ItemService;
 use Illuminate\Support\Facades\Crypt;
 
-class HomeController extends Controller
+class homeController extends Controller
 {
     protected $categoryService;
     protected $itemService;
@@ -18,7 +18,7 @@ class HomeController extends Controller
     }
     public function create($kategori = null)
     {
-            
+
         $category = Category::all();
 
         try {
