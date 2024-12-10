@@ -24,6 +24,7 @@ Route::delete("/chart/{id?}", [chartController::class, 'delete'])->name('chart.d
 Route::patch("/chart/{id?}", [chartController::class, 'update'])->name('chart.update');
 Route::post("/chart/{id?}", [chartController::class, 'store'])->name('chart.store');
 
+// gatau
 // Route::get('/login', [AuthController::class, 'checkAuth'])->name('login');
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');

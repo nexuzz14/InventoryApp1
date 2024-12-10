@@ -19,14 +19,14 @@
                 @endphp
                 <tbody class="min-h-40">
                     @isset($data)
-                        <form action="">
                             @foreach ($data as $item)
                                 <tr class="border-b">
                                     <td class="w-14 px-3 py-2">
                                         <form method="POST"
                                             action="{{ route('chart.delete', ['id' => Crypt::encrypt($item->id)]) }}">
-                                            @method('DELETE')
                                             @csrf
+                                            @method('DELETE')
+
                                             <button class="text-red-400">
                                                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                     width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -63,7 +63,6 @@
                                     $totalPrice += $item->item->price;
                                 @endphp
                             @endforeach
-                        </form>
                     @endisset
 
 
