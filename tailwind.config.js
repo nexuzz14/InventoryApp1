@@ -7,10 +7,12 @@ export default {
         "./resources/views/user/*",
         "./resources/views/auth/login.blade.php",
         "./resources/views/layouts/navigation.blade.php",
+        "./resources/views/layouts/app.blade.php",
         "./resources/views/dashboard/supplier.blade.php",
         "./resources/views/components/notivication-handler.blade.php",
         "./resources/views/welcome.blade.php",
         "./resources/views/home.blade.php",
+        "./resources/views/invoice.blade.php",
         "./resources/views/components/sidebar.blade.php"
     ],
     safelist: [

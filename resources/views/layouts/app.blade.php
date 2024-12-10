@@ -16,8 +16,7 @@
     @include('layouts.navigation')
     <x-notivication-handler :message="session('message')"></x-notivication-handler>
 
-
-    <div class="w-full pt-16 flex items-center justify-center flex-col" style="">
+    <div class="w-full pt-16 max-w-7xl flex items-center justify-center flex-col" style="">
 
             @yield('content')
 

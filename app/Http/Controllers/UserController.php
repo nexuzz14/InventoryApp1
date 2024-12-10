@@ -99,11 +99,10 @@ class UserController extends Controller
                     'email',
                     Rule::unique('users', 'email')->ignore($id),
                 ],
-                "data.role" => 'required|string|in:admin,user',
+                "data.role" => 'required|string|in:user,admin',
                 "data.password" => 'nullable|string|max:255',
             ]);
             
-            Log::debug($data['data']);
          
             $result = $this->userService->updateUser($id, $data['data']);
             if (!$result) {

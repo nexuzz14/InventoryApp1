@@ -10,6 +10,7 @@ class HomeController extends Controller
 {
     public function create($kategori = null)
     {
+            
         $category = Category::all();
 
         try {

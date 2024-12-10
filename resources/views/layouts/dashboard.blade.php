@@ -19,7 +19,7 @@
     <div class="h-screen flex flex-row absolute w-full " style="">
 
         @include('components.sidebar')
-        <div id="overlay" x-show="openNav" @click="openNav = false" class="fixed inset-0 bg-black/40"></div>
+        <div id="overlay" x-show="openNav" @click="openNav = false" class="fixed z-40 inset-0 bg-black/40"></div>
         <div class="bg-gray-100 flex-1 p-6 md:mt-16 overflow-y-auto">
             @yield('content')
         </div>

@@ -19,7 +19,7 @@ class UnitsRequestController extends Controller
     }
     public function create($idBarang){
         if($idBarang == null){
-            return redirect()->route('page.home');
+            return redirect()->route('home');
         };
         try{
            $id = Crypt::decrypt($idBarang);
@@ -27,14 +27,14 @@ class UnitsRequestController extends Controller
           if($selectedUnit){
             return view('user.request', compact('selectedUnit'));
           }  else{
-            return redirect()->route('page.home');
+            return redirect()->route('home');
           }
         } catch(\Exception $e){
-            return redirect()->route('page.home');
+            return redirect()->route('home');
         }
 
     }
-
+  
     public function store(Request $request){
       try{
         $data = $request->validate([
@@ -44,17 +44,20 @@ class UnitsRequestController extends Controller
         $itemId = Crypt::decrypt($request->item_id);
         $item = Item::find($itemId);
      
-        if($item && $request->quantity <= $item->quantitiy){
+        if($item && $data['quantity'] <= $item['quantity']){
             $chart = new chart();
-            $chart->customer_id = Auth::user()->id;
+            $chart->user_id = Auth::user()->id;
+            $chart->quantity = $data['quantity'];
             $chart->item_id = $itemId;
             $chart->save();
             return redirect()->back()->with("message", "Berhasil Menambahkan Ke Daftar Anda");
 
         }else{
+       
           return redirect()->back()->with("message", "Terjadi Kesalahan saat menambahkan item ke daftar");
         }
       }catch(\Exception $e){
+        Log::debug("errornya : \n $e");
         return redirect()->back()->with("message", "Terjadi Kesalahan saat menambahkan item ke daftar, $e");
       }
     }

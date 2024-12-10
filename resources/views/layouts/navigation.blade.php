@@ -42,6 +42,9 @@
             </div>
             <div class=""
                 :class="openNav ? 'flex items-center justify-end lg:order-2' : 'flex items-center justify-center lg:order-2'">
+                
+          
+                @if (Auth::check())
                 <button type="button" @click="openNav = !openNav"
                     class="flex text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 absolute"
                     id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
@@ -49,9 +52,6 @@
                     <img class="w-8 h-8 rounded-full"
                         src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                 </button>
-                <!-- Dropdown menu -->
-
-                @if (Auth::user())
                     <div :class="openNav ? 'fixed top-14 right-0' : 'hidden'"
                         class="z-50 my-4  text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
                         id="dropdown">
@@ -85,7 +85,7 @@
                         </ul>
                     </div>
                 @else
-                    <a class="px-3 py-1 bg-blue text-white font-medium text-lg" href="{{route('login')}}">Login</a>
+                    <a class="px-3 py-1 bg-blue-400 rounded text-white font-medium text-lg" href="{{route('login')}}">Login</a>
                 @endif
             </div>
         </div>

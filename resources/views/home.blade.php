@@ -33,17 +33,19 @@
                 </button>
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                @if (isset($barang))
                 @foreach ($barang as $item)
-                    <a href="/barang/order/{{Crypt::encrypt($item->id)}}" class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-                        <img src="{{ Storage::url($item->image) }}" class="w-full h-40 object-cover">
-                        <div class="p-4">
-                            <h4 class="text-lg font-medium">{{ $item->name }}</h4>
-                            <h6 class="text-gray-400">
-                                Rp. {{ number_format($item->price, 0, ',', '.') }}
-                            </h6>
-                        </div>
-                    </a>
-                @endforeach
+                <a href="/order/{{Crypt::encrypt($item->id)}}" class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
+                    <img src="{{ Storage::url($item->image) }}" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h4 class="text-lg font-medium">{{ $item->name }}</h4>
+                        <h6 class="text-gray-400">
+                            Rp. {{ number_format($item->price, 0, ',', '.') }}
+                        </h6>
+                    </div>
+                </a>
+            @endforeach
+                @endif
 
 
             </div>
@@ -64,13 +66,16 @@
                     </button>
                 </div>
                 <div class="box py-2 flex flex-wrap gap-2">
-                    <a href="/barang"
+                    <a href="/"
                         class="px-3 py-1 rounded-full capitalize border bg-blue-100 text-blue-700 whitespace-nowrap border-blue-400 hover:shadow-lg duration-200">Semua
                         Kategori</a>
-                    @foreach ($category as $item)
-                        <a href="/barang/{{ Crypt::encrypt($item->id) }}"
+                        @isset($category)
+                        @foreach ($category as $item)
+                        <a href="/{{ Crypt::encrypt($item->id) }}"
                             class="px-3 py-1 rounded-full capitalize border bg-blue-100 text-blue-700 whitespace-nowrap border-blue-400 hover:shadow-lg duration-200">{{ $item->name }}</a>
                     @endforeach
+                        @endisset
+                   
                 </div>
             </div>
         </div>

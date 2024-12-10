@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('Chart', function(Blueprint $table){
             $table->id();
-            $table->bigInteger('customer_id');
+            $table->bigInteger('user_id');
+            $table->bigInteger('quantity');
             $table->bigInteger('item_id');
         });
     }

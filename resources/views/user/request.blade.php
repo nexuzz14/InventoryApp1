@@ -51,7 +51,8 @@
                     <form action="" method="POST">
                         @method("POST")
                         @csrf
-                        <input type="hidden" value="{{Crypt::encrypt($selectedUnit->id)}}">
+                        <input name="item_id" type="hidden" value="{{Crypt::encrypt($selectedUnit->id)}}">
+                        <input name="quantity" type="hidden" value="" x-model="value">
                         <button type="submit" class="w-full py-2 bg-blue-400 text-white rounded-md mt-3 mb-2 hover:shadow-lg duration-150 ">Tambah Ke Daftar Order</button>
                     </form>
                 </div>

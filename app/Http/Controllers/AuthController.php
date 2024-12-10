@@ -4,16 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Crypt;
+use  App\Models\Item;
+use App\Models\Category;
 class AuthController extends Controller
 {
-    public function checkAuth()
+    public function checkAuth($kategori = null)
     {
         if (Auth::check()) {
             if (Auth::user()->role == 'superadmin' || Auth::user()->role == 'admin') {
                 return redirect('/dashboard');
             } else {
-                return view('home');
+                $category = Category::all();
+
+                try {
+                    if ($kategori !== null) {
+                        $idKategori = Crypt::decrypt($kategori);
+                        
+                        $selectedCategory = Category::find($idKategori);
+                        if ($selectedCategory) {
+                            $barang = Item::where('category_id', $idKategori)->get();
+                        } else {
+                            $barang = Item::all();
+                        }
+                    } else {
+                        $barang = Item::all();
+                    }
+                } catch (\Exception $e) {
+                    $barang = Item::all();
+                }
+        
+                return view('home', compact('category', 'barang'));
             }
         }
 

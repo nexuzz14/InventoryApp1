@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\chartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
@@ -16,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [AuthController::class, 'checkAuth'])->name("welcome");
 Route::get('/', [AuthController::class, 'checkAuth']);
+Route::get("/order/{idbarang?}", [UnitsRequestController::class, 'create'])->name('order');
+Route::post("/order/{idbarang?}", [UnitsRequestController::class, 'store'])->name('storeOrder');
+Route::get("/chart", [chartController::class, 'chart'])->name('chart');
+Route::delete("/chart/{id?}", [chartController::class, 'delete'])->name('chart.delete');
+Route::patch("/chart/{id?}", [chartController::class, 'update'])->name('chart.update');
+Route::post("/chart/{id?}", [chartController::class, 'store'])->name('chart.store');
 
 // Route::get('/login', [AuthController::class, 'checkAuth'])->name('login');
 
@@ -63,9 +70,7 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
 Route::get("/invoice", function () {
     return view('invoice');
 })->name("page.invoice");
-Route::get("/barang/{kategori?}", [homeController::class, 'create'])->name("page.home");
-Route::get("/barang/order/{idbarang?}", [UnitsRequestController::class, 'create'])->name('order');
-Route::post("/barang/order/{idbarang?}", [UnitsRequestController::class, 'store'])->name('storeOrder');
+
 
 Route::fallback(function () {
     return view('404');

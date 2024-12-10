@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {
@@ -25,7 +26,7 @@ class UserService
         }else{
             $data["password"] = User::find($id)->password;
         }
-
+        Log::debug($data['role']);
         return User::find($id)->update($data);
     }
 
