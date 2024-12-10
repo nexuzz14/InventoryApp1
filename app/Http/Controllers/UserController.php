@@ -103,10 +103,10 @@ class UserController extends Controller
                 "data.password" => 'nullable|string|max:255',
             ]);
             
+            Log::debug($data['data']);
          
-            $result = $this->userService->updateUser($id, $data);
+            $result = $this->userService->updateUser($id, $data['data']);
             if (!$result) {
-            Log::debug("ini eror");
 
                 return redirect()->back()->with("message", "Terjadi kesalahan saat mengubah data");
 
@@ -121,7 +121,7 @@ class UserController extends Controller
             return redirect()->back()->with('message', $messages)->withInput();
         } catch (\Exception $e) {
             Log::debug("ini eror, $e");
-            
+
             return redirect()->back()->with('message', 'Terjadi kesalahan');
 
         }
