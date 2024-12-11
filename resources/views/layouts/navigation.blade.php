@@ -4,7 +4,7 @@
             :class="openNav ? 'flex justify-between z-50 h-12 pr-5 overflow-visible' :
                 'flex flex-wrap justify-between items-center z-50 h-12 pr-5 overflow-visible'">
             <div class="flex justify-start items-center">
-                <button id="toggleSidebar" aria-expanded="true" aria-controls="sidebar"
+                {{-- <button id="toggleSidebar" aria-expanded="true" aria-controls="sidebar"
                     class="hidden p-2 mr-3 text-gray-600 rounded cursor-pointer lg:inline hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 16 12">

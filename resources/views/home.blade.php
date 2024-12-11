@@ -5,9 +5,9 @@
         <!-- Welcome Section -->
         <section class="flex md:flex-col flex-row items-center gap-8">
             <div class="md:w-1/2 ">
-                <h2 class="text-4xl font-bold mb-4">Welcome to Inventory</h2>
-                <p class="text-gray-400">Easily manage your products and supplies with our user-friendly platform. Stay
-                    organized and save time with our powerful tools.</p>
+                <h2 class="text-4xl font-bold mb-4">Selamat Datang di Inventory App</h2>
+                <p class="text-gray-400">Kelola produk dan persediaan Anda dengan mudah menggunakan platform kami yang ramah pengguna.
+                    Tetap terorganisir dan hemat waktu dengan fitur-fitur canggih kami.</p>
             </div>
             <div class="md:w-1/2 h-96 overflow-hidden flex items-center md:justify-end justify-center">
                 <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
@@ -20,7 +20,7 @@
 
         <section>
             <h3 class=" mb-6 flex gap-3">
-                <p class="text-3xl font-bold">Featured Products</p>
+                <p class="text-3xl font-bold">Daftar Produk</p>
                 <button @click="show=true"
                     class="capitalize border-l-2 hover:shadow-lg duration-150 border-blue-500 rounded px-3 py-1  bg-blue-100 text-blue-600 flex  items-center gap-2">
                     <svg class="w-6 h-6 text-blue-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -29,7 +29,7 @@
                             d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Zm4.996 2a1 1 0 0 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 8a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 11a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 14a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Z"
                             clip-rule="evenodd" />
                     </svg>
-                    <p class="text-inherit min-w-20">semua kategori</p>
+                    <p class="text-inherit min-w-20">Semua Kategori</p>
                 </button>
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
