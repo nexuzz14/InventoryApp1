@@ -15,7 +15,11 @@
 <body class="font-sans antialiased" x-data="{ openNav: false }" x-init="openNav = false">
     @include('layouts.navigation')
     <x-notivication-handler :message="session('message')"></x-notivication-handler>
-
+    {{-- <div class="loadingScreen fixed top-0 left-0 h-screen w-screen">
+        <div class="flex flex-col gap-3">
+            <img src="https://lordicon.com/icons/wired/lineal/21-avatar" alt="loadingIcon" class="max-w-s">
+        </div>
+    </div> --}}
     <div class="w-full pt-16  flex items-center justify-center flex-col" style="">
 
             @yield('content')

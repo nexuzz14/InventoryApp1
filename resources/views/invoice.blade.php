@@ -19,50 +19,50 @@
                 @endphp
                 <tbody class="min-h-40">
                     @isset($data)
-                            @foreach ($data as $item)
-                                <tr class="border-b">
-                                    <td class="w-14 px-3 py-2">
-                                        <form method="POST"
-                                            action="{{ route('chart.delete', ['id' => Crypt::encrypt($item->id)]) }}">
-                                            @csrf
-                                            @method('DELETE')
+                        @foreach ($data as $item)
+                            <tr class="border-b">
+                                <td class="w-14 px-3 py-2">
+                                    <form method="POST"
+                                        action="{{ route('chart.delete', ['id' => Crypt::encrypt($item->id)]) }}">
+                                        @csrf
+                                        @method('DELETE')
 
-                                            <button class="text-red-400">
-                                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path fill-rule="evenodd"
-                                                        d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </form>
+                                        <button class="text-red-400">
+                                            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd"
+                                                    d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </form>
 
-                                    </td>
-                                    <td class="px-3 py-2">{{ $item->item->name }}</td>
-                                    <td class="px-3 py-2">Rp{{ number_format($item->item->price * $item->quantity, 0, ',', '.') }}
-                                        / <small class="text-xs">Rp.{{ number_format($item->item->price, 0, ',', '.') }}</small>
-                                    </td>
-                                    <td class="w-20 px-3 py-2">
-                                        <form x-data="{ value: {{ $item->quantity ?? 0 }} }" method="POST"
-                                            action="{{ route('chart.update', ['id' => Crypt::encrypt($item->id)]) }}"
-                                            class="flex gap-2 whitespace-nowrap">
-                                            @method('PATCH')
-                                            @csrf
-                                            <input class="w-8 p-1 border py-0" type="number" x-model="value" name="quantity"
-                                                @input="value = Math.max(0, Math.min({{ $item->item->quantity ?? 0 }}, value))"
-                                                @change="$el.closest('form').submit()">
-                                            <div class="">
-                                                (qty)
-                                            </div>
-                                        </form>
+                                </td>
+                                <td class="px-3 py-2">{{ $item->item->name }}</td>
+                                <td class="px-3 py-2">Rp{{ number_format($item->item->price * $item->quantity, 0, ',', '.') }}
+                                    / <small class="text-xs">Rp.{{ number_format($item->item->price, 0, ',', '.') }}</small>
+                                </td>
+                                <td class="w-20 px-3 py-2">
+                                    <form x-data="{ value: {{ $item->quantity ?? 0 }} }" method="POST"
+                                        action="{{ route('chart.update', ['id' => Crypt::encrypt($item->id)]) }}"
+                                        class="flex gap-2 whitespace-nowrap">
+                                        @method('PATCH')
+                                        @csrf
+                                        <input class="w-8 p-1 border py-0" type="number" x-model="value" name="quantity"
+                                            @input="value = Math.max(0, Math.min({{ $item->item->quantity ?? 0 }}, value))"
+                                            @change="$el.closest('form').submit()">
+                                        <div class="">
+                                            (qty)
+                                        </div>
+                                    </form>
 
-                                    </td>
-                                </tr>
-                                @php
-                                    $totalQty += $item->quantity;
-                                    $totalPrice += $item->item->price;
-                                @endphp
-                            @endforeach
+                                </td>
+                            </tr>
+                            @php
+                                $totalQty += $item->quantity;
+                                $totalPrice += $item->item->price;
+                            @endphp
+                        @endforeach
                     @endisset
 
 
@@ -94,10 +94,11 @@
                 </svg>
                 <p class="font-bold">Order</p>
             </div>
-            <div class="flex flex-col mt-3 h-full flex-1 ">
-                <label for="">Nama Lengkap</label>
-                <input type="text" value="{{Auth::check() ? Auth::user()->name : "no name"}}" disabled class="bg-gray-200 mt-1 p-2 rounded">
-                <label for="">Total</label>
+            <div x-data="{ peminta: '{{ Auth::check() ? Auth::user()->name : '' }}' }" class="flex flex-col mt-3 h-full flex-1">
+
+                <label for="">Nama Peminta<span class="text-red-500">*</span></label>
+                <input type="text" x-model="peminta" class="bg-gray-200 mt-1 p-2 rounded mb-2"/>
+                <label for="">Total (otomatis)</label>
                 <div class="box flex gap-2 w-full">
                     <div class="bg-gray-200 flex-1 w-full mt-1 p-2 rounded">{{ $data->count() }} Item /
                         {{ $totalQty }} (Qty)</div>
@@ -108,11 +109,12 @@
                 @php
                     $i = 0;
                 @endphp
-                <form method="POST" action="{{route('chart.store')}}">
+                <form method="POST" action="{{ route('chart.store') }}">
                     @csrf
-                    <input type="hidden" value="{{Crypt::encrypt(Auth::user()->id)}}" name="staff_id">
+                    <input type="hidden" value="{{ Crypt::encrypt(Auth::user()->id) }}" name="staff_id">
+                    <input type="hidden" x-model="peminta" name="peminta">
                     @foreach ($data as $item)
-                    <input type="hidden" value="{{$item->id}}" name="chartData[]">
+                        <input type="hidden" value="{{ $item->id }}" name="chartData[]">
 
                         <input type="hidden" value="{{ $item->item_id }}" name="items[{{ $i }}][item_id]">
                         <input type="hidden" value="{{ $item->quantity }}" name="items[{{ $i }}][quantity]">
@@ -120,7 +122,12 @@
                             $i++;
                         @endphp
                     @endforeach
-                    <button class="w-full font-bold text-white text-center py-3 bg-blue-400 mt-4">Order Sekarang</button>
+                    <button :disabled="peminta.trim() === ''"
+                        :class="peminta.trim() === '' ? 'bg-gray-400 cursor-not-allowed' :
+                            'bg-blue-400 hover:bg-blue-500'"
+                        class="w-full font-bold text-white text-center py-3 mt-4">
+                        Order Sekarang
+                    </button>
 
                 </form>
 
