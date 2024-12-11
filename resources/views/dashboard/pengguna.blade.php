@@ -47,7 +47,23 @@
                                 <td class="text-xs lg:text-md">{{$item->name}}</td>
                                 <td class="text-xs lg:text-md">{{$item->username}}</td>
                                 <td class="text-xs lg:text-md">{{$item->email}}</td>
-                                <td class="text-xs lg:text-md">{{$item->role}}</td>
+                                <td class="text-xs lg:text-md">
+                                    @switch($item->role)
+                                        @case('superadmin')
+                                            Super Admin
+                                            @break
+
+                                        @case('admin')
+                                            Admin Gudang
+                                            @break
+
+                                        @case('user')
+                                            Staff / Karyawan
+                                            @break
+                                        @default
+                                            Tidak Diketahui
+                                    @endswitch
+                                </td>
                                 <td class="flex space-x-2">
                                     <button @click="show=true, editData={username: '{{$item->username}}', nama: '{{$item->name}}', email: '{{$item->email}}', role: '{{$item->role}}', id: '{{Crypt::encrypt($item->id)}}'}"
                                         class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
@@ -98,8 +114,8 @@
                         <label for="role">Role</label>
                         <select name="role" id="role" required
                             class="mb-2 border active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0">
-                            <option value="admin">Petugas</option>
-                            <option value="user">pengguna</option>
+                            <option value="admin">Admin Gudang</option>
+                            <option value="user">Staff/Karyawan</option>
                         </select>
                         @error('role')
                         <div class="text-red-500 text-sm">{{ $message }}</div>
