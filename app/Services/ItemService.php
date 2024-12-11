@@ -20,8 +20,12 @@ class ItemService
 
     public function getAllItems()
     {
-        $Item = Item::all();
-        $data = $Item->map(function ($Item) {
+        // Mengambil semua item dengan relasi yang diperlukan
+        $manualItems = Item::where('source', 'manual')->get();
+        $purchasingItems = Item::where('source', 'purchasing')->get();
+
+        // Memetakan data manual
+        $manualData = $manualItems->map(function ($Item) {
             return [
                 'id' => $Item->id,
                 'name' => $Item->name,
@@ -36,8 +40,29 @@ class ItemService
             ];
         });
 
-        return $data;
+        // Memetakan data purchasing
+        $purchasingData = $purchasingItems->map(function ($Item) {
+            return [
+                'id' => $Item->id,
+                'name' => $Item->name,
+                'category' => $Item->category->name,
+                'supplier' => $Item->supplier->name,
+                'unit' => $Item->unit->name,
+                'location' => $Item->location->name,
+                'image' => $Item->image,
+                'quantity' => $Item->quantity,
+                'price' => $Item->price,
+                'status' => $Item->status,
+            ];
+        });
+
+        // Mengembalikan data manual dan purchasing
+        return [
+            'manualItems' => $manualData,
+            'purchasingItems' => $purchasingData,
+        ];
     }
+
 
     public function getTotalItems(): int
     {

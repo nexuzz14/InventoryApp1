@@ -174,7 +174,7 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @foreach ($manualItems as $item)
+                        @foreach ($purchasingItems as $item)
                             <tr>
                                 <td>{{ $item['name'] }}</td>
                                 <td><img src="{{ Storage::url($item['image']) }}" style="width: 100px; height: 50px"

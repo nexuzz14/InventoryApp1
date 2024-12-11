@@ -17,12 +17,23 @@ class ItemController extends Controller
         $this->itemService = $itemService;
         $this->imageService = $imageService;
     }
-    public function index()
+    public function barangIndex()
     {
         $data = $this->itemService->getAllItems();
-
-        return view("dashboard.barang", compact("data"));
+        $manualItems = $data['manualItems'];
+        return view('dashboard.barang', compact('manualItems'));
     }
+
+
+    public function pembelianIndex()
+    {
+        $data = $this->itemService->getAllItems();
+        $purchasingItems = $data['purchasingItems']; // Ambil data purchasing dari hasil metode
+        return view('dashboard.pembelian', compact('purchasingItems'));
+    }
+
+
+
     public function store(Request $request)
     {
         $path = $this->imageService->storeImage($request->file('image'), 'items');

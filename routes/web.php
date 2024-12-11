@@ -31,7 +31,8 @@ Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get("dashboard/category", [CategoryController::class, 'index'])->name("dashboard.category");
-    Route::get("dashboard/barang", [ItemController::class, 'index'])->name("dashboard.barang");
+    Route::get("dashboard/barang", [ItemController::class, 'barangIndex'])->name("dashboard.barang");
+    Route::get("dashboard/pembelian", [ItemController::class, 'pembelianIndex'])->name("dashboard.pembelian");
     Route::get("dashboard/supplier", [SupplierController::class, 'index'])->name("category");
     Route::get("dashboard/satuan", [UnitController::class, 'index'])->name("satuan");
     Route::get("/permintaan-barang", function () {
