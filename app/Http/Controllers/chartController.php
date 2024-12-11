@@ -20,7 +20,7 @@ class chartController extends Controller
     {
         if (Auth::check()) {
             $data = chart::with('item')->where('user_id', Auth::user()->id)->get();
-            return view('invoice', compact('data'));
+            return view('chart', compact('data'));
         }
     }
     public function update($id, Request $request)
