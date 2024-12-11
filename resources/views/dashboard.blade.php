@@ -4,7 +4,7 @@
         <x-card-item :label="'Category'" :value="$category" :color="'teal'"><x-mdi-vector-arrange-below /></x-card-item>
         <x-card-item :label="'Supplier'" :value="$suppliers" :color="'red'"><x-mdi-truck-fast /></x-card-item>
         <x-card-item :label="'Barang'" :value="$items" :color="'red'"><x-mdi-cube-outline/></x-card-item>
-        <x-card-item :label="'Orders'" :value="'50'" :color="'red'"><x-mdi-cart-plus /></x-card-item>
+        <x-card-item :label="'Permintaan'" :value="$totalRequest" :color="'red'"><x-mdi-cart-plus /></x-card-item>
     </div>
     <!-- End General Report -->
 

@@ -7,6 +7,7 @@ use App\Charts\MonthlyUsersChart;
 use App\Services\CategoryService;
 use App\Services\ItemService;
 use App\Services\SupplierService;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -24,6 +25,7 @@ class DashboardController extends Controller
         $category = $this->categoryService->getTotalCategory();
         $suppliers = $this->supplierService->getTotalSuppliers();
         $items = $this->itemService->getTotalItems();
-        return view('dashboard', ['chart' => $chart->build(), 'historyRequestChart' => $historyRequestChart->build(), 'category' => $category, 'suppliers' => $suppliers, 'items' => $items]);
+        $totalRequest = DB::table('request_items')->count();
+        return view('dashboard', ['chart' => $chart->build(), 'historyRequestChart' => $historyRequestChart->build(), 'category' => $category, 'suppliers' => $suppliers, 'items' => $items, 'totalRequest' => $totalRequest]);
     }
 }

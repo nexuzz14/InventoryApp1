@@ -8,7 +8,7 @@ class RequestItem extends Model
 {
     protected $table = 'request_items';
     protected $fillable = [
-        'staff_id', 'status', 'processed_by'
+        'staff_id', 'status', 'processed_by', 'nama_pemohon'
     ];
 
     public function customer()
@@ -23,7 +23,7 @@ class RequestItem extends Model
 
     public function requestDetails()
     {
-        return $this->hasMany(ItemsRequestDetail::class);
+        return $this->hasMany(ItemsRequestDetail::class, 'request_id');
     }
 
     public function transaction()

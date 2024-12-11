@@ -6,7 +6,6 @@ use App\Services\CategoryService;
 use App\Services\LocationService;
 use App\Services\SupplierService;
 use App\Services\UnitService;
-use Illuminate\Http\Request;
 
 class MasterController extends Controller
 {

@@ -10,6 +10,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UnitsRequestController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,8 @@ Route::delete("/chart/{id?}", [chartController::class, 'delete'])->name('chart.d
 Route::patch("/chart/{id?}", [chartController::class, 'update'])->name('chart.update');
 Route::post("/chart/{id?}", [chartController::class, 'store'])->name('chart.store');
 
+Route::get("/request-barang", [TransactionController::class, "getAllRequest"])->name("request.barang");
+
 // gatau
 // Route::get('/login', [AuthController::class, 'checkAuth'])->name('login');
 Route::get('/categories-data', [CategoryController::class, 'getData'])->name('categories.data');
@@ -35,9 +38,10 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get("dashboard/pembelian", [ItemController::class, 'pembelianIndex'])->name("dashboard.pembelian");
     Route::get("dashboard/supplier", [SupplierController::class, 'index'])->name("category");
     Route::get("dashboard/satuan", [UnitController::class, 'index'])->name("satuan");
-    Route::get("/permintaan-barang", function () {
+    Route::get("/dashboard/permintaan-barang", function () {
         return view("dashboard.permintaan-barang");
     });
+
 
     Route::get("dashboard/lokasi", [LocationController::class, "index"])->name("lokasi");
 
@@ -69,6 +73,9 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::post("item", [ItemController::class, "store"])->name("item.store");
     Route::delete("item/{id}", [ItemController::class, "destroy"])->name("item.delete");
     Route::patch("item", [ItemController::class, "update"])->name("item.update");
+    
+    Route::patch("request/item/detail", [TransactionController::class, "updateItemsRequestDetail"])->name("request.item.detail");
+    Route::post("transaction", [TransactionController::class, "storeTransaction"])->name("transaction.store");
 });
 
 Route::get("/invoice", function () {
