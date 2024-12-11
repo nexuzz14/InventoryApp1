@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\chart;
+use App\Services\RequestItemService;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 class chartController extends Controller
 {
+    protected $requsetItemService;
+    public function __construct(RequestItemService $requestItemService)
+    {
+        $this->requsetItemService = $requestItemService;
+    }
     public function chart()
     {
         if (Auth::check()) {
@@ -64,27 +70,30 @@ class chartController extends Controller
                 }
             }
             Log::debug("ga tau");
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->back()->with("message", "Barang gagal dihapus Dari daftar");
-            
+
         }
 
     }
 
     public function store(Request $request)
     {
-        try {
-            Log::alert($request);
-            foreach ($request->chartData as $item) {
-                $data = Chart::find($item);
-                if ($data) {
-                    $data->delete();
+        $requestResult = $this->requsetItemService->storeRequest($request->all());
+        if ($requestResult) {
+            try {
+                Log::alert($request);
+                foreach ($request->chartData as $item) {
+                    $data = Chart::find($item);
+                    if ($data) {
+                        $data->delete();
+                    }
                 }
+                return redirect()->back()->with("message", "order berhasil");
+            } catch (\Exception $e) {
+                return redirect()->back()->with("message", "Order Gagal");
             }
-            return redirect()->back()->with("message", "order berhasil");
-        } catch (\Exception $e) {
-            return redirect()->back()->with("message", "Order Gagal");
         }
+        return redirect()->back()->with("message", "Order Gagal");
     }
 }

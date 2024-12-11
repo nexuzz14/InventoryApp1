@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ItemsRequestDetail extends Model
 {
     protected $guarded = [];
+    public $timestamps = false;
     public function item()
     {
         return $this->belongsTo(Item::class);
