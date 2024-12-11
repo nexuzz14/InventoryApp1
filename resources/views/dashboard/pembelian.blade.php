@@ -77,7 +77,7 @@
                                     class="border mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                     id="status" required />
                                 <option value="tersedia">Tersedia</option>
-                                <option value="tidak">Tidak Tersedia</option>
+                                <option value="tidak tersedia">Tidak Tersedia</option>
                                 </select>
 
                             </div>

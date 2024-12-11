@@ -23,11 +23,10 @@ class UserController extends Controller
     {
         $this->userService = $userService;
     }
-    public function index($role = "admin")
+    public function index()
     {
-        $roles = $role === "admin" ? "admin" : "user";
 
-        $user = User::latest()->where("role", $roles)->get();
+        $user = User::all();
         return view('dashboard.pengguna', compact('user'));
     }
 
