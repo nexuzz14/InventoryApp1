@@ -39,7 +39,7 @@
                     <p class="text-lg font-bold py-2 border-b border-1">Tambah lokasi</p>
                     <form action="{{ route('location.store') }}" method="POST" class="flex mt-3 flex-col">
                         @csrf
-                        <label for="name">Nama Lokasi</label>
+                        <label for="name">Nama Lokasi <span class="text-red-500">*</span></label>
                         <input type="text" name="name"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="name">

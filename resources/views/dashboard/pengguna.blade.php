@@ -88,7 +88,7 @@
                     <p class="text-lg font-bold py-2 border-b border-1">Tambah pengguna</p>
                     <form action="{{ route('pengguna.store') }}" method="POST" class="flex mt-3 flex-col">
                         @csrf
-                        <label for="username">Nama pengguna</label>
+                        <label for="username">Nama pengguna <span class="text-red-500">*</span></label>
                         <input type="text" name="username"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="username" required>
@@ -96,7 +96,7 @@
                             <div class="text-red-500 text-sm">{{ $message }}</div>
                             @enderror
 
-                        <label for="nama">Nama</label>
+                        <label for="nama">Nama <span class="text-red-500">*</span></label>
                         <input type="text" name="name"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="nama" required>
@@ -104,14 +104,14 @@
                             <div class="text-red-500 text-sm">{{ $message }}</div>
                             @enderror
 
-                        <label for="email">Email</label>
+                        <label for="email">Email <span class="text-red-500">*</span></label>
                         <input type="email" name="email"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                             id="email" required>
                             @error('email')
                             <div class="text-red-500 text-sm">{{ $message }}</div>
                             @enderror
-                        <label for="role">Role</label>
+                        <label for="role">Role <span class="text-red-500">*</span></label>
                         <select name="role" id="role" required
                             class="mb-2 border active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0">
                             <option value="admin">Admin Gudang</option>
@@ -122,7 +122,7 @@
                         @enderror
 
                         <div class="passwordInput" x-data="{ showPass: false }">
-                            <label for="password">Password</label>
+                            <label for="password">Password <span class="text-red-500">*</span></label>
                             <div class="inputBox mb-2 flex gap-2 bg-gray-200">
                                 <input :type="showPass ? 'text' : 'password'" name="password"
                                     class="bg-gray-200 active:ring-0 flex-1 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"

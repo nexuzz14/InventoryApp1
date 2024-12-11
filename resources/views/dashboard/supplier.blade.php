@@ -50,19 +50,19 @@
                 <p class="text-lg font-bold py-2 border-b border-1">Tambah Supllier</p>
                 <form action="{{ route('supplier.store') }}" method="POST" class="flex mt-3 flex-col">
                     @csrf
-                    <label for="namaKategori">Nama Supplier</label>
+                    <label for="namaKategori">Nama Supplier <span class="text-red-500">*</span></label>
                     <input type="text" name="name"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                         id="namaKategori" oninput="validateForm()" required />
 
-                    <label for="notelp">No. Telepon Supplier</label>
+                    <label for="notelp">No. Telepon Supplier <span class="text-red-500">*</span></label>
                     <input type="text" name="phone"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                         id="notelp" oninput="validateForm()" required />
                     <small id="error-message" style="color: red; display: none;">Nomor telepon tidak valid. Harus berupa
                         angka dengan panjang 10-15 karakter.</small>
 
-                    <label for="alamat">Alamat Supplier</label>
+                    <label for="alamat">Alamat Supplier <span class="text-red-500">*</span></label>
                     <input type="text" name="address"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                         id="alamat" oninput="validateForm()" required />

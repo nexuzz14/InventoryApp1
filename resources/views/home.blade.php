@@ -29,7 +29,7 @@
                             d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Zm4.996 2a1 1 0 0 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 8a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 11a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 14a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Z"
                             clip-rule="evenodd" />
                     </svg>
-                    <p class="text-inherit min-w-20">Semua Kategori</p>
+                    <p class="text-inherit min-w-20">{{ $activeCategory === "" ? "Semua Kategori" : $activeCategory }}</p>
                 </button>
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -73,7 +73,7 @@
                         Kategori</a>
                     @isset($category)
                         @foreach ($category as $item)
-                            <a href="/barang/{{ Crypt::encrypt($item['id']) }}"
+                            <a href="/{{ Crypt::encrypt($item['id']) }}"
                                 class="px-3 py-1 rounded-full capitalize border bg-blue-100 text-blue-700 whitespace-nowrap border-blue-400 hover:shadow-lg duration-200">{{ $item->name }}</a>
                         @endforeach
                     @endisset

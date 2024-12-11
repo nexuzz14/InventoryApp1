@@ -21,14 +21,14 @@
 
                             {{-- group 1 --}}
                             <div class="section flex flex-col flex-1">
-                                <label for="namaKategori">Nama Barang</label>
+                                <label for="namaKategori">Nama Barang <span class="text-red-500">*</span></label>
                                 <input type="text" name="name"
                                     class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                     id="namaKategori" required />
 
                                 <div class="flex gap-2 mb-[10px]">
                                     <div class="flex-1">
-                                        <label for="supplier">Supplier</label>
+                                        <label for="supplier">Supplier <span class="text-red-500">*</span></label>
                                         <select name="supplier_id" id="supplier"
                                             class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                             <template x-for="supplier in suppliers">
@@ -37,7 +37,7 @@
                                         </select>
                                     </div>
                                     <div class="flex-1">
-                                        <label for="category">Kategori</label>
+                                        <label for="category">Kategori <span class="text-red-500">*</span></label>
                                         <select name="category_id" id="category"
                                             class="border px-3 w-full py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                             <template x-for="category in categories">
@@ -46,7 +46,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <label for="location">Lokasi</label>
+                                <label for="location">Lokasi <span class="text-red-500">*</span></label>
                                 <select name="location_id" id="location"
                                     class="border px-2 w-full mt-2 py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                     <template x-for="location in locations">
@@ -55,13 +55,13 @@
                                 </select>
                                 <div class="flex gap-1">
                                     <div class="flex-1">
-                                        <label for="quantity">Jumlah</label>
+                                        <label for="quantity">Jumlah <span class="text-red-500">*</span></label>
                                         <input type="number"
                                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                             id="quantity" name="quantity" required />
                                     </div>
                                     <div class="">
-                                        <label for="unit">Satuan</label>
+                                        <label for="unit">Satuan <span class="text-red-500">*</span></label>
                                         <select name="unit_id" id="unit"
                                             class="border px-2 w-full mt-2 py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">
                                             <template x-for="unit in units">
@@ -72,7 +72,7 @@
 
                                 </div>
 
-                                <label for="status">Status</label>
+                                <label for="status">Status <span class="text-red-500">*</span></label>
                                 <select name="status"
                                     class="border mb-2 active:ring-0 active:outline-none mt-2 px-2 py-2 rounded focus:outline-none focus-within:ring-0"
                                     id="status" required />
@@ -90,7 +90,7 @@
                                     <img id="imagePreview" src="" alt="Image preview"
                                         class="w-full h-full object-contain">
                                 </div>
-                                <label for="fileInput">Gambar</label>
+                                <label for="fileInput">Gambar </label>
                                 <div
                                     class="inputfile mb-2 flex relative overflow-hidden bg-blue-400 duration-200 py-2 rounded font-bold text-white mt-1 items-center cursor-pointer px-4">
                                     <svg class="w-6 z-0 h-6 text-white absolute" aria-hidden="true"

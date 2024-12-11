@@ -15,7 +15,7 @@ use App\Http\Controllers\UnitsRequestController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [AuthController::class, 'checkAuth'])->name("welcome");
-Route::get('/', [AuthController::class, 'checkAuth']);
+Route::get('/{kategori?}', [AuthController::class, 'checkAuth']);
 Route::get("/order/{idbarang?}", [UnitsRequestController::class, 'create'])->name('order');
 Route::post("/order/{idbarang?}", [UnitsRequestController::class, 'store'])->name('storeOrder');
 Route::get("/chart", [chartController::class, 'chart'])->name('chart');
@@ -71,11 +71,6 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::patch("item", [ItemController::class, "update"])->name("item.update");
 });
 
-Route::get("/invoice", function () {
-    return view('invoice');
-})->name("page.invoice");
-Route::get("/barang/{kategori?}", [HomeController::class, 'create'])->name("page.home");
-Route::get("/barang/order/{idbarang?}", [UnitsRequestController::class, 'create'])->name('order');
 Route::fallback(function () {
     return view('404');
 })->name('fallback');

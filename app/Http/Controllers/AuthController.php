@@ -16,12 +16,13 @@ class AuthController extends Controller
                 return redirect('/dashboard');
             } else {
                 $category = Category::all();
-
+                $activeCategory = "";
                 try {
                     if ($kategori !== null) {
                         $idKategori = Crypt::decrypt($kategori);
-                        
+
                         $selectedCategory = Category::find($idKategori);
+                        $activeCategory = $selectedCategory['name'];
                         if ($selectedCategory) {
                             $barang = Item::where('category_id', $idKategori)->get();
                         } else {
@@ -33,8 +34,8 @@ class AuthController extends Controller
                 } catch (\Exception $e) {
                     $barang = Item::all();
                 }
-        
-                return view('home', compact('category', 'barang'));
+
+                return view('home', compact('category','activeCategory', 'barang'));
             }
         }
 
