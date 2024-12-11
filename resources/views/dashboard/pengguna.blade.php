@@ -8,19 +8,19 @@
             <div class="box flex-1 w-full">
 
                 {{-- tombol pisah --}}
-                <div class="btn_group flex gap-2 py-2">
-                    <a href="/dashboard/pengguna/user" 
-                        class="py-2 px-2 rounded border duration-200 hover:px-3 
+                {{-- <div class="btn_group flex gap-2 py-2">
+                    <a href="/dashboard/pengguna/user"
+                        class="py-2 px-2 rounded border duration-200 hover:px-3
                         {{ request()->is('dashboard/pengguna/user') ? 'px-4 bg-blue-200 text-blue-600' : '' }}">
                         Customer
                     </a>
-                    <a href="/dashboard/pengguna/admin" 
-                        class="py-2 px-2 rounded border duration-200 hover:px-3 
+                    <a href="/dashboard/pengguna/admin"
+                        class="py-2 px-2 rounded border duration-200 hover:px-3
                         {{ request()->is('dashboard/pengguna/admin') ? 'px-4 bg-blue-200 text-blue-600' : '' }}">
                         Petugas
                     </a>
-                </div>
-                
+                </div> --}}
+
                 {{-- end tombol pisah --}}
 
                 {{-- table --}}
@@ -32,6 +32,7 @@
                                 <th class="text-xs lg:text-md">Nama</th>
                                 <th class="text-xs lg:text-md">Nama Pengguna</th>
                                 <th class="text-xs lg:text-md">Email</th>
+                                <th class="text-xs lg:text-md">Role</th>
 
                                 <th class="w-20 pl-4 text-xs lg:text-md">Action</th>
                             </tr>
@@ -46,6 +47,7 @@
                                 <td class="text-xs lg:text-md">{{$item->name}}</td>
                                 <td class="text-xs lg:text-md">{{$item->username}}</td>
                                 <td class="text-xs lg:text-md">{{$item->email}}</td>
+                                <td class="text-xs lg:text-md">{{$item->role}}</td>
                                 <td class="flex space-x-2">
                                     <button @click="show=true, editData={username: '{{$item->username}}', nama: '{{$item->name}}', email: '{{$item->email}}', role: '{{$item->role}}', id: '{{Crypt::encrypt($item->id)}}'}"
                                         class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
@@ -154,7 +156,7 @@
             x-transition:leave="animate__animated animate__fadeOut animate__faster"
             class="fixed w-screen z-40 h-screen px-4 bg-black bg-opacity-10 backdrop-blur-sm top-0 left-0 flex items-center justify-center">
 
-            <div 
+            <div
                 x-show="show"
                 x-transition:enter="animate__animated animate__faster animate__fadeInUp"
                 x-transition:leave="animate__animated animate__faster animate__fadeOutDown"
@@ -170,7 +172,7 @@
                     <input type="text" name="data[username]" x-model="editData.username"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
                         id="usernameEd" required>
-                    
+
                     <label for="namaEd">Nama</label>
                     <input type="text" name="data[name]" x-model="editData.nama"
                         class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
