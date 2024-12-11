@@ -16,8 +16,9 @@ class RequestItemService
 
     public function storeRequest($data)
     {
+        $staff_id = Crypt::decrypt($data['staff_id']);
         $request_items = RequestItem::create([
-            'customer_id' => $data['customer_id'],
+            'staff_id' => $staff_id,
             'status' => 'pending',
         ]);
 
@@ -34,6 +35,6 @@ class RequestItemService
             )
         );
 
-        return $request_items;
+        return $result;
     }
 }

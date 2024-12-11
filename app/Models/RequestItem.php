@@ -8,7 +8,7 @@ class RequestItem extends Model
 {
     protected $table = 'request_items';
     protected $fillable = [
-        'customer_id', 'status', 'processed_by'
+        'staff_id', 'status', 'processed_by'
     ];
 
     public function customer()

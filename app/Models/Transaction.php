@@ -9,7 +9,7 @@ class Transaction extends Model
     protected $guarded = [];
     public function customer()
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(User::class, 'staff_id');
     }
 
     public function itemsRequest()
