@@ -24,7 +24,7 @@
                 <a href="#" class="flex mr-4">
                     <span class="self-center text-2xl font-semibold whitespace-nowrap">Inventory</span>
                 </a>
-                <form action="#" method="GET" class="hidden lg:block lg:pl-2">
+                {{-- <form action="#" method="GET" class="hidden lg:block lg:pl-2">
                     <label for="topbar-search" class="sr-only">Search</label>
                     <div class="relative mt-1 lg:w-96">
                         <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -38,21 +38,27 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Search">
                     </div>
-                </form>
+                </form> --}}
             </div>
             <div class=""
                 :class="openNav ? 'flex items-center justify-end lg:order-2' : 'flex items-center justify-center lg:order-2'">
-                
-          
+
+
                 @if (Auth::check())
-                <button type="button" @click="openNav = !openNav"
-                    class="flex text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 absolute"
-                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
-                    <span class="sr-only">Open user menu</span>
-                    <img class="w-8 h-8 rounded-full"
-                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
-                </button>
-                    <div :class="openNav ? 'fixed top-14 right-0' : 'hidden'"
+                    <a href="/chart" class="chart px-3">
+                        <svg class="w-8 h-8 text-gray-800 hover:text-gray-400 duration-150" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
+                          </svg>
+                          
+                    </a>
+                    <button type="button" @click="openNav = !openNav"
+                        class="flex text-sm bg-gray-800 rounded-full md:mr-0  focus:ring-0"
+                        id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
+                        <span class="sr-only">Open user menu</span>
+                        <img class="w-8 h-8 rounded-full"
+                            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                    </button>
+                    <div :class="openNav ? 'fixed top-14 right-2' : 'hidden'"
                         class="z-50 my-4  text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
                         id="dropdown">
                         <div class="py-3 px-4">
@@ -85,7 +91,8 @@
                         </ul>
                     </div>
                 @else
-                    <a class="px-3 py-1 bg-blue-400 rounded text-white font-medium text-lg" href="{{route('login')}}">Login</a>
+                    <a class="px-3 py-1 bg-blue-400 rounded text-white font-medium text-lg"
+                        href="{{ route('login') }}">Login</a>
                 @endif
             </div>
         </div>
