@@ -104,7 +104,6 @@
                         {{ $totalQty }} (Qty)</div>
                     <div class="bg-gray-200 flex-1 w-full mt-1 p-2 rounded">
                         Rp.{{ number_format($totalPrice, 0, ',', '.') }}</div>
-
                 </div>
                 @php
                     $i = 0;

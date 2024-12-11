@@ -12,23 +12,53 @@
 
 </head>
 
-<body class="font-sans antialiased" x-data="{ openNav: false }" x-init="openNav = false">
+<body class="font-sans antialiased" x-data="{ openNav: false, loadingText:'Memuat...', loading:true }" x-init="openNav = false">
     @include('layouts.navigation')
+
     <x-notivication-handler :message="session('message')"></x-notivication-handler>
-    {{-- <div class="loadingScreen fixed top-0 left-0 h-screen w-screen">
+    {{-- <div x-show="loading" class="loadingScreen fixed top-0 left-0 flex items-center justify-center z-50 h-screen bg-white w-screen">
         <div class="flex flex-col gap-3">
-            <img src="https://lordicon.com/icons/wired/lineal/21-avatar" alt="loadingIcon" class="max-w-s">
+            <script src="https://cdn.lordicon.com/lordicon.js"></script>
+            <lord-icon src="https://cdn.lordicon.com/wsdieofl.json" trigger="loop" style="width:250px;height:250px">
+            </lord-icon>
+            <div class="text-center text-lg" x-model="loadingText"></div>
+
         </div>
     </div> --}}
-    <div class="w-full pt-16  flex items-center justify-center flex-col" style="">
 
+    <div class="h-screen bg-gray-100 flex flex-row absolute w-full " style="">
+
+        @include('components.sidebar')
+     
+        <div class=" flex-1 p-6 md:mt-16 overflow-y-auto">
             @yield('content')
+        </div>
 
     </div>
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
-    
+    <script>
+        $(document).ready(function() {
+            $('#table').DataTable({
+                fixedHeader: true,
+                columnDefs: [{
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }],
+            });
+        });
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('-ml-64');
+                sidebar.classList.toggle('ml-0');
+                sidebar.classList.toggle('animate__slideInLeft');
+        }
+    </script>
     {{-- <script></script> --}}
     <x-script-pack></x-script-pack>
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+
+    
 </body>
 
 </html>

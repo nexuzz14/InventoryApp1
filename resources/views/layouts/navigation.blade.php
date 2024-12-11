@@ -4,16 +4,16 @@
             :class="openNav ? 'flex justify-between z-50 h-12 pr-5 overflow-visible' :
                 'flex flex-wrap justify-between items-center z-50 h-12 pr-5 overflow-visible'">
             <div class="flex justify-start items-center">
-                <button id="toggleSidebar" aria-expanded="true" aria-controls="sidebar"
+                {{-- <button id="toggleSidebar" aria-expanded="true" aria-controls="sidebar"
                     class="hidden p-2 mr-3 text-gray-600 rounded cursor-pointer lg:inline hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 16 12">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M1 1h14M1 6h14M1 11h7" />
                     </svg>
-                </button>
+                </button> --}}
                 <button aria-expanded="true" aria-controls="sidebar" onclick="toggleSidebar()"
-                    class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer {{Auth::check() ? (Auth::user()->role === 'user' ? '' : 'lg:hidden') : 'lg:hidden'}} hover:text-gray-900 hover:bg-gray-100  focus:ring-2  dark:focus:ring-0 dark:text-gray-400  dark:hover:text-white">
                     <svg class="w-[18px] h-[18px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 17 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -45,12 +45,15 @@
 
 
                 @if (Auth::check())
-                    <a href="/chart" class="chart px-3">
-                        <svg class="w-8 h-8 text-gray-800 hover:text-gray-400 duration-150" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
-                          </svg>
-                          
-                    </a>
+                @if (Auth::user()->role === "user")
+                <a href="/chart" class="chart px-3">
+                    <svg class="w-8 h-8 text-gray-800 hover:text-gray-400 duration-150" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
+                      </svg>
+                      
+                </a>
+                @endif
+            
                     <button type="button" @click="openNav = !openNav"
                         class="flex text-sm bg-gray-800 rounded-full md:mr-0  focus:ring-0"
                         id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
