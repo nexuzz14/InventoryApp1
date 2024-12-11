@@ -20,7 +20,7 @@
 
         @include('components.sidebar')
         <div id="overlay" x-show="openNav" @click="openNav = false" x-init="openNav = false"
-            class="fixed inset-0 bg-black/40"></div>
+            class="fixed inset-0 "></div>
         <div class="bg-gray-100 flex-1 p-6 md:mt-16 overflow-y-auto">
             @yield('content')
         </div>
