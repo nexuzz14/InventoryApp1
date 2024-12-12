@@ -43,7 +43,7 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     });
     Route::get("/dashboard/invoice", function (){
         return view("dashboard.invoice");
-    });
+    })->name('dashboard.invoice');
 
     Route::get("/list/invoice", [TransactionController::class, "getAllInvoice"])->name("list.invoice");
 

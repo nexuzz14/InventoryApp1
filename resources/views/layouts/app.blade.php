@@ -58,7 +58,6 @@
     <x-script-pack></x-script-pack>
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
 
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
     
 </body>
 

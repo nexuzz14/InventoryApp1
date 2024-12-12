@@ -3,15 +3,15 @@
     class="relative flex flex-col lg:mt-0 bg-white border-r border-gray-300 p-6 flex-none w-64  {{ Auth::check() ? (Auth::user()->role === 'user' ? '-ml-64' : 'lg:ml-0 md:-ml-64') : 'lg:ml-0 md:-ml-64' }} md:fixed md:top-0 md:z-30 h-full shadow-xl animate__animated animate_faster  text-sm ">
     <div x-data="{ isHovered: false }" x-on:mouseenter="isHovered = true" x-on:mouseleave="isHovered = false"
         class="flex-0 pb-6 border-b w-full  iconGroup mt-16 md:pt-8 relative">
-        <button class="absolute top-0 right-0">
+        <a href="/auth/logout" class="absolute top-0 right-0">
             <x-mdi-logout class="w-6 h-6 "></x-mdi-logout>
-    </button>
+        </a>
         <div class="flex flex-col gap-2 items-center">
-        
+
             <div class="box w-16 h-16 p-2 box-content shadow-md rounded-full border-2 overflow-hidden">
-                <lord-icon src="https://cdn.lordicon.com/fmasbomy.json" :trigger="isHovered ? 'in' : 'hover'"
-                state="hover-looking-around" class="w-16 h-16">
-            </lord-icon>
+                <lord-icon src="https://cdn.lordicon.com/fmasbomy.json" :trigger="isHovered ? 'in' : 'morph'"
+                    state="hover-looking-around" class="w-16 h-16">
+                </lord-icon>
             </div>
             <div class="flex flex-col justify-center text-center w-full">
                 <h5 class="line-clamp-1 font-medium">{{ Auth::user()->username }}</h5>
@@ -167,7 +167,16 @@
                             <x-mdi-cart-minus class="mr-2 w-6 h-6" />
                             Barang Keluar
                         </a>
+                        
                     @endif
+                    <a x-show="show"
+                            x-transition:enter="animate__animated animate__lightSpeedInLeft animate__faster"
+                            x-transition:leave="animate__animated animate__lightSpeedOutLeft animate__faster"
+                            href="/dashboard/invoice"
+                            class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
+                            <svg class="mr-2 w-6 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>invoice-multiple-outline</title><path d="M2 2V17H4V4H17V2H2M18.5 20.32L21 22V6H6V22L8.5 20.32L11 22L13.5 20.32L16 22L18.5 20.32M19 8V17.57L16 19.59L13.5 17.9L11 19.59L8 17.57V8H19Z" /></svg>
+                            invoice
+                        </a>
                 @endauth
 
             </div>
@@ -212,6 +221,6 @@
     </div>
 
 
-    
+
 </div>
 <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/40 hidden"></div>
