@@ -10,10 +10,13 @@
                 <div class="px-8 py-6 ">
                     <label class="block font-semibold"> Username</label>
                     <input type="text" placeholder="Username" name="username"
-                        class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-500 focus:ring-1 rounded-md">
+                        class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:shadow-lg focus:ring-1 rounded-md">
                     <label class="block mt-3 font-semibold"> Password </label>
                     <input type="password" name="password" placeholder="Password"
-                        class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-500 focus:ring-1 rounded-md">
+                        class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:shadow-lg focus:ring-1 rounded-md">
+                    @error('email')
+                        <p class="text-xs mt-2 text-red-500">Email Atau Password Salah</p>
+                    @enderror
                     <div class="flex justify-between items-baseline">
                         <button type="submit"
                             class="mt-4 bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 ">Login</button>
