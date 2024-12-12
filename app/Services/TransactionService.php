@@ -58,4 +58,28 @@ class TransactionService
             }
         ]);
     }
+
+    public function detailOwnInvoice($id)
+    {
+        return Transaction::with([
+            'requestItem' => function ($query) use ($id) {
+                $query->select("id", "nama_pemohon");
+            },
+            'requestItem.requestDetails' => function ($query) {
+                $query->select("id", "item_id", 'request_id', 'quantity', 'status')->where('status', 'accepted');
+            },
+            'requestItem.requestDetails.item' => function ($query) {
+                $query->select("id", "name", "price");
+            }
+        ])->find($id);
+    }
+
+    public function listOwnInvoice($id)
+    {
+        return Transaction::with([
+            'requestItem' => function ($query) use ($id) {
+                $query->select("id", "nama_pemohon");
+            }
+        ])->where('staff_id', $id)->select('id', 'total_price', 'total_qty', 'status', 'created_at', 'request_id')->get();
+    }
 }

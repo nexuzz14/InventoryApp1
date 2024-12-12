@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('request_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('staff_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'selesai'])->default('pending');
             $table->string('nama_pemohon');
             $table->foreignId('processed_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();

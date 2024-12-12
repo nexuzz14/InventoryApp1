@@ -90,6 +90,6 @@ class CategoryController extends Controller
                 "Terjadi kesalahan saat menghapus kategori"
             ]);
         }
-        return redirect()->route('category');
+        return redirect('/dashboard/category');
     }
 }

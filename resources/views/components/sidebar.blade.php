@@ -167,16 +167,20 @@
                             <x-mdi-cart-minus class="mr-2 w-6 h-6" />
                             Barang Keluar
                         </a>
-                        
                     @endif
-                    <a x-show="show"
-                            x-transition:enter="animate__animated animate__lightSpeedInLeft animate__faster"
-                            x-transition:leave="animate__animated animate__lightSpeedOutLeft animate__faster"
-                            href="/dashboard/invoice"
-                            class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
-                            <svg class="mr-2 w-6 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>invoice-multiple-outline</title><path d="M2 2V17H4V4H17V2H2M18.5 20.32L21 22V6H6V22L8.5 20.32L11 22L13.5 20.32L16 22L18.5 20.32M19 8V17.57L16 19.59L13.5 17.9L11 19.59L8 17.57V8H19Z" /></svg>
-                            invoice
-                        </a>
+                    <a x-show="show" x-transition:enter="animate__animated animate__lightSpeedInLeft animate__faster"
+                        x-transition:leave="animate__animated animate__lightSpeedOutLeft animate__faster"
+                        @if (Auth::user()->role == 'superadmin' || Auth::user()->role == 'admin') href="/dashboard/invoice"                               
+                           @else
+                            href="/invoice" @endif
+                        class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
+                        <svg class="mr-2 w-6 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <title>invoice-multiple-outline</title>
+                            <path
+                                d="M2 2V17H4V4H17V2H2M18.5 20.32L21 22V6H6V22L8.5 20.32L11 22L13.5 20.32L16 22L18.5 20.32M19 8V17.57L16 19.59L13.5 17.9L11 19.59L8 17.57V8H19Z" />
+                        </svg>
+                        invoice
+                    </a>
                 @endauth
 
             </div>
