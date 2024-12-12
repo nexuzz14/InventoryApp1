@@ -54,7 +54,7 @@ class TransactionController extends Controller
         return response()->json($result);
     }
 
-    public function invoice(Request $request)
+    public function getAllInvoice(Request $request)
     {
         $draw = $request->get('draw');
         $start = $request->get('start');
