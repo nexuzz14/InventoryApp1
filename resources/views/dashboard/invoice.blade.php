@@ -2,7 +2,7 @@
 @section('content')
     <div class="box flex-1 w-full">
         <div class="card col-span-2 xl:col-span-1 px-4 md:max-w-full overflow-x-auto">
-            <div class="card-header">Kategori</div>
+            <div class="card-header">List Tagihan</div>
             <table id="tablePermintaan" class="">
                 <thead>
                     <tr>
@@ -37,17 +37,15 @@
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         function format(d) {
-            console.log(d);
+            // console.log(d);
             let li = '';
-            for (let i = 0; i < d.request_details.length; i++) {
+            for (let i = 0; i < d.request_item.request_details.length; i++) {
                 li += `
                     <li class="w-full min-w-screen h-[50px] flex items-center justify-start bg-white border border-1 drop-shadow-md">
-                        <div class="w-[50px] h-[50px] flex items-center justify-center">
-                            <input type="checkbox" data-quantity="${d.request_details[i].quantity}" data-detail-id="${d.request_details[i].id}" ${d.request_details[i].status == 'accepted' ? 'checked' : ''} class="checkbox-item peer w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600" required="">
-                        </div>
-                        <div>
-                            <p class="ml-2 text-gray-500 text-sm font-semibold">${d.request_details[i].item.name}</p>
-                            <p class="ml-2 text-gray-500 text-sm font-semibold">Jumlah: ${d.request_details[i].quantity} ${d.request_details[i].item.unit.name}</p>
+                        <div class="flex items-center justify-center">
+                            <p class="ml-2 text-gray-500 text-sm font-semibold">${d.request_item.request_details[i].item.name}: </p>
+                            <p class="ml-2 text-gray-500 text-sm font-semibold">${d.request_item.request_details[i].quantity} ${d.request_item.request_details[i].item.unit.name}</p>
+                            <p class="ml-2 text-gray-500 text-sm font-semibold">${d.request_item.request_details[i].item.price}: Rp. ${d.request_item.request_details[i].item.price * d.request_item.request_details[i].quantity}</p>
                         </div>
                     </li>
                 `
@@ -58,35 +56,6 @@
                 </ul>
             `
             return ul
-        }
-
-        function prosesPermintaan(requestId) {
-            console.log(requestId);
-            let isRequestInProgress = true;
-            $('#loadingModal').show();
-            window.addEventListener("beforeunload", function(e) {
-                if (isRequestInProgress) {
-                    e.preventDefault();
-                    e.returnValue = '';
-                }
-            });
-            $.ajax({
-                url: "{{ route('transaction.store') }}",
-                type: "POST",
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    request_id: requestId
-                },
-                success: function(response) {
-                    $('#loadingModal').hide();
-                    isRequestInProgress = false;
-                    window.location.reload();
-                },
-                error: function(xhr) {
-                    $('#loadingModal').hide();
-                    isRequestInProgress = false;
-                }
-            });
         }
 
         $(document).ready(function() {
@@ -132,7 +101,7 @@
                     "targets": "_all"
                 }],
 
-                ajax: '/request-barang',
+                ajax: '/list/invoice',
                 columns: [{
                         class: 'dt-control',
                         orderable: false,
@@ -140,9 +109,52 @@
                         defaultContent: ''
                     },
                     {
-                        data: 'nama_pemohon',
+                        data: 'request_item.nama_pemohon',
                         title: 'Nama / Instansi Pemohon'
                     },
+                    {
+                        data: 'staff.name',
+                        title: 'Nama Staff'
+                    },
+                    {
+                        data: 'total_qty',
+                        title: 'Total Jumlah Barang'
+                    },
+                    {
+                        data: 'total_appoved_items',
+                        title: 'Total Jenis Barang'
+                    },
+                    {
+                        data: 'total_price',
+                        title: 'Total Harga'
+                    },
+                    {
+                        data: 'dibayarkan',
+                        title: 'Total Bayar'
+                    },
+                    {
+                        data: 'status',
+                        title: 'Status'
+                    },
+                    {
+                        data: null,
+                        title: 'Action',
+                        render: function(data, type, row) {
+                            return `
+                            <div class="flex space-x-2">
+                                <button x-on:click="editCategory('${row.id}', '${row.name}')"
+                            class="text-green-500 px-2 py-1 rounded-md bg-green-100">Edit</button>
+                        <form action="/category/delete/${row.id}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="text-red-500 px-2 py-1 rounded-md bg-red-100">Delete</button>
+                        </form>
+                            </div>
+
+                    `;
+                        }
+                    }
                 ],
                 order: [
                     [1, 'asc']
@@ -165,12 +177,10 @@
                     detailRows.splice(idx, 1);
                 } else {
                     tr.classList.add('details');
+                    console.log(row.data());
                     row.child(
                         `<div class='flex flex-col gap-2 items-start w-full min-w-screen'>
-                        ${format(row.data())}
-                        <button onclick = 'prosesPermintaan(${row.data().id })' type = 'submit' class = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' >
-                            Proses 
-                            </button>  
+                            ${format(row.data())}
                         </div > `
                     ).show();
 

@@ -15,8 +15,8 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UnitsRequestController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', [AuthController::class, 'checkAuth'])->name("welcome");
-Route::get('/{kategori?}', [AuthController::class, 'checkAuth']);
+Route::get('/', [AuthController::class, 'checkAuth'])->name("welcome");
+// Route::get('/{kategori?}', [AuthController::class, 'checkAuth']);   
 Route::get("/order/{idbarang?}", [UnitsRequestController::class, 'create'])->name('order');
 Route::post("/order/{idbarang?}", [UnitsRequestController::class, 'store'])->name('storeOrder');
 Route::get("/chart", [chartController::class, 'chart'])->name('chart');
@@ -41,6 +41,11 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get("/dashboard/permintaan-barang", function () {
         return view("dashboard.permintaan-barang");
     });
+    Route::get("/dashboard/invoice", function (){
+        return view("dashboard.invoice");
+    });
+
+    Route::get("/list/invoice", [TransactionController::class, "getAllInvoice"])->name("list.invoice");
 
 
     Route::get("dashboard/lokasi", [LocationController::class, "index"])->name("lokasi");
@@ -76,6 +81,12 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     
     Route::patch("request/item/detail", [TransactionController::class, "updateItemsRequestDetail"])->name("request.item.detail");
     Route::post("transaction", [TransactionController::class, "storeTransaction"])->name("transaction.store");
+});
+Route::get('/invoice', function(){
+    return view('invoice');
+});
+Route::get('/detail/invoice', function(){
+    return view('detail-invoice');
 });
 
 Route::fallback(function () {

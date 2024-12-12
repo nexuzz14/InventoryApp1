@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('request_id')->constrained('request_items')->onDelete('cascade');
             $table->integer('total_qty');
             $table->decimal("total_price", 10, 2);
+            $table->decimal("dibayarkan", 10, 2)->default(0);
             $table->integer("total_appoved_items");
             $table->enum("status", ["paid", "unpaid"]);
             $table->timestamps();

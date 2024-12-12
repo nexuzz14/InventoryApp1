@@ -9,7 +9,7 @@ use  App\Models\Item;
 use App\Models\Category;
 class AuthController extends Controller
 {
-    public function checkAuth($kategori = null)
+    public function checkAuth()
     {
         if (Auth::check()) {
             if (Auth::user()->role == 'superadmin' || Auth::user()->role == 'admin') {

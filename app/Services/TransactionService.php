@@ -37,4 +37,25 @@ class TransactionService
         ]);
         return $transaction;
     }
+
+    public function getAllTransaction()
+    {
+        return Transaction::with([
+            'requestItem' => function ($query) {
+                $query->select("id", "nama_pemohon");
+            },
+            'staff' => function ($query) {
+                $query->select("id", "name");
+            },
+            'requestItem.requestDetails' => function ($query) {
+                $query->select("id", "item_id", 'request_id', 'quantity', 'status')->where('status', 'accepted');
+            },
+            'requestItem.requestDetails.item' => function ($query) {
+                $query->select("id", "name", "unit_id", "price");
+            },
+            'requestItem.requestDetails.item.unit' => function ($query) {
+                $query->select("id", "name");
+            }
+        ]);
+    }
 }
