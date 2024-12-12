@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Services\CategoryService;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -13,34 +15,46 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
     protected $userService;
+    protected $transactionService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, TransactionService $transactionService)
     {
         $this->userService = $userService;
+        $this->transactionService = $transactionService;
     }
     public function index()
     {
-
         $user = User::all();
         return view('dashboard.pengguna', compact('user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getDetailOwnInvoice($id)
     {
-        //
-    }
+        $invoice = $this->transactionService->detailOwnInvoice(base64_decode($id))->toArray();
 
-    /**
-     * Store a newly created resource in storage.
-     */
+        if (is_array(reset($invoice))) {
+            foreach ($invoice as &$item) {
+                $item['id'] = base64_encode($item['id']);
+                $item['created_at'] = \Carbon\Carbon::parse($item['created_at']);
+            }
+        } else {
+            $invoice['id'] = base64_encode($invoice['id']);
+            $invoice['created_at'] = \Carbon\Carbon::parse($invoice['created_at']);
+        }
+        // return response()->json($invoice);
+        return view('user.detail-invoice', compact('invoice'));
+    }
+    public function getOwnInvoice()
+    {
+        $invoice = $this->transactionService->listOwnInvoice(Auth::user()->id)->toArray();
+        foreach ($invoice as &$item) {
+            $item['id'] = base64_encode($item['id']);
+            $item['created_at'] = \Carbon\Carbon::parse($item['created_at']);
+        }
+
+        return view('user.invoice', compact('invoice'));
+    }
     public function store(Request $request)
     {
         $data = $request->validate([
