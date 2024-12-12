@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class=" flex-1 overflow-y-auto scrollsimple w-full">
+    <div class=" flex-1 overflow-y-auto scrollsimple w-full overflow-x-hidden   direction-ltr">
         <div class="flex flex-col h-full flex-1 w-full">
             <div x-data={show:false} class="flex flex-col mt-3 w-full border-b-2 border-gray-200">
                 <button @click="show=!show" class="flex gap-2 border-none mb-4 w-full justify-between items-center">
@@ -138,7 +138,7 @@
                         <!-- link -->
                         <a x-show="show" x-transition:enter="animate__animated animate__lightSpeedInLeft animate__faster"
                             x-transition:leave="animate__animated animate__lightSpeedOutLeft animate__faster"
-                            href="./typography.html"
+                            href="{{route('dashboard.permintaan')}}"
                             class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
                             <x-mdi-clipboard-check-outline class="mr-2 w-6 h-6" />
                             Permintaan Barang

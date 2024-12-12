@@ -48,6 +48,24 @@ class TransactionController extends Controller
         return response()->json($result);
     }
 
+    public function updateTransaction(Request $request){
+        try{
+            $data = $request->validate([
+                'id'=>"required|integer",
+                'nominal'=>"required|integer|min:0",
+            ]);
+
+            $result =   $this->transactionService->transactionPay($data['id'], $data['nominal']);
+            if($request){
+                return redirect()->back()->with("message", "pembayaran berhasil");
+            }else{
+                return redirect()->back()->with("message", "pembayaran gagal");
+
+            }
+        }catch(\Exception $e){
+            return redirect()->back()->with("message", "pembayaran gagal, $e");
+        }
+    }
     public function storeTransaction(Request $request)
     {
         $result = $this->transactionService->storeTransaction($request->all());

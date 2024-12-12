@@ -58,4 +58,29 @@ class TransactionService
             }
         ]);
     }
+
+    public function transactionPay($id, $nominal)
+    {
+        $data = Transaction::find($id);
+    
+        if ($data) {
+            if (($data->dibayarkan + $nominal) > $data->total_price) {
+                $data->dibayarkan = $data['total_price'];
+
+            }else{
+                $data->dibayarkan += $nominal;
+
+            }
+    
+    
+            $data->status = ($data->dibayarkan >= $data->total_price) ? 'paid' : 'bon';
+    
+            $data->save();
+    
+            return true;
+        }
+    
+        return false;
+    }
+    
 }

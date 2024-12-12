@@ -17,7 +17,6 @@
     "dependencies": {
         "alpine": "^0.2.1",
         "alpinejs": "^3.14.6",
-        "chart.js": "^4.4.7",
-        "lottie": "^0.0.1"
+        "chart.js": "^4.4.7"
     }
 }

@@ -40,13 +40,13 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
     Route::get("dashboard/satuan", [UnitController::class, 'index'])->name("satuan");
     Route::get("/dashboard/permintaan-barang", function () {
         return view("dashboard.permintaan-barang");
-    });
+    })->name('dashboard.permintaan');
     Route::get("/dashboard/invoice", function (){
         return view("dashboard.invoice");
     })->name('dashboard.invoice');
 
     Route::get("/list/invoice", [TransactionController::class, "getAllInvoice"])->name("list.invoice");
-
+    Route::post("/dashboard/invoice", [TransactionController::class, "updateTransaction"])->name("invoice.updatePayment");
 
     Route::get("dashboard/lokasi", [LocationController::class, "index"])->name("lokasi");
 
