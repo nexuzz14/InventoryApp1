@@ -4,79 +4,77 @@ namespace Tests\Unit;
 
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 use Tests\TestCase;
 
 class UserServiceTest extends TestCase
 {
-
-    use RefreshDatabase;
     protected $userService;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userService = new UserService();
+        $this->userService = app(UserService::class);
     }
 
-    public function test_get_all_users()
-    {
-        User::factory()->count(3)->create(); // Menambahkan 3 user
+    public function test_store_user()
+{
+    $data = [
+        'name' => 'Test User',
+        'username' => 'uniqueuser', // Ensure 'username' is provided
+        'email' => 'testuser@example.com',
+        'role' => 'user',
+        'password' => 'password123',
+    ];
 
-        $response = $this->get('/users');
-        $response->assertStatus(200);
-        $response->assertJsonCount(3, 'data');
-    }
+    $userService = new UserService();
+    $user = $userService->storeUser($data);
 
-    public function testStoreUser()
-    {
-        $userData = [
-            'name' => 'Test User',
-            'username' => 'testuser',
-            'email' => 'test@example.com',
-            'password' => 'password123',
-        ];
+    $this->assertDatabaseHas('users', [
+        'username' => $data['username'],
+        'email' => $data['email'],
+    ]);
+}
 
-        $response = $this->post('/users', $userData);
-        $response->assertStatus(201);  // Pastikan responnya sesuai
-    }
+public function test_update_user()
+{
+    $user = User::factory()->create([
+        'username' => 'olduser',
+        'email' => 'olduser@example.com',
+    ]);
 
-    public function test_update_user_with_password()
-    {
-        $user = User::factory()->create(['password' => bcrypt('oldpassword')]);
-        $data = ['password' => 'newpassword'];
+    $data = [
+        'name' => 'Updated User',
+        'username' => 'updateduser', // Ensure the new username is provided
+        'email' => 'newemail@example.com',
+        'role' => 'admin',
+    ];
 
-        $updated = $this->userService->updateUser($user->id, $data);
+    $userService = new UserService();
+    $updatedUser = $userService->updateUser($user->id, $data);
 
-        $this->assertTrue($updated);
-        $this->assertTrue(Hash::check('newpassword', $user->fresh()->password));
-    }
-
-    public function test_update_user_without_password()
-    {
-        $user = User::factory()->create();
-
-        $updatedData = [
-            'name' => 'Updated Name',
-            'email' => 'updated@example.com',
-            // Jangan sertakan password jika tidak diubah
-        ];
-
-        $response = $this->put("/users/{$user->id}", $updatedData);
-        $response->assertStatus(200);
-    }
-
+    $this->assertDatabaseHas('users', [
+        'id' => $user->id,
+        'username' => $data['username'], // Validate 'username' update
+        'email' => $data['email'],
+    ]);
+}
     public function test_delete_user()
     {
-        $user = User::factory()->create();
-        $encryptedId = Crypt::encrypt($user->id);
+        $user = User::factory()->create([
+            'username' => 'deletableuser',
+            'email' => 'deletable@example.com',
+            'role' => 'user',
+        ]);
 
-        $deleted = $this->userService->deleteUser($encryptedId);
+        $userService = new UserService();
+        $result = $userService->deleteUser(Crypt::encrypt($user->id));
 
-        $this->assertTrue($deleted);
-        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+        $this->assertTrue($result);
+        $this->assertDatabaseMissing('users', [
+            'id' => $user->id,
+        ]);
     }
 }

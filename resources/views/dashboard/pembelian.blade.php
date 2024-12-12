@@ -46,6 +46,9 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                    <input type="hidden" value="purchasing" id="purchasing" name="source" class="block w-full p-2 border rounded">
+
                                 <label for="location">Lokasi <span class="text-red-500">*</span></label>
                                 <select name="location_id" id="location"
                                     class="border px-2 w-full mt-2 py-2 active:ring-0 active:outline-none focus:outline-none focus-within:ring-0 rounded-md">

@@ -48,7 +48,7 @@
         <div class="flex-0  w-full lg:max-w-96">
             <div class="form  w-full  bg-white border border-1  px-3 py-2">
                 <p class="text-lg font-bold py-2 border-b border-1">Tambah Supllier</p>
-                <form action="{{ route('supplier.store') }}" method="POST" class="flex mt-3 flex-col">
+                <form action="{{ route('supplier.store') }}" method="POST" class="flex mt-3 flex-col" id="supplierForm">
                     @csrf
                     <label for="namaKategori">Nama Supplier <span class="text-red-500">*</span></label>
                     <input type="text" name="name"
@@ -68,14 +68,23 @@
                         id="alamat" oninput="validateForm()" required />
 
                     <div class="flex items-end w-full justify-end">
-                        <button id="submit-button"
-                            class="bg-blue-400 capitalize text-white px-2 hover:px-4 duration-200 py-1 rounded">
-                            tambah
-                        </button>
+                        <div class="flex items-end w-full justify-end">
+                            <input type="submit" value="Submit"
+                                class="submit-button hover:cursor-pointer bg-blue-400 capitalize text-white px-2 hover:px-4 duration-200 py-1 rounded">
+                        </div>
                     </div>
 
 
 
+
+                    <script>
+                        document.getElementById('supplierForm').addEventListener('submit', function(event) {
+                            const submitButton = this.querySelector('.submit-button');
+                            // Disable button to prevent double submit
+                            submitButton.disabled = true;
+                            submitButton.classList.add('bg-gray-300', 'cursor-not-allowed'); // Optional: Add styles for disabled state
+                        });
+                    </script>
 
                     <script>
                         function validateForm() {

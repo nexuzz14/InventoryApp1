@@ -59,11 +59,11 @@ class TransactionService
         ]);
     }
 
-<<<<<<< HEAD
+
     public function transactionPay($id, $nominal)
     {
         $data = Transaction::find($id);
-    
+
         if ($data) {
             if (($data->dibayarkan + $nominal) > $data->total_price) {
                 $data->dibayarkan = $data['total_price'];
@@ -72,19 +72,19 @@ class TransactionService
                 $data->dibayarkan += $nominal;
 
             }
-    
-    
+
+
             $data->status = ($data->dibayarkan >= $data->total_price) ? 'paid' : 'bon';
-    
+
             $data->save();
-    
+
             return true;
         }
-    
+
         return false;
     }
-    
-=======
+
+
     public function detailOwnInvoice($id)
     {
         return Transaction::with([
@@ -108,5 +108,5 @@ class TransactionService
             }
         ])->where('staff_id', $id)->select('id', 'total_price', 'total_qty', 'status', 'created_at', 'request_id')->get();
     }
->>>>>>> 596d26fea1d4856630696f5d1f94451c895cf6f9
+
 }

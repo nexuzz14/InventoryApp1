@@ -34,21 +34,19 @@
                     </tbody>
                 </table>
             </div>
-            <div class="flex-0    w-full lg:max-w-96">
-                <div class="form  w-full  bg-white border border-1  px-3 py-2">
+            <div class="flex-0 w-full lg:max-w-96">
+                <div class="form w-full bg-white border border-1 px-3 py-2">
                     <p class="text-lg font-bold py-2 border-b border-1">Tambah lokasi</p>
-                    <form action="{{ route('location.store') }}" method="POST" class="flex mt-3 flex-col">
+                    <form action="{{ route('location.store') }}" method="POST" id="locationForm" class="flex mt-3 flex-col">
                         @csrf
                         <label for="name">Nama Lokasi <span class="text-red-500">*</span></label>
                         <input type="text" name="name"
                             class="bg-gray-200 mb-2 active:ring-0 active:outline-none px-2 py-1 rounded focus:outline-none focus-within:ring-0"
-                            id="name">
-
+                            id="name" required>
 
                         <div class="flex items-end w-full justify-end">
-                            <input type="submit"
-                                class="hover:cursor-pointer bg-blue-400 capitalize text-white px-2 hover:px-4 duration-200 py-1 rounded">
-                            </input>
+                            <input type="submit" value="Submit"
+                                class="submit-button hover:cursor-pointer bg-blue-400 capitalize text-white px-2 hover:px-4 duration-200 py-1 rounded">
                         </div>
                     </form>
                 </div>
@@ -88,4 +86,12 @@
 
         </div>
     </div>
+    <script>
+        document.getElementById('locationForm').addEventListener('submit', function(event) {
+            const submitButton = this.querySelector('.submit-button');
+            // Disable button to prevent double submit
+            submitButton.disabled = true;
+            submitButton.classList.add('bg-gray-300', 'cursor-not-allowed'); // Optional: Add styles for disabled state
+        });
+    </script>
 @endsection
