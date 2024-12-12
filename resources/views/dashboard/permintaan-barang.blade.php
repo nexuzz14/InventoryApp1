@@ -2,7 +2,6 @@
 @section('content')
     <div class="box flex-1 w-full">
         <div class="card col-span-2 xl:col-span-1 px-4 md:max-w-full overflow-x-auto">
-            <div class="card-header">Kategori</div>
             <table id="tablePermintaan" class="">
                 <thead>
                     <tr>
@@ -37,7 +36,6 @@
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         function format(d) {
-            console.log(d);
             let li = '';
             for (let i = 0; i < d.request_details.length; i++) {
                 li += `

@@ -18,6 +18,7 @@ class TransactionController extends Controller
         $this->transactionService = $transactionService;
     }
 
+
     public function getAllRequest(Request $request)
     {
         $draw = $request->get('draw');
@@ -41,13 +42,39 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function updateItemsRequestDetail(Request $request){
+    public function updateItemsRequestDetail(Request $request)
+    {
         $result = $this->requestItemService->updateItemsRequestDetail($request->id);
         return response()->json($result);
     }
 
-    public function storeTransaction(Request $request){
+    public function storeTransaction(Request $request)
+    {
         $result = $this->transactionService->storeTransaction($request->all());
         return response()->json($result);
+    }
+
+    public function invoice(Request $request)
+    {
+        $draw = $request->get('draw');
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $search = $request->get('search')['value'];
+        $totalRecords = DB::table('request_items')->count();
+
+        $query = $this->transactionService->getAllTransaction();
+        // return response()->json($query->get());
+        if (!empty($search)) {
+            $query->where('nama_pemohon', 'like', "%{$search}%");
+        }
+        $filteredRecords = $query->count();
+        $data = $query->offset($start)->limit($length)->get();
+
+        return response()->json([
+            'draw' => $draw,
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data
+        ]);
     }
 }

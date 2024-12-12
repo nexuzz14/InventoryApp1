@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $guarded = [];
-    public function customer()
+    public function staff()
     {
         return $this->belongsTo(User::class, 'staff_id');
     }
 
-    public function itemsRequest()
+    public function requestItem()
     {
-        return $this->belongsTo(RequestItem::class, 'requests_id');
+        return $this->belongsTo(RequestItem::class, 'request_id', 'id');
     }
 }

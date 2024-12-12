@@ -1,6 +1,6 @@
 <!-- start sidebar -->
 <div id="sidebar"
-    class="relative flex lg:mt-0 bg-white border-r border-gray-300 p-6 flex-none w-64  {{Auth::check() ? (Auth::user()->role === 'user' ? '-ml-64' : 'lg:ml-0 md:-ml-64') : 'lg:ml-0 md:-ml-64'}} md:fixed md:top-0 md:z-30 h-full shadow-xl animate__animated animate_faster shadow-lg text-sm overflow-y-auto scrollsimplea">
+    class="relative flex lg:mt-0 bg-white border-r border-gray-300 p-6 flex-none w-64  {{ Auth::check() ? (Auth::user()->role === 'user' ? '-ml-64' : 'lg:ml-0 md:-ml-64') : 'lg:ml-0 md:-ml-64' }} md:fixed md:top-0 md:z-30 h-full shadow-xl animate__animated animate_faster shadow-lg text-sm overflow-y-auto scrollsimplea">
     <!-- Semua ikon akan menggunakan ukuran text-sm -->
 
     <!-- sidebar content -->
@@ -112,6 +112,17 @@
                 class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
                 <x-mdi-clipboard-check-outline class="mr-2 w-6 h-6" />
                 Permintaan Barang
+            </a>
+            <a x-show="show" x-transition:enter="animate__animated animate__lightSpeedInLeft animate__faster"
+                x-transition:leave="animate__animated animate__lightSpeedOutLeft animate__faster"
+                href="/dashboard/invoice"
+                class="mb-3 capitalize font-medium hover:text-teal-600 transition ease-in-out duration-500 flex items-center">
+                <svg class="mr-2 w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <title>invoice-outline</title>
+                    <path
+                        d="M21 22L18 20L15 22L12 20L9 22L6 20L3 22V3H21V22M19 18.26V5H5V18.26L6 17.6L9 19.6L12 17.6L15 19.6L18 17.6L19 18.26Z" />
+                </svg>
+                Invoice
             </a>
             <!-- link -->
             <a x-show="show" x-transition:enter="animate__animated animate__lightSpeedInLeft animate__faster"

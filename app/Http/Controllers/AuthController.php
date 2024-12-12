@@ -9,31 +9,31 @@ use  App\Models\Item;
 use App\Models\Category;
 class AuthController extends Controller
 {
-    public function checkAuth($kategori = null)
+    public function checkAuth()
     {
         if (Auth::check()) {
             if (Auth::user()->role == 'superadmin' || Auth::user()->role == 'admin') {
                 return redirect('/dashboard');
             } else {
-                $category = Category::all();
-                $activeCategory = "";
-                try {
-                    if ($kategori !== null) {
-                        $idKategori = Crypt::decrypt($kategori);
+                // $category = Category::all();
+                // $activeCategory = "";
+                // try {
+                    // if ($kategori !== null) {
+                    //     $idKategori = Crypt::decrypt($kategori);
 
-                        $selectedCategory = Category::find($idKategori);
-                        $activeCategory = $selectedCategory['name'];
-                        if ($selectedCategory) {
-                            $barang = Item::where('category_id', $idKategori)->get();
-                        } else {
-                            $barang = Item::all();
-                        }
-                    } else {
-                        $barang = Item::all();
-                    }
-                } catch (\Exception $e) {
-                    $barang = Item::all();
-                }
+                    //     $selectedCategory = Category::find($idKategori);
+                    //     $activeCategory = $selectedCategory['name'];
+                    //     if ($selectedCategory) {
+                    //         $barang = Item::where('category_id', $idKategori)->get();
+                    //     } else {
+                    //         $barang = Item::all();
+                    //     }
+                    // } else {
+                    //     $barang = Item::all();
+                    // }
+                // } catch (\Exception $e) {
+                //     $barang = Item::all();
+                // }
 
                 return view('home', compact('category','activeCategory', 'barang'));
             }
