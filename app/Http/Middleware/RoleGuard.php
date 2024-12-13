@@ -22,9 +22,9 @@ class RoleGuard
         }
 
         if (!in_array(Auth::user()->role, $role)) {
-            return redirect()->route('fallback');
+            abort(404);
         }
-    
+
         return $next($request);
     }
 }
