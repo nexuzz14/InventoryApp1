@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
@@ -23,16 +24,24 @@ class CategoryController extends Controller
         return view('dashboard.kategori', compact('categories'));
     }
 
-
+    public function get()
+    {
+        $categories = $this->categoryServices->getAllCategory();
+        return response()->json([
+            'data' => $categories
+        ]);
+    }
     public function store(StoreCategoryRequest $category)
     {
         $result = $this->categoryServices->storeCategory($category->request->all());
         if (!$result) {
-            return back()->withErrors([
-                "Terjadi kesalahan saat membuat kategori"
+            return  response()->json([
+                "messages"=>"Gagal menambah kategori"
             ]);
         }
-        return redirect()->route('dashboard.category');
+        return  response()->json([
+            "messages"=>"berhasil menambah kategori"
+        ]);
     }
 
 
@@ -62,34 +71,32 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        // dd($category);
-    }
+    
 
 
     public function update(Request $request)
     {
         $result = $this->categoryServices->updateCategory($request->id, $request->name);
         if (!$result) {
-            return back()->withErrors([
-                "Terjadi kesalahan saat mengubah kategori"
+            return response()->json([
+                'messages'=>'Terjadi kesalahan saat mengubah kategori' . $request->name
             ]);
         }
-        return redirect()->route('dashboard.category');
+        return response()->json([
+            'messages'=>'berhasil mengubah kategori'
+        ]);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $result = $this->categoryServices->deleteCategory($id);
+        $result = $this->categoryServices->deleteCategory($request->id);
         if (!$result) {
-            return back()->withErrors([
-                "Terjadi kesalahan saat menghapus kategori"
+            return response()->json([
+                'messages'=>'gagal menghapus kategori'
             ]);
         }
-        return redirect('/dashboard/category');
+        return response()->json([
+            'messages'=>'berhasil menghapus kategori'
+        ]);
     }
 }

@@ -17,14 +17,21 @@ class RoleGuard
      */
     public function handle(Request $request, Closure $next, ...$role): Response
     {
-        if (!Auth::check()) {
-            return redirect('/')->with('error', 'Silakan login terlebih dahulu.');
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], 401);
         }
 
-        if (!in_array(Auth::user()->role, $role)) {
-            return redirect()->route('fallback');
+        // Cek apakah user memiliki salah satu role yang diizinkan
+        if (!in_array($user->role, $role)) {
+            return response()->json([
+                'message' => 'Forbidden '. $user->role,
+            ], 403);
         }
-    
+
         return $next($request);
     }
 }

@@ -30,11 +30,12 @@ class CategoryService
 
     public function updateCategory($id, $data)
     {
-        $category = Category::find(Crypt::decrypt($id));
-        $category->update([
-            "name" => $data
-        ]);
+        $category = Category::find($id);
+        
         if ($category) {
+            $category->update([
+                "name" => $data
+            ]);
             return true;
         }
         return false;
@@ -42,7 +43,13 @@ class CategoryService
 
     public function deleteCategory($id)
     {
-        $id = Crypt::decrypt($id);
-        return Category::find($id)->delete();
+        $data = Category::find($id);
+        if($data){
+            $data->delete();
+            return true;
+
+        }else{
+            return false;
+        }
     }
 }

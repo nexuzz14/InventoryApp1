@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use  App\Models\Item;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
+use Carbon\Carbon;
 class AuthController extends Controller
 {
     public function checkAuth()
@@ -16,26 +18,26 @@ class AuthController extends Controller
                 return redirect('/dashboard');
             } else {
                 $category = Category::all();
-                $activeCategory = "";
-                try {
-                    if ($kategori !== null) {
-                        $idKategori = Crypt::decrypt($kategori);
+                // $activeCategory = "";
+                // try {
+                //     if ($kategori !== null) {
+                //         $idKategori = Crypt::decrypt($kategori);
 
-                        $selectedCategory = Category::find($idKategori);
-                        $activeCategory = $selectedCategory['name'];
-                        if ($selectedCategory) {
-                            $barang = Item::where('category_id', $idKategori)->get();
-                        } else {
-                            $barang = Item::all();
-                        }
-                    } else {
-                        $barang = Item::all();
-                    }
-                } catch (\Exception $e) {
-                    $barang = Item::all();
-                }
+                //         $selectedCategory = Category::find($idKategori);
+                //         $activeCategory = $selectedCategory['name'];
+                //         if ($selectedCategory) {
+                //             $barang = Item::where('category_id', $idKategori)->get();
+                //         } else {
+                //             $barang = Item::all();
+                //         }
+                //     } else {
+                //         $barang = Item::all();
+                //     }
+                // } catch (\Exception $e) {
+                // }
+                  $barang = Item::all();
 
-                return view('home', compact('category','activeCategory', 'barang'));
+                return view('home', compact('category', 'barang'));
             }
         }
 
@@ -44,16 +46,37 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('username', 'password');
-
-        if (Auth::attempt($credentials )) {
-            $request->session()->regenerate();
-            return redirect('/');
-        }
-
-        return back()->withErrors([
-            'email' => 'Email atau Password Salah'
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string',
+            'password' => 'required|string',
         ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    
+        $credentials = $request->only('username', 'password');
+    
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('auth_token', ['*'], Carbon::now()->addHours(4));
+            return response()->json([
+                'message' => 'Berhasil',
+                'data' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'token' => $token->plainTextToken,
+                ],
+            ]);
+        }
+    
+        return response()->json([
+            'message' => 'Email atau Password Salah',
+        ], 401);
     }
 
     public function logout(Request $request)
