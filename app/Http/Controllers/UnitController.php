@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUnitRequest;
 use App\Models\Unit;
 use App\Services\UnitService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UnitController extends Controller
 {
@@ -25,25 +26,25 @@ class UnitController extends Controller
     {
         $result = $this->unitService->storeUnit($request->all());
         if (!$result) {
-            return back()->withErrors([
-                'message' => 'Data gagal disimpan'
+            return response()->json([
+                "message"=>"Gagal menambah satuan",
             ]);
         }
-        return back()->withSuccess([
-            'message' => 'Data berhasil disimpan'
+        return response()->json([
+            'message' => 'berhasil menambah satuan'
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $result = $this->unitService->deleteUnit($id);
+        $result = $this->unitService->deleteUnit($request->id);
         if (!$result) {
-            return back()->withErrors([
-                'message' => 'Data gagal dihapus'
+            return response()->json([
+                'message' => 'gagal menghapus unit'
             ]);
         }
-        return back()->withSuccess([
-            'message' => 'Data berhasil dihapus'
+        return response()->json([
+            'message' => 'berhasil menghapus kategori'
         ]);
     }
 
@@ -51,12 +52,12 @@ class UnitController extends Controller
     {
         $result = $this->unitService->updateUnit($request->id, $request->name);
         if (!$result) {
-            return back()->withErrors([
-                'message' => 'Data gagal diperbarui'
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengubah ketegori' . $request->name
             ]);
         }
-        return back()->withSuccess([
-            'message' => 'Data berhasil diperbarui'
+        return response()->json([
+            'message' => 'berhasil mengubah kategori'
         ]);
     }
 
