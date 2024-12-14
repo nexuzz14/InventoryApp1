@@ -4,19 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\chart;
 use App\Models\Item;
-use App\Services\RequestItemService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 class UnitsRequestController extends Controller
 {
-  protected $itemRequestService;
+  
 
-  public function __construct(RequestItemService $requestService)
-  {
-    $this->itemRequestService = $requestService;
-  }
+  // fungsi lama
   public function create($idBarang)
   {
     if ($idBarang == null) {

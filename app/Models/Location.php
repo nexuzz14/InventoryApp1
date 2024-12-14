@@ -14,4 +14,10 @@ class Location extends Model
         'name'
     ];
     public $timestamps = false;
+
+    public function items()
+    {
+        return $this->belongsToMany(Item::class, 'item_location');
+    }
+
 }

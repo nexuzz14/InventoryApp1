@@ -24,13 +24,7 @@ class CategoryController extends Controller
         return view('dashboard.kategori', compact('categories'));
     }
 
-    public function get()
-    {
-        $categories = $this->categoryServices->getAllCategory();
-        return response()->json([
-            'data' => $categories
-        ]);
-    }
+   
     public function store(StoreCategoryRequest $category)
     {
         $result = $this->categoryServices->storeCategory($category->request->all());

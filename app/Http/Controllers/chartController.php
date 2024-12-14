@@ -58,42 +58,47 @@ class chartController extends Controller
     public function delete($id)
     {
         try {
-            if (Auth::check()) {
                 $idOrigin = Crypt::decrypt($id);
                 $data = chart::find($idOrigin);
                 if ($data && Auth::user()->id == $data['user_id']) {
                     $data->delete();
                     return redirect()->back()->with("message", "Barang dihapus Dari daftar");
-
                 } else {
                     return redirect()->back()->with("message", "Barang gagal dihapus Dari daftar");
                 }
-            }
-            Log::debug("ga tau");
         } catch (\Exception $e) {
             return redirect()->back()->with("message", "Barang gagal dihapus Dari daftar");
-
         }
-
     }
 
     public function store(Request $request)
     {
-        $requestResult = $this->requsetItemService->storeRequest($request->all());
+        $requestResult = $this->requsetItemService->storeRequest($request, $request->user());
         if ($requestResult) {
             try {
-                Log::alert($request);
                 foreach ($request->chartData as $item) {
                     $data = Chart::find($item);
                     if ($data) {
                         $data->delete();
                     }
                 }
-                return redirect()->back()->with("message", "order berhasil");
+                return response()->json(
+                    [
+                        "messages" => "order berhasil"
+                    ]
+                );
             } catch (\Exception $e) {
-                return redirect()->back()->with("message", "Order Gagal");
+                return response()->json(
+                    [
+                        "messages" => "order berhasil"
+                    ]
+                );
             }
         }
-        return redirect()->back()->with("message", "Order Gagal");
+        return response()->json(
+            [
+                "messages" => "order berhasil"
+            ]
+        );
     }
 }

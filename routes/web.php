@@ -57,7 +57,8 @@ Route::middleware(['RoleGuard:superadmin,admin'])->group(function () {
 
 
 
-    Route::delete("category/{id?}", [CategoryController::class, 'destroy'])->name("category.delete");
+    Route::delete("category/
+    {id?}", [CategoryController::class, 'destroy'])->name("category.delete");
     Route::patch("category", [CategoryController::class, 'update'])->name("category.update");
     Route::post("category", [CategoryController::class, 'store'])->name("category.store");
 

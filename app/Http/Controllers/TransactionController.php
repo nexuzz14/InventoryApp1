@@ -48,6 +48,7 @@ class TransactionController extends Controller
         return response()->json($result);
     }
 
+    // old function
     public function updateTransaction(Request $request){
         try{
             $data = $request->validate([
@@ -56,20 +57,29 @@ class TransactionController extends Controller
             ]);
 
             $result =   $this->transactionService->transactionPay($data['id'], $data['nominal']);
-            if($request){
-                return redirect()->back()->with("message", "pembayaran berhasil");
-            }else{
-                return redirect()->back()->with("message", "pembayaran gagal");
-
+            if($result){
+                return response()->json([
+                    "message"=>"success",
+                ]);
             }
+            return response()->json([
+                "message"=>"failed",
+            ]);
         }catch(\Exception $e){
-            return redirect()->back()->with("message", "pembayaran gagal, $e");
+            return response()->json([
+                "message"=>"failed $e",
+            ]);
         }
     }
+    // old function
+
     public function storeTransaction(Request $request)
     {
         $result = $this->transactionService->storeTransaction($request->all());
-        return response()->json($result);
+        return response()->json([
+            'message'=>"succes",
+            "data"=>$result
+        ]);
     }
 
     public function getAllInvoice(Request $request)

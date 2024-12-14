@@ -12,6 +12,7 @@ class ItemController extends Controller
 {
     protected $itemService;
     protected $imageService;
+    
     public function __construct(ItemService $itemService, ImageService $imageService)
     {
         $this->itemService = $itemService;
@@ -36,17 +37,15 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        $path = $this->imageService->storeImage($request->file('image'), 'items');
         $data = $request->all();
-        $data["image"] = $path;
         $result = $this->itemService->store($data);
         if (!$result) {
-            return back()->withErrors([
-                'message' => 'Data gagal disimpan'
+            return response()->json([
+                "message"=>"barang gagal ditambahkan"
             ]);
         }
-        return back()->withSuccess([
-            'message' => 'Data berhasil disimpan'
+        return response()->json([
+            "message"=>"barang berhasil ditambahkan"
         ]);
     }
     public function destroy($id)

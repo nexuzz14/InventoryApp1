@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Supplier extends Model
+class client extends Model
 {
-    protected $table = 'suppliers';
+    protected $table = 'clients';
     protected $primaryKey = 'id';
     protected $fillable = ['name', 'address', 'phone'];
     public $timestamps = false;
@@ -14,6 +14,6 @@ class Supplier extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class, 'item_supplier');
+        return $this->belongsToMany(Item::class, 'request_item');
     }
 }

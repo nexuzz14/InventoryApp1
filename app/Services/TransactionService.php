@@ -1,41 +1,64 @@
 <?php
 
 namespace App\Services;
+
+use App\Models\RequestItem;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Log;
+use App\Services\ItemService;
 class TransactionService
 {
+    protected $itemService;
+    public function __construct(ItemService $ItemService) {
+        $this->itemService = $ItemService;
+    }
     public function storeTransaction($data)
     {
-        $requestItems = DB::table('request_items')
-            ->where('request_items.id', $data['request_id'])
-            ->where('items_request_details.status', 'accepted')
-            ->join('items_request_details', 'request_items.id', '=', 'items_request_details.request_id')
-            ->join('items', 'items.id', '=', 'items_request_details.item_id')
-            ->select('request_items.staff_id', 'items_request_details.quantity', 'items.price')
-            ->get();
-        if ($requestItems) {
-            DB::table('request_items')
-                ->where('request_items.id', $data['request_id'])
-                ->update(['status' => 'selesai']);
-        }
-        $totalQty = $requestItems->sum('quantity');
-        $totalPrice = $requestItems->sum(function ($item) {
-            return $item->quantity * $item->price;
-        });
-        $totalApprovedItems = $requestItems->count();
-        $customerId = $requestItems[0]->staff_id;
+        $buyPrice = 0;
+        $totalQty = 0;
 
-        $transaction = Transaction::create([
-            'staff_id' => $customerId,
-            'request_id' => $data['request_id'],
-            'total_qty' => $totalQty,
-            'total_price' => $totalPrice,
-            'total_appoved_items' => $totalApprovedItems,
-            'status' => 'unpaid',
-        ]);
+        $request_tabel = RequestItem::with('requestDetails.item.locations')->find($data['request_id']);
+        $requestDetails = $request_tabel->requestDetails;
+        foreach ($data['data'] as $itemsSelected) {
+            $item = $requestDetails->find($itemsSelected['details_id']); 
+            if ($item) {
+                if ($itemsSelected['location']) {
+                    foreach ($itemsSelected['location'] as $dataLocation) {
+                        $gudang = $item->item->locations->find($dataLocation['location_id']);
+                        if ($gudang) {
+                            $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
+                        Log::debug($newQuantity);
+
+                            $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
+                            $totalQty += $shortage;
+                        Log::debug($totalQty);
+                        Log::debug($shortage);
+
+
+                            $buyPrice += ($shortage * $item->item->price);
+                            $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
+                        }
+                    }
+                }
+                $this->itemService->calculateQty($item->item_id);
+            }
+        }
+        Log::debug($request_tabel);
+        if($totalQty > 0){
+            $totalApprovedItems = $requestDetails->count();
+            $transaction = Transaction::create([
+                'staff_id' => $request_tabel['staff_id'],
+                'request_id' => $data['request_id'],
+                'total_qty' => $totalQty,
+                'total_price' => $buyPrice,
+                'total_appoved_items' => $totalApprovedItems,
+                'status' => 'unpaid',
+            ]);
         return $transaction;
+
+        }
+      
     }
 
     public function getAllTransaction()
@@ -67,20 +90,13 @@ class TransactionService
         if ($data) {
             if (($data->dibayarkan + $nominal) > $data->total_price) {
                 $data->dibayarkan = $data['total_price'];
-
-            }else{
+            } else {
                 $data->dibayarkan += $nominal;
-
             }
-
-
             $data->status = ($data->dibayarkan >= $data->total_price) ? 'paid' : 'bon';
-
             $data->save();
-
             return true;
         }
-
         return false;
     }
 
@@ -108,5 +124,4 @@ class TransactionService
             }
         ])->where('staff_id', $id)->select('id', 'total_price', 'total_qty', 'status', 'created_at', 'request_id')->get();
     }
-
 }
