@@ -4,96 +4,141 @@ namespace App\Services;
 
 use App\Models\Item;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ItemService
 {
     public function store($data): bool
     {
-        $suppliers = $data['suppliers'] ?? [];
-        $locations = $data['locations'] ?? [];
-        $totalQuantity = 0;
-        if (!empty($locations)) {
-            $totalQuantity = array_sum(array_map(function ($location) {
-                return $location['quantity'] ?? 0;
-            }, $locations));
-
-            $data['quantity'] = $totalQuantity;
-        }
-        unset($data['suppliers'], $data['locations']);
-
         $item = Item::create($data);
-
         if (!$item) {
             return false;
         }
-        if (!empty($suppliers)) {
-            $item->suppliers()->attach($suppliers);
-        }
-        if (!empty($locations)) {
-            $item->locations()->attach($locations);
-        }
-
         return true;
     }
 
-    public function calculateQty($id)
-{
-    $data = [];
-    $locations = DB::table('item_location')->where('item_location.item_id', $id)->get();
-
-    if (!$locations->isEmpty()) { // Periksa jika koleksi tidak kosong
-        $totalQuantity = $locations->sum('quantity'); // Menjumlahkan semua kuantitas
-        
-        $data['quantity'] = $totalQuantity;
-        $data['status'] = $totalQuantity <= 0 ? "tidak tersedia" : "tersedia";
-    } else {
-        // Jika tidak ada lokasi, anggap stok tidak tersedia
-        $data['quantity'] = 0;
-        $data['status'] = "tidak tersedia";
-    }
-
-    Item::find($id)->update($data); // Update data item
-    return true;
-}
-
-    public function getAllItems()
+    public function storeLocationStock($request)
     {
-        $manualItems = Item::where('source', 'manual')->get();
-        $purchasingItems = Item::where('source', 'purchasing')->get();
-        $manualData = $manualItems->map(function ($Item) {
-            return [
-                'id' => $Item->id,
-                'name' => $Item->name,
-                'category' => $Item->category->name,
-                'supplier' => $Item->supplier->name,
-                'unit' => $Item->unit->name,
-                'location' => $Item->location,
-                'image' => $Item->image,
-                'quantity' => $Item->quantity,
-                'price' => $Item->price,
-                'status' => $Item->status,
-            ];
-        });
-        $purchasingData = $purchasingItems->map(function ($Item) {
-            return [
-                'id' => $Item->id,
-                'name' => $Item->name,
-                'category' => $Item->category->name,
-                'supplier' => $Item->supplier->name,
-                'unit' => $Item->unit->name,
-                'location' => $Item->location->name,
-                'image' => $Item->image,
-                'quantity' => $Item->quantity,
-                'price' => $Item->price,
-                'status' => $Item->status,
-            ];
-        });
-        return [
-            'manualItems' => $manualData,
-            'purchasingItems' => $purchasingData,
-        ];
+        $item = Item::find($request['id']);
+        if ($item) {
+            $locations = $request['locations'] ?? [];
+            if (!empty($locations)) {
+                $attachData = $request['location'];
+                $item->locations()->attach($attachData);
+            }
+            return true;
+        }
+        return false;
     }
+
+    public function getLocalData($itemId)
+    {
+        $item = Item::with(['locations', 'unit'])
+            ->find($itemId);
+
+        if ($item) {
+            $locations = $item->locations->map(function ($location) {
+                return [
+                    'id' => $location->id,
+                    'location_id' => $location->pivot->location_id,
+                    'quantity' => $location->pivot->quantity
+                ];
+            });
+            return [
+                'status' => 'success',
+                'data' => [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'image' => $item->image,
+                    'category_id' => $item->category_id,
+                    'quantity' => $item->quantity,
+                    'description' => $item->description,
+                    'status' => $item->status,
+                    'price' => $item->price,
+                    'created_at' => $item->created_at,
+                    'updated_at' => $item->updated_at,
+                    'locations' => $locations,
+                    'unit' => $item->unit->name
+                ]
+            ];
+        }
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Item not found'
+        ], 404);
+    }
+
+
+
+    public function updateAll($itemId, $locations)
+    {
+        $item = Item::find($itemId);
+        Log::debug($itemId);
+        if ($item) {
+            $existingLocations = $item->locations()->pluck('location_id')->toArray();
+            $updatedLocationIds = [];
+
+            foreach ($locations as $location) {
+
+                if ($location['id'] !== null) {
+                 Log::debug("start Update");
+
+                    $item->locations()->updateExistingPivot(
+                        $location['id'],
+                        [
+                            'location_id' => $location['location_id'],
+                            'quantity' => $location['quantity']
+                        ]
+                    );
+                    $updatedLocationIds[] = $location['location_id'];
+                  Log::debug("end Update");
+
+                } else {
+                  Log::debug("start attach");
+
+                    $item->locations()->attach($location['location_id'], ['quantity' => $location['quantity']]);
+                    $updatedLocationIds[] = $location['location_id'];
+                  Log::debug("end attach attach");
+
+                }
+            }
+            Log::debug("end loop Update");
+
+            $locationsToDetach = array_diff($existingLocations, $updatedLocationIds);
+            Log::debug($locationsToDetach);
+            if (!empty($locationsToDetach)) {
+                $item->locations()->detach($locationsToDetach);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public function getAllData()
+    {
+        $items = Item::with('unit')
+            ->select('id', 'name', 'category_id', 'quantity', 'status', 'price')
+            ->get();
+
+        $data = $items->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'category_id' => $item->category_id,
+                'quantity' => $item->quantity,
+                'status' => $item->status,
+                'price' => $item->price,
+                'unit' => $item->unit->name ?? ''
+            ];
+        });
+
+        return $data;
+    }
+
+
     public function updateItemLocation($request, Item $item)
     {
         $item->locations()->sync($request->locations);
@@ -101,28 +146,7 @@ class ItemService
         $item->save();
     }
 
-    public function updateStock($data)
-    {
-        foreach ($data as $itemData) {
-            // Cari item berdasarkan ID
-            $item = Item::find($itemData['id']);
 
-            if ($item) {
-                // Loop ke lokasi-lokasi yang terkait dan update quantity-nya
-                foreach ($itemData['locations'] as $locationData) {
-                    // Update quantity pada pivot table item_location
-                    $item->locations()->updateExistingPivot(
-                        $locationData['location_id'],
-                        ['quantity' => $locationData['quantity']] // Hanya update quantity
-                    );
-                }
-            } else {
-                return response()->json([
-                    "message"=>"gagal memperbarui",
-                ]);
-            }
-        }
-    }
 
     public function getTotalItems(): int
     {

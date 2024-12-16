@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Services\ImageService;
 use App\Services\ItemService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ItemController extends Controller
 {
@@ -18,20 +19,20 @@ class ItemController extends Controller
         $this->itemService = $itemService;
         $this->imageService = $imageService;
     }
-    public function barangIndex()
-    {
-        $data = $this->itemService->getAllItems();
-        $manualItems = $data['manualItems'];
-        return view('dashboard.barang', compact('manualItems'));
-    }
+    // public function barangIndex()
+    // {
+    //     $data = $this->itemService->getAllItems();
+    //     $manualItems = $data['manualItems'];
+    //     return view('dashboard.barang', compact('manualItems'));
+    // }
 
 
-    public function pembelianIndex()
-    {
-        $data = $this->itemService->getAllItems();
-        $purchasingItems = $data['purchasingItems']; // Ambil data purchasing dari hasil metode
-        return view('dashboard.pembelian', compact('purchasingItems'));
-    }
+    // public function pembelianIndex()
+    // {
+    //     $data = $this->itemService->getAllItems();
+    //     $purchasingItems = $data['purchasingItems']; // Ambil data purchasing dari hasil metode
+    //     return view('dashboard.pembelian', compact('purchasingItems'));
+    // }
 
 
 
@@ -47,6 +48,34 @@ class ItemController extends Controller
         return response()->json([
             "message"=>"barang berhasil ditambahkan"
         ]);
+    }
+    public function getLocalData(Request $request){
+        $id=$request->id;
+        $result = $this->itemService->getLocalData($id);
+        if($result){
+            return response()->json([
+                "status"=>"success",
+                "data"=>$result
+            ],200);
+        }
+        return null;
+    }
+    public function updateAll(Request $request){
+        Log::debug($request);
+        $id = $request->id;
+        $data = $request->locations;
+        $result =  $this->itemService->updateAll($id, $data);
+        if($result){
+            return response()->json([
+                "message"=>"Berhasil menambahkan",
+                "status"=>"success"
+            ], 200);
+        }
+
+        return response()->json([
+            "message"=>"Gagal Menambahkan",
+            "status"=>"error"
+        ], 401);
     }
     public function destroy($id)
     {
