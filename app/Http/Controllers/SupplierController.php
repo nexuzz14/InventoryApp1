@@ -29,13 +29,13 @@ class SupplierController extends Controller
     {
         $result = $this->supplierService->storeSupplier($storeSupplierRequest->all());
         if (!$result) {
-            return back()->withErrors([
-                "Terjadi kesalahan saat membuat supplier"
+            return response()->json([
+              'message' => 'Gagal menambah supplier'
             ]);
         }
 
-        return back()->withSuccess([
-            "Supplier berhasil ditambahkan"
+        return response()->json([
+           'message' => "Berhasil menambah supplier"
         ]);
     }
 
@@ -43,13 +43,13 @@ class SupplierController extends Controller
     {
         $result = $this->supplierService->updateSupplier($request->id, $request->all(["name", "address", "phone"]));
         if (!$result) {
-            return back()->withErrors([
-                "Terjadi kesalahan saat memperbarui supplier"
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengubah supplier' . $request->name
             ]);
         }
 
-        return back()->withSuccess([
-            "Supplier berhasil diperbarui"
+        return response()->json([
+            'message' => 'berhasil mengubah supplier'
         ]);
     }
 
@@ -57,13 +57,13 @@ class SupplierController extends Controller
     {
         $result = $this->supplierService->deleteSupplier($id);
         if (!$result) {
-            return back()->withErrors([
-                "Terjadi kesalahan saat menghapus supplier"
+            return response()->json([
+                'message'=> 'gagal menghapus supplier'
             ]);
         }
 
-        return back()->withSuccess([
-            "Supplier berhasil dihapus"
+        return response()->json([
+            'message'=> 'berhasil menghapus supplier'
         ]);
     }
 

@@ -24,36 +24,36 @@ class LocationController extends Controller
     {
         $result = $this->locationService->store($request->all());
         if (!$result) {
-            return back()->withErrors([
-                "message" => "Terjadi Kesalahan"
+            return response()->json([
+                "message" => "gagal menambah lokasi"
             ]);
         }
-        return back()->withSuccess([
-            "message" => "Data berhasil disimpan"
+        return response()->json([
+            "message" => "berhasil menambah lokasi"
         ]);
     }
     public function destroy($id)
     {
         $result = $this->locationService->deleteLocation($id);
         if (!$result) {
-            return back()->withErrors([
-                "message" => "Terjadi Kesalahan"
+            return response()->json([
+                "message" => "Gagal menghapus lokasi"
             ]);
         }
-        return back()->withSuccess([
-            "message" => "Data berhasil dihapus"
+        return response()->json([
+            "message" => "Berhasil menghapus lokasi"
         ]);
     }
     public function update(UpdateLocationRequest $request)
     {
         $result = $this->locationService->updateLocation($request->id, $request->all(["name"]));
         if (!$result) {
-            return back()->withErrors([
-                "message" => "Terjadi Kesalahan"
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengubah ketegori' . $request->name
             ]);
         }
-        return back()->withSuccess([
-            "message" => "Data berhasil diupdate"
+        return response()->json([
+            "message" => "Berhasil mengubah lokasi"
         ]);
     }
 
