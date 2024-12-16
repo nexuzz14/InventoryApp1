@@ -48,7 +48,9 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
 
     Route::post('/items/new', [ItemController::class, 'store']);
-    Route::post('/items/get', [ItemController::class, 'getAllItems']);
+    Route::post('/items/locationStock', [ItemController::class, 'updateAll']);
+    Route::get('/items/get', [ItemController::class, 'getLocalData']);
+    // Route::post('/items/get', [ItemController::class, 'getAllItems']);
 
 
 });

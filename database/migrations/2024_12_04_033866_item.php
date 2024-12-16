@@ -18,19 +18,13 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
-            $table->integer('quantity');
-            $table->enum('source', ['manual', 'purchasing']);
+            $table->integer('quantity')->default(0);
+            $table->text('description')->nullable();
             $table->enum('status', ['tersedia', 'tidak tersedia']);
             $table->decimal('price', 10, 2);
             $table->timestamps();
         });
 
-        Schema::create('item_supplier', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
-            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
-            $table->timestamps();
-        });
 
         Schema::create('item_location', function (Blueprint $table) {
             $table->id();
