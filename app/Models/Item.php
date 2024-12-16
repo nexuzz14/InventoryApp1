@@ -12,11 +12,12 @@ class Item extends Model
     public function calculateQty()
     {
         $totalQuantity = $this->locations()->sum('quantity');
-        $this->update([
-            'quantity' => $totalQuantity,
-            'status' => $totalQuantity > 0 ? 'tersedia' : 'tidak tersedia',
-        ]);
+        $this->quantity = $totalQuantity;
+    
+        // Simpan tanpa memicu event
+        $this->saveQuietly();
     }
+    
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -28,10 +29,11 @@ class Item extends Model
     }
 
     
+    
     public function locations()
     {
         return $this->belongsToMany(Location::class, 'item_location')
-            ->using(ItemLocation::class) 
-            ->withPivot('quantity'); 
+            ->using(ItemLocation::class) // Gunakan model pivot
+            ->withPivot('quantity', 'id'); // Sertakan kolom tambahan dari pivot
     }
 }

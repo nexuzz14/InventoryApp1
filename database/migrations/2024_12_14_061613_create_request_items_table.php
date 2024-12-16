@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('staff_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->enum('status', ['pending', 'selesai'])->default('pending');
-            $table->string('nama_pemohon');
             $table->foreignId('processed_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
