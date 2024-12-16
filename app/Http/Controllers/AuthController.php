@@ -9,6 +9,8 @@ use  App\Models\Item;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
 use Carbon\Carbon;
+use Illumminate\Support\Fascade\Cookie;
+
 class AuthController extends Controller
 {
     public function checkAuth()
@@ -35,7 +37,7 @@ class AuthController extends Controller
                 //     }
                 // } catch (\Exception $e) {
                 // }
-                  $barang = Item::all();
+                $barang = Item::all();
 
                 return view('home', compact('category', 'barang'));
             }
@@ -50,30 +52,32 @@ class AuthController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validasi gagal',
                 'errors' => $validator->errors(),
             ], 422);
         }
-    
+
         $credentials = $request->only('username', 'password');
-    
+
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('auth_token', ['*'], Carbon::now()->addHours(4));
+            $expiryTime = 1440; // Same as cookie expiration time in minutes
+            $token = $user->createToken('auth_token', ['*'], Carbon::now()->addMinutes($expiryTime));
+            $cookie = cookie('auth_token', $token->plainTextToken, 1440, '/', null, true, true, false, 'Strict');
             return response()->json([
                 'message' => 'Berhasil',
                 'data' => [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'email' => $user->email,
+                    'email' => $user->email, 
                     'token' => $token->plainTextToken,
                 ],
-            ]);
+            ])->cookie($cookie);
         }
-    
+
         return response()->json([
             'message' => 'Email atau Password Salah',
         ], 401);

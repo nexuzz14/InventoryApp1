@@ -13,6 +13,18 @@ Route::post('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 Route::post('/login', [AuthController::class, 'login']);
+// Route::get('/me', function (Request $request) {
+//     return response()->json($request->user()
+// })
+// );->middleware('auth :sanctum');
+// Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
+//     return response()->json(['name' => $request->user()->name]);
+// });
+Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
+    return response()->json($request->user()->only(['name', 'email', 'role']));
+});
+
+
 
 Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
@@ -38,7 +50,7 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     Route::post('/items/new', [ItemController::class, 'store']);
     Route::post('/items/get', [ItemController::class, 'getAllItems']);
 
-    
+
 });
 
 Route::middleware('auth:sanctum')->group(function(){
