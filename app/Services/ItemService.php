@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\Item;
+use App\Models\Location;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\DB;
 class ItemService
 {
     public function store($data): bool
@@ -37,9 +38,10 @@ class ItemService
             ->find($itemId);
 
         if ($item) {
+            
             $locations = $item->locations->map(function ($location) {
                 return [
-                    'id' => $location->id,
+                    'id' => $location->pivot->id,
                     'location_id' => $location->pivot->location_id,
                     'quantity' => $location->pivot->quantity
                 ];
@@ -74,47 +76,42 @@ class ItemService
     {
         $item = Item::find($itemId);
         Log::debug($itemId);
+    
         if ($item) {
-            $existingLocations = $item->locations()->pluck('location_id')->toArray();
+            $existingLocations = $item->locations()->pluck('item_location.id')->toArray();
             $updatedLocationIds = [];
-
             foreach ($locations as $location) {
-
-                if ($location['id'] !== null) {
-                 Log::debug("start Update");
-
+                if (isset($location['id'])) {
                     $item->locations()->updateExistingPivot(
-                        $location['id'],
+                        $location['id'],  // ID relasi pivot
                         [
                             'location_id' => $location['location_id'],
                             'quantity' => $location['quantity']
                         ]
                     );
-                    $updatedLocationIds[] = $location['location_id'];
-                  Log::debug("end Update");
-
-                } else {
-                  Log::debug("start attach");
-
-                    $item->locations()->attach($location['location_id'], ['quantity' => $location['quantity']]);
-                    $updatedLocationIds[] = $location['location_id'];
-                  Log::debug("end attach attach");
-
-                }
+                    $updatedLocationIds[] = $location['id']; 
+                } 
             }
-            Log::debug("end loop Update");
-
             $locationsToDetach = array_diff($existingLocations, $updatedLocationIds);
             Log::debug($locationsToDetach);
+    
             if (!empty($locationsToDetach)) {
-                $item->locations()->detach($locationsToDetach);
+                DB::table('item_location')
+                ->whereIn('id', $locationsToDetach)
+                ->delete();
             }
 
+            foreach($locations as $location){
+                if(!isset($location['id'])) {
+                    $item->locations()->attach($location['location_id'], ['quantity' => $location['quantity']]);
+                }
+            }
+           
             return true;
         }
-
         return false;
     }
+    
 
 
     public function getAllData()

@@ -7,6 +7,7 @@ class ItemLocation extends Pivot
 {
     protected $table = 'item_location';
     protected $guarded = ['id']; 
+    protected $fillable = ['item_id', 'location_id', 'quantity'];
 
 
     protected static function booted()
@@ -21,6 +22,7 @@ class ItemLocation extends Pivot
             // Panggil calculateQty jika data pivot dihapus
             $item = $pivot->item;
             $item->calculateQty();
+            $item->saveQuietly();
         });
     }
 
