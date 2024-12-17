@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Item;
 use App\Models\RequestItem;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,7 @@ class TransactionService
             $item = $requestDetails->find($itemsSelected['details_id']); 
             $item->quantity = $itemsSelected['quantity'];
             $item->save();
-            if ($item) {
+            if ($item && $item->quantity > 0) {
                 if ($itemsSelected['location']) {
                     foreach ($itemsSelected['location'] as $dataLocation) {
                         if($dataLocation['quantity'] > 0){
