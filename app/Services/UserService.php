@@ -32,7 +32,6 @@ class UserService
 
     public function deleteUser($id)
     {
-        $id = Crypt::decrypt($id);
         return User::find($id)->delete();
     }
 }

@@ -40,18 +40,22 @@ class ClientController extends Controller
     }
 
     public function update(Request $request)
-    {
-        $result = $this->ClientService->update($request->id, $request->all(["name", "address", "phone"]));
-        if (!$result) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat mengubah client' . $request->name
-            ]);
-        }
+{
+    $data = $request->only(["name", "address", "phone"]); // Ambil data yang diizinkan
 
+    $result = $this->ClientService->update($request->id, $data);
+
+    if (!$result) {
         return response()->json([
-            'message' => 'berhasil mengubah client'
+            'message' => 'Terjadi kesalahan saat mengubah client ' . $request->name
         ]);
     }
+
+    return response()->json([
+        'message' => 'Berhasil mengubah client'
+    ]);
+}
+
 
     public function destroy($id)
     {
