@@ -157,7 +157,7 @@ class ItemService
         return $data;
     }
 
-
+//halo
     public function updateItemLocation($request, Item $item)
     {
         $item->locations()->sync($request->locations);
