@@ -58,56 +58,64 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-        $data = $request->validate([
-            "username" => 'required|string|max:50|unique:' . User::class,
-            "name" => 'required|string',
-            "email" => 'required|email|unique:' . User::class,
-            "role" => 'required|string|in:admin,user',
-            "password" => 'required|string|max:255',
-        ]);
+        try {
+            $data = $request->validate([
+                "username" => 'required|string|max:50|unique:' . User::class,
+                "name" => 'required|string',
+                "email" => 'required|email|unique:' . User::class,
+                "role" => 'required|string|in:admin,user',
+                "password" => 'required|string|max:255',
+            ]);
 
-        $user = new User();
-        $user->username = $data['username'];
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->role = $data['role'];
-        $user->password = bcrypt($data['password']); // Enkripsi password
-        $user->save();
+            $user = new User();
+            $user->username = $data['username'];
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            $user->role = $data['role'];
+            $user->password = bcrypt($data['password']); // Enkripsi password
+            $user->save();
 
-        return response()->json()->with('message', 'User berhasil ditambahkan!');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User berhasil ditambahkan!'
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => $e->errors()], 500);
+        }
     }
 
     public function update(Request $request)
     {
         try {
-            $id = Crypt::decrypt($request->id);
+            $id = $request->id;
 
-            $data = $request->validate([
-                "data.username" => [
-                    'required',
-                    'string',
-                    'max:50',
-                    Rule::unique('users', 'username')->ignore($id),
-                ],
-                "data.name" => 'required|string',
-                "data.email" => [
-                    'required',
-                    'email',
-                    Rule::unique('users', 'email')->ignore($id),
-                ],
-                "data.role" => 'required|string|in:user,admin',
-                "data.password" => 'nullable|string|max:255',
-            ]);
+            // $data = $request->validate([
+            //     "data.username" => [
+            //         'required',
+            //         'string',
+            //         'max:50',
+            //         Rule::unique('users', 'username')->ignore($id),
+            //     ],
+            //     "data.name" => 'required|string',
+            //     "data.email" => [
+            //         'required',
+            //         'email',
+            //         Rule::unique('users', 'email')->ignore($id),
+            //     ],
+            //     "data.role" => 'required|string|in:user,admin',
+            //     "data.password" => 'nullable|string|max:255',
+            // ]);
 
 
-            $result = $this->userService->updateUser($id, $data);
+            $result = $this->userService->updateUser($id, $request->all());
             if (!$result) {
 
-                return response()->json()->with("message", "Terjadi kesalahan saat mengubah data");
-
+                return response()->json(["message", "Terjadi kesalahan saat mengubah data"]);
             }
-            return response()->json()->with("message", "berhasil");
+            return response()->json([
+                "status"=> "success",
 
+                "message" => "Berhasil mengubah data"], 200);
         } catch (ValidationException $e) {
             $messages = collect($e->errors())
                 ->flatten()
@@ -118,10 +126,7 @@ class UserController extends Controller
             Log::debug("ini eror, $e");
 
             return response()->json()->with('message', 'Terjadi kesalahan');
-
         }
-
-
     }
 
     /**
@@ -147,7 +152,9 @@ class UserController extends Controller
 
             $totalRecords = DB::table('users')->count();
 
-            $data = DB::table('users')->get();
+            $data = DB::table('users')
+            ->select('id', 'username', 'name', 'email', 'role')
+            ->get();
             return response()->json([
                 'recordsTotal' => $totalRecords,
                 'data' => $data

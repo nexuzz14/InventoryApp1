@@ -41,18 +41,22 @@ class SupplierController extends Controller
     }
 
     public function update(Request $request)
-    {
-        $result = $this->supplierService->update($request->id, $request->all(["name", "address", "phone"]));
-        if (!$result) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat mengubah supplier' . $request->name
-            ]);
-        }
+{
+    $data = $request->only(["name", "address", "phone"]); // Ambil data yang diizinkan
 
+    $result = $this->supplierService->update($request->id, $data);
+
+    if (!$result) {
         return response()->json([
-            'message' => 'berhasil mengubah supplier'
+            'message' => 'Terjadi kesalahan saat mengubah supplier ' . $request->name
         ]);
     }
+
+    return response()->json([
+        'message' => 'Berhasil mengubah supplier'
+    ]);
+}
+
 
     public function destroy($id)
     {
