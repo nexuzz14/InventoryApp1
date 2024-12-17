@@ -18,6 +18,7 @@ Route::post('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::get('/me', function (Request $request) {
 //     return response()->json($request->user()
 // })
@@ -26,7 +27,7 @@ Route::post('/login', [AuthController::class, 'login']);
 //     return response()->json(['name' => $request->user()->name]);
 // });
 Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
-    return response()->json($request->user()->only(['name', 'email', 'role']));
+    return response()->json(['user' => $request->user()->only(['name', 'email', 'role'])]);
 });
 
 

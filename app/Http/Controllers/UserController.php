@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -84,48 +85,59 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         try {
-            $id = $request->id;
+            // Ambil user berdasarkan ID
+            $user = User::findOrFail($id);
 
-            // $data = $request->validate([
-            //     "data.username" => [
-            //         'required',
-            //         'string',
-            //         'max:50',
-            //         Rule::unique('users', 'username')->ignore($id),
-            //     ],
-            //     "data.name" => 'required|string',
-            //     "data.email" => [
-            //         'required',
-            //         'email',
-            //         Rule::unique('users', 'email')->ignore($id),
-            //     ],
-            //     "data.role" => 'required|string|in:user,admin',
-            //     "data.password" => 'nullable|string|max:255',
-            // ]);
+            // Validasi hanya field yang dikirim (opsional)
+            $validatedData = $request->validate([
+                'username' => 'sometimes|required|string|max:50|unique:users,username,' . $id,
+                'name' => 'sometimes|required|string|max:255',
+                'email' => 'sometimes|required|email|unique:users,email,' . $id,
+                'role' => 'sometimes|required|string|in:user,admin',
+                'password' => 'sometimes|nullable|string|min:6|max:255',
+            ]);
 
-
-            $result = $this->userService->updateUser($id, $request->all());
-            if (!$result) {
-
-                return response()->json(["message", "Terjadi kesalahan saat mengubah data"]);
+            // Update data sesuai input yang dikirim
+            if ($request->has('username')) {
+                $user->username = $validatedData['username'];
             }
+            if ($request->has('name')) {
+                $user->name = $validatedData['name'];
+            }
+            if ($request->has('email')) {
+                $user->email = $validatedData['email'];
+            }
+            if ($request->has('role')) {
+                $user->role = $validatedData['role'];
+            }
+            if ($request->has('password')) {
+                $user->password = Hash::make($validatedData['password']);
+            }
+
+            // Simpan perubahan
+            $user->save();
+
             return response()->json([
-                "status"=> "success",
+                'status' => 'success',
+                'message' => 'Berhasil mengubah data',
+                'data' => $user
+            ], 200);
 
-                "message" => "Berhasil mengubah data"], 200);
-        } catch (ValidationException $e) {
-            $messages = collect($e->errors())
-                ->flatten()
-                ->join(' '); // Gabungkan error dengan spasi atau karakter lain
-
-            return response()->json()->with('message', $messages)->withInput();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
-            Log::debug("ini eror, $e");
-
-            return response()->json()->with('message', 'Terjadi kesalahan');
+            Log::error("Update Error: " . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan',
+            ], 500);
         }
     }
 
