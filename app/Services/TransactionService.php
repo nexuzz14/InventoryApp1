@@ -21,19 +21,25 @@ class TransactionService
         $request_tabel = RequestItem::with('requestDetails.item.locations')->find($data['request_id']);
         $requestDetails = $request_tabel->requestDetails;
         foreach ($data['data'] as $itemsSelected) {
+
             $item = $requestDetails->find($itemsSelected['details_id']); 
+            $item->quantity = $itemsSelected['quantity'];
+            $item->save();
             if ($item) {
                 if ($itemsSelected['location']) {
                     foreach ($itemsSelected['location'] as $dataLocation) {
-                        $gudang = $item->item->locations->find($dataLocation['location_id']);
-                        if ($gudang) {
-                            $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
-                            $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
-                            $totalQty += $shortage;
-
-                            $buyPrice += ($shortage * $item->item->price);
-                            $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
+                        if($dataLocation['quantity'] > 0){
+                            $gudang = $item->item->locations->find($dataLocation['location_id']);
+                            if ($gudang) {
+                                $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
+                                $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
+                                $totalQty += $shortage;
+    
+                                $buyPrice += ($shortage * $item->item->price);
+                                $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
+                            }
                         }
+                      
                     }
                 }
             }

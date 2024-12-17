@@ -9,21 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class RequestItemService
 {
-    public function updateItemsRequestDetail($id){
-        $data = ItemsRequestDetail::find($id);
-        $data->item->decrement('quantity', $data->quantity);
-        $status = $data['status'] == "accepted" ? "rejected" : "accepted";
-        $data->update([
-            'status' => $status
-        ]);
-        return $data;
-    }
+ 
     public function getAllRequest()
     {
         return RequestItem::with([
 
             'requestDetails' => function ($query) {
-                $query->select('quantity', 'id', 'item_id', 'status', 'request_id');
+                $query->select('quantity', 'id', 'item_id', 'request_id');
             },
             'requestDetails.item' => function ($query) {
                 $query->select('name', 'unit_id', 'price', 'id');
@@ -31,7 +23,7 @@ class RequestItemService
             'requestDetails.item.unit' => function ($query) {
                 $query->select('name', 'id');
             }
-        ])->where('status', 'pending');
+        ])->get();
     }
     public function getDetailRequest($id)
     {
