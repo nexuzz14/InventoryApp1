@@ -27,7 +27,7 @@ class UnitController extends Controller
         $result = $this->unitService->storeUnit($request->all());
         if (!$result) {
             return response()->json([
-                "message"=>"Gagal menambah satuan",
+                'message'=>'Gagal menambah satuan',
             ]);
         }
         return response()->json([
@@ -40,41 +40,47 @@ class UnitController extends Controller
         $result = $this->unitService->deleteUnit($request->id);
         if (!$result) {
             return response()->json([
-                'message' => 'gagal menghapus unit'
+                'message' => 'gagal menghapus satuan'
             ]);
         }
         return response()->json([
-            'message' => 'berhasil menghapus kategori'
+            'message' => 'berhasil menghapus satuan'
         ]);
     }
 
-    public function update(UpdateUnitRequest $request)
+    public function update(Request $request)
     {
         $result = $this->unitService->updateUnit($request->id, $request->name);
         if (!$result) {
             return response()->json([
-                'message' => 'Terjadi kesalahan saat mengubah ketegori' . $request->name
+                'message' => 'Terjadi kesalahan saat mengubah satuan' . $request->name
             ]);
         }
         return response()->json([
-            'message' => 'berhasil mengubah kategori'
+            'message' => 'berhasil mengubah satuan'
         ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Unit $unit)
+    public function getData(Request $request)
     {
-        //
-    }
+        try {
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Unit $unit)
-    {
-        //
+            $totalRecords = DB::table('units')->count();
+
+            $data = DB::table('units')->get();
+            return response()->json([
+                'recordsTotal' => $totalRecords,
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messages' => 'Terjadi kesalahan saat mengambil data satuan',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
 }

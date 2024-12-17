@@ -38,7 +38,7 @@ class ItemService
             ->find($itemId);
 
         if ($item) {
-            
+
             $locations = $item->locations->map(function ($location) {
                 return [
                     'id' => $location->pivot->id,
@@ -76,7 +76,7 @@ class ItemService
     {
         $item = Item::find($itemId);
         Log::debug($itemId);
-    
+
         if ($item) {
             $existingLocations = $item->locations()->pluck('item_location.id')->toArray();
             $updatedLocationIds = [];
@@ -89,12 +89,12 @@ class ItemService
                             'quantity' => $location['quantity']
                         ]
                     );
-                    $updatedLocationIds[] = $location['id']; 
-                } 
+                    $updatedLocationIds[] = $location['id'];
+                }
             }
             $locationsToDetach = array_diff($existingLocations, $updatedLocationIds);
             Log::debug($locationsToDetach);
-    
+
             if (!empty($locationsToDetach)) {
                 DB::table('item_location')
                 ->whereIn('id', $locationsToDetach)
@@ -106,17 +106,17 @@ class ItemService
                     $item->locations()->attach($location['location_id'], ['quantity' => $location['quantity']]);
                 }
             }
-           
+
             return true;
         }
         return false;
     }
-    
+
 
 
     public function getAllData()
     {
-        $items = Item::with('unit')
+        $items = Item::with('unit', 'Category')
             ->select('id', 'name', 'category_id', 'quantity', 'status', 'price')
             ->get();
 
@@ -125,8 +125,8 @@ class ItemService
                 'id' => $item->id,
                 'name' => $item->name,
                 'category_id' => $item->category_id,
+                'category_name' => $item->category->name ?? 'Unknown',
                 'quantity' => $item->quantity,
-                'status' => $item->status,
                 'price' => $item->price,
                 'unit' => $item->unit->name ?? ''
             ];
@@ -156,7 +156,7 @@ class ItemService
 
     public function deleteItem($id)
     {
-        $item = Item::find(Crypt::decrypt($id))->delete();
+        $item = Item::find($id)->delete();
         if (!$item) {
             return false;
         }
@@ -165,7 +165,7 @@ class ItemService
 
     public function updateItem($id, $data)
     {
-        $item = Item::find(Crypt::decrypt($id))->update($data);
+        $item = Item::find($id)->update($data);
         if (!$item) {
             return false;
         }

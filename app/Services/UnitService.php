@@ -19,13 +19,13 @@ class UnitService
 
     public function updateUnit($id, $data)
     {
-        return Unit::find(Crypt::decrypt($id))->update([
+        return Unit::find($id)->update([
             "name" => $data
         ]);
     }
 
     public function deleteUnit($id)
     {
-        return Unit::find(Crypt::decrypt($id))->delete();
+        return Unit::find($id)->delete();
     }
 }

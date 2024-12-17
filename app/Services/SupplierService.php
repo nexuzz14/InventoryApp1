@@ -17,7 +17,7 @@ class SupplierService
         return Supplier::count();
     }
 
-    public function storeSupplier(array $data)
+    public function store(array $data)
     {
         return Supplier::create($data);
     }
@@ -27,15 +27,15 @@ class SupplierService
         return Supplier::find($id);
     }
 
-    public function updateSupplier($id, $data)
+    public function update($id, $data)
     {
-        $supplier = Supplier::find(Crypt::decrypt($id));
+        $supplier = Supplier::find($id);
         $supplier->update($data);
         return $supplier;
     }
 
-    public function deleteSupplier($id)
+    public function delete($id)
     {
-        return Supplier::find(Crypt::decrypt($id))->delete();
+        return Supplier::find($id)->delete();
     }
 }

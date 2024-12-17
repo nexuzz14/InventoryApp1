@@ -13,7 +13,7 @@ class ItemController extends Controller
 {
     protected $itemService;
     protected $imageService;
-    
+
     public function __construct(ItemService $itemService, ImageService $imageService)
     {
         $this->itemService = $itemService;
@@ -67,14 +67,12 @@ class ItemController extends Controller
         $result =  $this->itemService->updateAll($id, $data);
         if($result){
             return response()->json([
-                "message"=>"Berhasil menambahkan",
-                "status"=>"success"
+                "message"=>"Berhasil menambahkan"
             ], 200);
         }
 
         return response()->json([
-            "message"=>"Gagal Menambahkan",
-            "status"=>"error"
+            "message"=>"Gagal Menambahkan"
         ], 401);
     }
     public function destroy($id)
@@ -110,6 +108,13 @@ class ItemController extends Controller
         ]);
     }
 
+    public function getAllData(){
+        $result=$this->itemService->getAllData();
+        return response()->json([
+            "status"=>"success",
+            "data"=>$result
+        ],200);
+    }
     /**
      * Show the form for creating a new resource.
      */

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateLocationRequest;
 use App\Models\Location;
 use App\Services\LocationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LocationController extends Controller
 {
@@ -44,7 +45,7 @@ class LocationController extends Controller
             "message" => "Berhasil menghapus lokasi"
         ]);
     }
-    public function update(UpdateLocationRequest $request)
+    public function update(Request $request)
     {
         $result = $this->locationService->updateLocation($request->id, $request->all(["name"]));
         if (!$result) {
@@ -60,24 +61,23 @@ class LocationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function getData(Request $request)
     {
-        //
-    }
-    /**
-     * Display the specified resource.
-     */
-    public function show(Location $location)
-    {
-        //
-    }
+        try {
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Location $location)
-    {
-        //
+            $totalRecords = DB::table('locations')->count();
+
+            $data = DB::table('locations')->get();
+            return response()->json([
+                'recordsTotal' => $totalRecords,
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messages' => 'Terjadi kesalahan saat mengambil data satuan',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
 }

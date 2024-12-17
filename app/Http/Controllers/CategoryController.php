@@ -24,17 +24,17 @@ class CategoryController extends Controller
         return view('dashboard.kategori', compact('categories'));
     }
 
-   
+
     public function store(StoreCategoryRequest $category)
     {
         $result = $this->categoryServices->storeCategory($category->request->all());
         if (!$result) {
             return  response()->json([
-                "messages"=>"Gagal menambah kategori"
+                "messages" => "Gagal menambah kategori"
             ]);
         }
         return  response()->json([
-            "messages"=>"berhasil menambah kategori"
+            "messages" => "berhasil menambah kategori"
         ]);
     }
 
@@ -42,30 +42,24 @@ class CategoryController extends Controller
 
     public function getData(Request $request)
     {
-        $draw = $request->get('draw');
-        $start = $request->get('start');
-        $length = $request->get('length');
-        $search = $request->get('search')['value'];
+        try {
 
-        $totalRecords = DB::table('categories')->count();
+            $totalRecords = DB::table('categories')->count();
 
-        $query = DB::table('categories');
-        if (!empty($search)) {
-            $query->where('name', 'like', "%{$search}%");
+            $data = DB::table('categories')->get();
+            return response()->json([
+                'recordsTotal' => $totalRecords,
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messages' => 'Terjadi kesalahan saat mengambil data kategori',
+                'error' => $e->getMessage()
+            ]);
         }
-        $filteredRecords = $query->count();
-
-        $data = $query->offset($start)->limit($length)->get();
-
-        return response()->json([
-            'draw' => $draw,
-            'recordsTotal' => $totalRecords,
-            'recordsFiltered' => $filteredRecords,
-            'data' => $data
-        ]);
     }
 
-    
+
 
 
     public function update(Request $request)
@@ -73,11 +67,11 @@ class CategoryController extends Controller
         $result = $this->categoryServices->updateCategory($request->id, $request->name);
         if (!$result) {
             return response()->json([
-                'messages'=>'Terjadi kesalahan saat mengubah kategori' . $request->name
+                'messages' => 'Terjadi kesalahan saat mengubah kategori' . $request->name
             ]);
         }
         return response()->json([
-            'messages'=>'berhasil mengubah kategori'
+            'messages' => 'berhasil mengubah kategori'
         ]);
     }
 
@@ -86,11 +80,11 @@ class CategoryController extends Controller
         $result = $this->categoryServices->deleteCategory($request->id);
         if (!$result) {
             return response()->json([
-                'messages'=>'gagal menghapus kategori'
-            ]);
+                'messages' => 'gagal menghapus kategori'
+            ], 200);
         }
         return response()->json([
-            'messages'=>'berhasil menghapus kategori'
+            'messages' => 'berhasil menghapus kategori'
         ]);
     }
 }

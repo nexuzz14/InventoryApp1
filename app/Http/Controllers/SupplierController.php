@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateSupplierRequest;
 use App\Models\Supplier;
 use App\Services\SupplierService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SupplierController extends Controller
 {
@@ -25,9 +26,9 @@ class SupplierController extends Controller
     }
 
 
-    public function store(StoreSupplierRequest $storeSupplierRequest)
+    public function store(Request $storeSupplierRequest)
     {
-        $result = $this->supplierService->storeSupplier($storeSupplierRequest->all());
+        $result = $this->supplierService->store($storeSupplierRequest->all());
         if (!$result) {
             return response()->json([
               'message' => 'Gagal menambah supplier'
@@ -39,9 +40,9 @@ class SupplierController extends Controller
         ]);
     }
 
-    public function update(UpdateSupplierRequest $request)
+    public function update(Request $request)
     {
-        $result = $this->supplierService->updateSupplier($request->id, $request->all(["name", "address", "phone"]));
+        $result = $this->supplierService->update($request->id, $request->all(["name", "address", "phone"]));
         if (!$result) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengubah supplier' . $request->name
@@ -55,7 +56,7 @@ class SupplierController extends Controller
 
     public function destroy($id)
     {
-        $result = $this->supplierService->deleteSupplier($id);
+        $result = $this->supplierService->delete($id);
         if (!$result) {
             return response()->json([
                 'message'=> 'gagal menghapus supplier'
@@ -70,16 +71,22 @@ class SupplierController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Supplier $supplier)
+    public function getData(Request $request)
     {
-        //
-    }
+        try {
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Supplier $supplier)
-    {
-        //
+            $totalRecords = DB::table('suppliers')->count();
+
+            $data = DB::table('suppliers')->get();
+            return response()->json([
+                'recordsTotal' => $totalRecords,
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messages' => 'Terjadi kesalahan saat mengambil data supplier',
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

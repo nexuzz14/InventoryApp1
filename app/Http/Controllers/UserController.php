@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -73,28 +74,9 @@ class UserController extends Controller
         $user->password = bcrypt($data['password']); // Enkripsi password
         $user->save();
 
-        return redirect()->back()->with('message', 'User berhasil ditambahkan!');
+        return response()->json()->with('message', 'User berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
         try {
@@ -121,21 +103,21 @@ class UserController extends Controller
             $result = $this->userService->updateUser($id, $data);
             if (!$result) {
 
-                return redirect()->back()->with("message", "Terjadi kesalahan saat mengubah data");
+                return response()->json()->with("message", "Terjadi kesalahan saat mengubah data");
 
             }
-            return redirect()->back()->with("message", "berhasil");
+            return response()->json()->with("message", "berhasil");
 
         } catch (ValidationException $e) {
             $messages = collect($e->errors())
                 ->flatten()
                 ->join(' '); // Gabungkan error dengan spasi atau karakter lain
 
-            return redirect()->back()->with('message', $messages)->withInput();
+            return response()->json()->with('message', $messages)->withInput();
         } catch (\Exception $e) {
             Log::debug("ini eror, $e");
 
-            return redirect()->back()->with('message', 'Terjadi kesalahan');
+            return response()->json()->with('message', 'Terjadi kesalahan');
 
         }
 
@@ -150,9 +132,31 @@ class UserController extends Controller
         $result = $this->userService->deleteUser($id);
 
         if (!$result) {
-            return redirect()->back()->with("message", "Terjadi kesalahan saat menghapus");
-        } else {
-            return redirect()->back()->with("message", "Berhasil menghapus");
+            return response()->json([
+                'message' => 'gagal menghapus akun'
+            ]);
+        }
+        return response()->json([
+            'message' => 'berhasil menghapus akun'
+        ]);
+    }
+
+    public function getData(Request $request)
+    {
+        try {
+
+            $totalRecords = DB::table('users')->count();
+
+            $data = DB::table('users')->get();
+            return response()->json([
+                'recordsTotal' => $totalRecords,
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'messages' => 'Terjadi kesalahan saat mengambil data user',
+                'error' => $e->getMessage()
+            ]);
         }
     }
 }

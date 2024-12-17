@@ -3,8 +3,13 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\chartController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\UnitController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
@@ -33,8 +38,28 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     });
 
     Route::post('/category/new', [CategoryController::class, 'store']);
-    Route::patch('/category/update', [CategoryController::class, 'update']);
+    Route::patch('/category/update/{id}', [CategoryController::class, 'update']);
     Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy']);
+
+    Route::post('/location/new', [LocationController::class, 'store']);
+    Route::patch('/location/update/{id}', [LocationController::class, 'update']);
+    Route::delete('/location/delete/{id}', [LocationController::class, 'destroy']);
+
+    Route::post('/unit/new', [UnitController::class, 'store']);
+    Route::patch('/unit/update/{id}', [UnitController::class, 'update']);
+    Route::delete('/unit/delete/{id}', [UnitController::class, 'destroy']);
+
+    Route::post('/supplier/new', [SupplierController::class, 'store']);
+    Route::patch('/supplier/update/{id}', [SupplierController::class, 'update']);
+    Route::delete('/supplier/delete/{id}', [SupplierController::class, 'destroy']);
+
+    Route::post('/pengguna/new', [UserController::class, 'store']);
+    Route::patch('/pengguna/update/{id}', [UserController::class, 'update']);
+    Route::delete('/pengguna/delete/{id}', [UserController::class, 'destroy']);
+
+    Route::post('/client/new', [ClientController::class, 'store']);
+    Route::patch('/client/update/{id}', [ClientController::class, 'update']);
+    Route::delete('/client/delete/{id}', [ClientController::class, 'destroy']);
 
 
     Route::post('/request/new', [chartController::class, 'store']);
@@ -48,13 +73,17 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
 
     Route::post('/items/new', [ItemController::class, 'store']);
-    Route::post('/items/locationStock', [ItemController::class, 'updateAll']);
-    Route::get('/items/get', [ItemController::class, 'getLocalData']);
-    // Route::post('/items/get', [ItemController::class, 'getAllItems']);
+    Route::get('/items/get', [ItemController::class, 'getAllData']);
+    Route::get('/items/getDetail', [ItemController::class, 'getAllItems']);
 
 
 });
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/category/get', [CategoryController::class, 'getData']);
+    Route::get('/location/get', [LocationController::class, 'getData']);
+    Route::get('/unit/get', [UnitController::class, 'getData']);
+    Route::get('/supplier/get', [SupplierController::class, 'getData']);
+    Route::get('/pengguna/get', [UserController::class, 'getData']);
+    Route::get('/client/get', [ClientController::class, 'getData']);
 });

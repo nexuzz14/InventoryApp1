@@ -19,7 +19,7 @@ class LocationService
         return Location::all();
     }
     public function updateLocation($id, $data){
-        $result = Location::find(Crypt::decrypt($id))->update($data);
+        $result = Location::find($id)->update($data);
         return $result;
     }
     public function getTotalLocation(): int
@@ -29,7 +29,7 @@ class LocationService
 
     public function deleteLocation($id)
     {
-        $item = Location::find(Crypt::decrypt($id))->delete();
+        $item = Location::find($id)->delete();
         return $item;
     }
 }
