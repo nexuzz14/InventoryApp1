@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->foreignId('request_id')->constrained('request_items')->onDelete('cascade');
             $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
             $table->integer('quantity');
-            $table->enum('status', ['accepted', 'rejected'])->default('accepted');
         });
     }
 

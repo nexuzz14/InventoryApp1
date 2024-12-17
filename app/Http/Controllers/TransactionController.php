@@ -25,7 +25,7 @@ class TransactionController extends Controller
 
         $requestResult = $this->requestItemService->storeRequest($data);
         return response()->json([
-            $requestResult
+            "message"=> "berhasil"
         ], 200);
       
     }

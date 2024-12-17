@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Item;
 use App\Models\RequestItem;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
@@ -21,24 +22,29 @@ class TransactionService
         $request_tabel = RequestItem::with('requestDetails.item.locations')->find($data['request_id']);
         $requestDetails = $request_tabel->requestDetails;
         foreach ($data['data'] as $itemsSelected) {
+
             $item = $requestDetails->find($itemsSelected['details_id']); 
-            if ($item) {
+            $item->quantity = $itemsSelected['quantity'];
+            $item->save();
+            if ($item && $item->quantity > 0) {
                 if ($itemsSelected['location']) {
                     foreach ($itemsSelected['location'] as $dataLocation) {
-                        $gudang = $item->item->locations->find($dataLocation['location_id']);
-                        if ($gudang) {
-                            $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
-                            $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
-                            $totalQty += $shortage;
-
-                            $buyPrice += ($shortage * $item->item->price);
-                            $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
+                        if($dataLocation['quantity'] > 0){
+                            $gudang = $item->item->locations->find($dataLocation['location_id']);
+                            if ($gudang) {
+                                $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
+                                $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
+                                $totalQty += $shortage;
+    
+                                $buyPrice += ($shortage * $item->item->price);
+                                $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
+                            }
                         }
+                      
                     }
                 }
             }
         }
-        Log::debug($request_tabel);
         if($totalQty > 0){
             $totalApprovedItems = $requestDetails->count();
             $transaction = Transaction::create([
