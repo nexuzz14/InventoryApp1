@@ -38,7 +38,6 @@ class TransactionService
                 }
             }
         }
-        Log::debug($request_tabel);
         if($totalQty > 0){
             $totalApprovedItems = $requestDetails->count();
             $transaction = Transaction::create([
