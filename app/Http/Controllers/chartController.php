@@ -71,34 +71,5 @@ class chartController extends Controller
         }
     }
 
-    public function store(Request $request)
-    {
-        $requestResult = $this->requsetItemService->storeRequest($request, $request->user());
-        if ($requestResult) {
-            try {
-                foreach ($request->chartData as $item) {
-                    $data = Chart::find($item);
-                    if ($data) {
-                        $data->delete();
-                    }
-                }
-                return response()->json(
-                    [
-                        "messages" => "order berhasil"
-                    ]
-                );
-            } catch (\Exception $e) {
-                return response()->json(
-                    [
-                        "messages" => "order berhasil"
-                    ]
-                );
-            }
-        }
-        return response()->json(
-            [
-                "messages" => "order berhasil"
-            ]
-        );
-    }
+  
 }

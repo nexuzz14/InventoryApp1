@@ -28,20 +28,14 @@ class TransactionService
                         $gudang = $item->item->locations->find($dataLocation['location_id']);
                         if ($gudang) {
                             $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
-                        Log::debug($newQuantity);
-
                             $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
                             $totalQty += $shortage;
-                        Log::debug($totalQty);
-                        Log::debug($shortage);
-
 
                             $buyPrice += ($shortage * $item->item->price);
                             $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
                         }
                     }
                 }
-                $this->itemService->calculateQty($item->item_id);
             }
         }
         Log::debug($request_tabel);

@@ -39,14 +39,14 @@ class RequestItemService
         return RequestItem::with(['requestDetails', 'requestDetails.item'])->find($id);
     }
 
-    public function storeRequest($data, $user)
+    
+    public function storeRequest($data)
     {
-        $staff_id = $user['id'];
+        $staff_id = $data['staff_id'];
         $request_items = RequestItem::create([
             'staff_id' => $staff_id,
             'status' => 'pending',
             'client_id' => $data['client_id'],
-            'nama_pemohon' => $user['name'],
         ]);
 
         $result = DB::table('items_request_details')->insert(

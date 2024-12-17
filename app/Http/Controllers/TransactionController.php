@@ -18,6 +18,17 @@ class TransactionController extends Controller
         $this->transactionService = $transactionService;
     }
 
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        $data['staff_id'] = $request->user()->id;
+
+        $requestResult = $this->requestItemService->storeRequest($data);
+        return response()->json([
+            $requestResult
+        ], 200);
+      
+    }
 
     public function getAllRequest(Request $request)
     {

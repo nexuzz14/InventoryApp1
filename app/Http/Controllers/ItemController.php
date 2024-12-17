@@ -61,7 +61,6 @@ class ItemController extends Controller
         return null;
     }
     public function updateAll(Request $request){
-        Log::debug($request);
         $id = $request->id;
         $data = $request->locations;
         $result =  $this->itemService->updateAll($id, $data);

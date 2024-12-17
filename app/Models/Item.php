@@ -34,6 +34,6 @@ class Item extends Model
     {
         return $this->belongsToMany(Location::class, 'item_location')
             ->using(ItemLocation::class) // Gunakan model pivot
-            ->withPivot('quantity', 'id'); // Sertakan kolom tambahan dari pivot
+            ->withPivot('quantity', 'id', 'location_id'); // Sertakan kolom tambahan dari pivot
     }
 }

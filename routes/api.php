@@ -62,7 +62,7 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     Route::delete('/client/delete/{id}', [ClientController::class, 'destroy']);
 
 
-    Route::post('/request/new', [chartController::class, 'store']);
+    Route::post('/request/new', [TransactionController::class, 'store']);
     Route::get('/request/get', [TransactionController::class, 'getAllRequest']);
     Route::patch('/request/update', [TransactionController::class, 'updateItemsRequestDetail']);
 
@@ -74,7 +74,9 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
     Route::post('/items/new', [ItemController::class, 'store']);
     Route::get('/items/get', [ItemController::class, 'getAllData']);
-    Route::get('/items/getDetail', [ItemController::class, 'getAllItems']);
+    Route::post('/items/locationStock', [ItemController::class, 'updateAll']);
+    Route::get('/items/getDetail', [ItemController::class, 'getLocalData']);
+
 
 
 });
