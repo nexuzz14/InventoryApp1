@@ -24,7 +24,7 @@ class RequestItem extends Model
         $monthFormatted = str_pad($month, 2, '0', STR_PAD_LEFT); // '12'
         $count = RequestItem::whereMonth('created_at', Carbon::now()->month)->count();
         $serialNumber = $count + 1;
-        return 'reg/' . $monthFormatted . '/' . $serialNumber;
+        return 'req/' . $monthFormatted . '/' . $serialNumber;
     }
     public function processedBy()
     {

@@ -35,14 +35,15 @@ class TransactionService
                                 $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
                                 $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
                                 $totalQty += $shortage;
-    
                                 $buyPrice += ($shortage * $item->item->price);
                                 $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
                             }
                         }
                       
                     }
+                    
                 }
+                
             }
         }
         if($totalQty > 0){
