@@ -64,6 +64,14 @@ class RequestItemService
 
 
     }
+    public function updateRequestDetail($id, $data){
+        try{
+            ItemsRequestDetail::find($id)->update($data);
+            return true;
+        }catch(\Exception $e){
+            return false;
+        }
+    }
 
 
     public function storeRequest($data)

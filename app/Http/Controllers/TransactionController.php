@@ -17,7 +17,7 @@ class TransactionController extends Controller
         $this->requestItemService = $requestItemService;
         $this->transactionService = $transactionService;
     }
-
+ 
     public function store(Request $request)
     {
         $data = $request->all();
@@ -65,11 +65,14 @@ class TransactionController extends Controller
         ], 500);
     }
 
-    // public function updateItemsRequestDetail(Request $request)
-    // {
-    //     $result = $this->requestItemService->updateItemsRequestDetail($request->id);
-    //     return response()->json($result);
-    // }
+    public function updateItemsRequestDetail(Request $request)
+    {
+        $data = [
+            "quantity"=> $request->quantity
+        ];
+        $result = $this->requestItemService->updateRequestDetail($request->id, $data);
+        return response()->json($result);
+    }
 
     // old function
     public function pay($id)
