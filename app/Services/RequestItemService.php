@@ -6,6 +6,7 @@ use App\Models\ItemsRequestDetail;
 use App\Models\RequestItem;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RequestItemService
 {

@@ -16,6 +16,8 @@ class ItemLocation extends Pivot
             // Panggil calculateQty setelah data pivot disimpan
             $item = $pivot->item;
             $item->calculateQty();
+            $item->saveQuietly();
+
         });
 
         static::deleted(function ($pivot) {

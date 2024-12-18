@@ -3,10 +3,11 @@
 namespace App\Services;
 
 use App\Models\Item;
-use App\Models\Location;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
+
+use function Psy\debug;
 
 class ItemService
 {
@@ -69,16 +70,29 @@ class ItemService
             'message' => 'Item not found'
         ], 404);
     }
+    public function update($data){
+        if(isset($data['locations'])){
+        $dataUpdate = Arr::except($data, ['locations']);
 
-
-
-    public function updateAll($itemId, $locations)
+        }else{
+            $dataUpdate = $data;
+        }
+        $item = Item::find($data['id']);
+        if($item){
+            $item->update($dataUpdate);
+            if(isset($data['locations'])){
+                $this->updateLocation($data['id'], $data['locations']);
+            }
+        }
+    }
+    public function updateLocation($itemId, $locations)
     {
         $item = Item::with('locations')->find($itemId);
 
         if ($item) {
             $existingLocations = $item->locations()->pluck('location_id')->toArray();
             $updatedLocationIds = [];
+            Log::debug($locations, $existingLocations);
             foreach ($locations as $location) {
                 if (isset($location["location_id"])) {
                     if (in_array($location['location_id'], $existingLocations) && !in_array($location['location_id'], $updatedLocationIds)) {
@@ -119,7 +133,6 @@ class ItemService
                 }
             }
 
-            // Detach records that are not updated
             $locationsToDetach = array_diff($existingLocations, $updatedLocationIds);
 
             if (!empty($locationsToDetach)) {
@@ -157,13 +170,13 @@ class ItemService
         return $data;
     }
 
-//halo
-    public function updateItemLocation($request, Item $item)
-    {
-        $item->locations()->sync($request->locations);
-        $item->quantity = $item->calculateTotalQuantity();
-        $item->save();
-    }
+
+    // public function updateItemLocation($request, Item $item)
+    // {
+    //     $item->locations()->sync($request->locations);
+    //     $item->quantity = $item->calculateTotalQuantity();
+    //     $item->save();
+    // }
 
 
 
@@ -185,12 +198,4 @@ class ItemService
         return true;
     }
 
-    public function updateItem($id, $data)
-    {
-        $item = Item::find($id)->update($data);
-        if (!$item) {
-            return false;
-        }
-        return true;
-    }
 }

@@ -53,11 +53,11 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function updateItemsRequestDetail(Request $request)
-    {
-        $result = $this->requestItemService->updateItemsRequestDetail($request->id);
-        return response()->json($result);
-    }
+    // public function updateItemsRequestDetail(Request $request)
+    // {
+    //     $result = $this->requestItemService->updateItemsRequestDetail($request->id);
+    //     return response()->json($result);
+    // }
 
     // old function
     public function updateTransaction(Request $request){
