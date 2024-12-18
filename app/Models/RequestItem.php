@@ -8,7 +8,7 @@ class RequestItem extends Model
 {
     protected $table = 'request_items';
     protected $fillable = [
-        'staff_id', 'status', 'processed_by', 'nama_pemohon', 'client_id'
+        'staff_id', 'status', 'processed_by', 'client_id'
     ];
 
     protected static function booted()

@@ -109,7 +109,7 @@ class ItemService
                             );
                             $updatedLocationIds[] = $location['location_id'];
                         } else {
-    
+
                             if (in_array($location['location_id'], $updatedLocationIds)) {
                                 if (isset($location['location_id'])) {
                                     $currentQuantity = $item->locations()
@@ -117,7 +117,7 @@ class ItemService
                                         ->first()
                                         ->pivot
                                         ->quantity ?? 0; // Default ke 0 jika tidak ada nilai
-    
+
                                     $newQuantity = $currentQuantity + $location['quantity'];
                                     Log::debug("nilai :" . $currentQuantity);
                                     // Update pivot dengan quantity yang sudah ditambahkan
@@ -139,7 +139,7 @@ class ItemService
             }else{
                 return "gagal, stock melebihi quantity";
             }
-            
+
 
             $locationsToDetach = array_diff($existingLocations, $updatedLocationIds);
             if (!empty($locationsToDetach)) {
@@ -195,13 +195,9 @@ class ItemService
         return Item::where('category_id', $categoryId)->get();
     }
 
-    public function deleteItem($id)
+    public function delete($id)
     {
-        $item = Item::find($id)->delete();
-        if (!$item) {
-            return false;
-        }
-        return true;
+        return Item::find($id)->delete();
     }
 
 }
