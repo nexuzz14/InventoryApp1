@@ -11,6 +11,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 
@@ -26,7 +27,14 @@ Route::post('/login', [AuthController::class, 'login']);
 //     return response()->json(['name' => $request->user()->name]);
 // });
 Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
-    return response()->json($request->user()->only(['name', 'email', 'role']));
+    return response()->json([
+        'user' => $request->user()->only(['name', 'email', 'role'])
+    ]);
+});
+
+Route::middleware('auth:sanctum')->get('/logout', function (Request $request) {
+    $request->user()->tokens()->delete();
+    Auth::logout();
 });
 
 
@@ -34,7 +42,7 @@ Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
 Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
     Route::post('/test', function (Request $request) {
-       return $request->user()->role;
+        return $request->user()->role;
     });
 
     Route::post('/category/new', [CategoryController::class, 'store']);
@@ -62,7 +70,6 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     Route::delete('/client/delete/{id}', [ClientController::class, 'destroy']);
 
 
-    Route::post('/request/new', [TransactionController::class, 'store']);
     Route::get('/request/get', [TransactionController::class, 'getAllRequest']);
     Route::patch('/request/update', [TransactionController::class, 'updateItemsRequestDetail']);
 
@@ -73,7 +80,6 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
 
     Route::post('/items/new', [ItemController::class, 'store']);
-    Route::get('/items/get', [ItemController::class, 'getAllData']);
     Route::post('/items/locationStock', [ItemController::class, 'updateAll']);
     Route::get('/items/getDetail', [ItemController::class, 'getLocalData']);
 
@@ -81,7 +87,9 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
 });
 
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/request/new', [TransactionController::class, 'store']);
+    Route::get('/items/get', [ItemController::class, 'getAllData']);
     Route::get('/category/get', [CategoryController::class, 'getData']);
     Route::get('/location/get', [LocationController::class, 'getData']);
     Route::get('/unit/get', [UnitController::class, 'getData']);

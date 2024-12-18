@@ -137,7 +137,7 @@ class ItemService
     public function getAllData()
     {
         $items = Item::with('unit', 'Category')
-            ->select('id', 'name', 'category_id', 'quantity', 'price')
+            ->select('id', 'name', 'category_id', 'quantity', 'price', 'unit_id', 'description')
             ->get();
 
         $data = $items->map(function ($item) {
@@ -148,7 +148,9 @@ class ItemService
                 'category_name' => $item->category->name ?? 'Unknown',
                 'quantity' => $item->quantity,
                 'price' => $item->price,
-                'unit' => $item->unit->name ?? ''
+                'unit' => $item->unit->name ?? '',
+                'description' => $item->description,
+                'unit_id' => $item->unit_id
             ];
         });
 

@@ -9,21 +9,20 @@ use Illuminate\Support\Facades\DB;
 
 class RequestItemService
 {
- 
+
     public function getAllRequest()
     {
-        return RequestItem::with([
-
-            'requestDetails' => function ($query) {
-                $query->select('quantity', 'id', 'item_id', 'request_id');
-            },
-            'requestDetails.item' => function ($query) {
-                $query->select('name', 'unit_id', 'price', 'id');
-            },
-            'requestDetails.item.unit' => function ($query) {
-                $query->select('name', 'id');
-            }
-        ])->get();
+        return DB::table('request_items')
+            ->select(
+                'request_items.id',
+                'request_items.code as kode',
+                'request_items.created_at as tanggal',
+                'users.name as namaStaf',   
+                'clients.name as namaClient'  
+            )
+            ->join('users', 'request_items.staff_id', '=', 'users.id')
+            ->join('clients', 'request_items.client_id', '=', 'clients.id')
+            ->get();
     }
     public function getDetailRequest($id)
     {
@@ -31,7 +30,7 @@ class RequestItemService
         return RequestItem::with(['requestDetails', 'requestDetails.item'])->find($id);
     }
 
-    
+
     public function storeRequest($data)
     {
         $staff_id = $data['staff_id'];
