@@ -138,6 +138,7 @@ class ItemService
     {
         $items = Item::with('unit', 'Category')
             ->select('id', 'name', 'category_id', 'quantity', 'price', 'unit_id', 'description')
+            ->select('id', 'name', 'category_id', 'quantity', 'price', 'unit_id', 'description')
             ->get();
 
         $data = $items->map(function ($item) {
@@ -157,7 +158,7 @@ class ItemService
         return $data;
     }
 
-
+//halo
     public function updateItemLocation($request, Item $item)
     {
         $item->locations()->sync($request->locations);
