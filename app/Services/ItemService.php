@@ -51,17 +51,16 @@ class ItemService
                 'data' => [
                     'id' => $item->id,
                     'name' => $item->name,
-                    'image' => $item->image,
                     'category_id' => $item->category_id,
-                    'category_id' => $item->category->name,
+                    'category_name' => $item->category->name,
                     'quantity' => $item->quantity,
                     'description' => $item->description,
                     'price' => $item->price,
                     'created_at' => $item->created_at,
                     'updated_at' => $item->updated_at,
                     'locations' => $locations,
-                    'unit' => $item->unit->name,
-                    'unit' => $item->unit->id
+                    'unit_name' => $item->unit->name,
+                    'unit_id' => $item->unit->id
                 ]
             ];
         }

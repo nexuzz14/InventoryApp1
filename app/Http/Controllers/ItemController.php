@@ -102,20 +102,20 @@ class ItemController extends Controller
             ]);
         } catch (ValidationException $e) {
             $errors = $e->errors();
-        
+
             if (isset($errors['uniq_id'])) {
                 return response()->json([
                     'message' => 'ID unik sudah digunakan. Silakan gunakan ID lain.',
                     'errors' => $errors['uniq_id']
                 ], 422);
             }
-        
+
             return response()->json([
                 'message' => 'Validasi gagal.',
                 'errors' => $errors
             ], 422);
         }
-        
+
         if($data['locations']){
             $totalQtyGudang = collect($data['locations'])->sum("quantity");
             if($totalQtyGudang > $request['quantity']){

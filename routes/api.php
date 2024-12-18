@@ -73,7 +73,7 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
     Route::get('/request/get', [TransactionController::class, 'getAllRequest']);
     Route::get('/request/get/{id}', [TransactionController::class, 'getDetailRequest']);
-    Route::patch('/request/update', [TransactionController::class, 'updateItemsRequestDetail']);
+    Route::patch('/request/updateDetail', [TransactionController::class, 'updateItemsRequestDetail']);
 
 
     Route::post('/transaction/store', [TransactionController::class, 'storeTransaction']);
@@ -88,7 +88,7 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     Route::patch('/items/locationStock', [ItemController::class, 'updateLocation']);
     Route::patch('/items/update', [ItemController::class, 'update']);
     Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
-    Route::get('/items/getDetail', [ItemController::class, 'getLocalData']);
+    Route::get('/items/getDetail/{id}', [ItemController::class, 'getLocalData']);
 
 
 
