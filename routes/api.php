@@ -84,7 +84,7 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     Route::get('/items/get', [ItemController::class, 'getAllData']);
     Route::patch('/items/locationStock', [ItemController::class, 'updateLocation']);
     Route::patch('/items/update', [ItemController::class, 'update']);
-    Route::delete('/items/delete/{$id}', [ItemController::class, 'destroy']);
+    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
     Route::get('/items/getDetail', [ItemController::class, 'getLocalData']);
 
 

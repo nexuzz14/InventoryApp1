@@ -50,14 +50,14 @@ class ItemController extends Controller
             ]);
         } catch (ValidationException $e) {
             $errors = $e->errors();
-        
+
             if (isset($errors['uniq_id'])) {
                 return response()->json([
                     'message' => 'ID unik sudah digunakan. Silakan gunakan ID lain.',
                     'errors' => $errors['uniq_id']
                 ], 422);
             }
-        
+
             return response()->json([
                 'message' => 'Validasi gagal.',
                 'errors' => $errors
@@ -151,15 +151,15 @@ class ItemController extends Controller
     }
     public function destroy($id)
     {
-        $result = $this->itemService->deleteItem($id);
+        $result = $this->itemService->delete($id);
         if (!$result) {
-            return back()->withErrors([
+            return response()->json([
                 'message' => 'Data gagal dihapus'
-            ]);
+            ], 500);
         }
-        return back()->withSuccess([
+        return response()->json([
             'message' => 'Data berhasil dihapus'
-        ]);
+        ], 200);
     }
     // public function update(Request $request)
     // {
