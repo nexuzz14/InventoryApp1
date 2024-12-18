@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal("total_price", 10, 2);
             $table->decimal("dibayarkan", 10, 2)->default(0);
             $table->integer("total_appoved_items");
-            $table->enum("status", ["paid", "unpaid", "Bon"]);
+            // $table->enum("status", ["paid", "unpaid", "Bon"]);
             $table->timestamps();
         });
         Schema::create('transaction_supplier', function (Blueprint $table) {

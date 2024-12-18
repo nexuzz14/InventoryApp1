@@ -40,7 +40,6 @@ class ItemService
             ->find($itemId);
 
         if ($item) {
-
             $locations = $item->locations->map(function ($location) {
                 return [
                     'id' => $location->pivot->id,
@@ -73,7 +72,6 @@ class ItemService
     public function update($data){
         if(isset($data['locations'])){
         $dataUpdate = Arr::except($data, ['locations']);
-
         }else{
             $dataUpdate = $data;
         }
@@ -83,66 +81,73 @@ class ItemService
             if(isset($data['locations'])){
                 $this->updateLocation($data['id'], $data['locations']);
             }
+        return true;
+
         }
+        return false;
     }
     public function updateLocation($itemId, $locations)
     {
         $item = Item::with('locations')->find($itemId);
-
         if ($item) {
             $existingLocations = $item->locations()->pluck('location_id')->toArray();
+            $totalQuantity = collect($locations)->sum('quantity');
+            ;
+
             $updatedLocationIds = [];
-            Log::debug($locations, $existingLocations);
-            foreach ($locations as $location) {
-                if (isset($location["location_id"])) {
-                    if (in_array($location['location_id'], $existingLocations) && !in_array($location['location_id'], $updatedLocationIds)) {
-                        $item->locations()->updateExistingPivot(
-                            $location['location_id'],  // ID relasi pivot
-                            [
-                                'location_id' => $location['location_id'],
-                                'quantity' => $location['quantity']
-                            ]
-                        );
-                        $updatedLocationIds[] = $location['location_id'];
-                    } else {
-
-                        if (in_array($location['location_id'], $updatedLocationIds)) {
-                            if (isset($location['location_id'])) {
-                                $currentQuantity = $item->locations()
-                                    ->wherePivot('location_id', $location['location_id'])
-                                    ->first()
-                                    ->pivot
-                                    ->quantity ?? 0; // Default ke 0 jika tidak ada nilai
-
-                                $newQuantity = $currentQuantity + $location['quantity'];
-                                Log::debug("nilai :" . $currentQuantity);
-                                // Update pivot dengan quantity yang sudah ditambahkan
-                                $item->locations()->updateExistingPivot(
-                                    $location['location_id'], // ID relasi pivot
-                                    ['quantity' => $newQuantity] // Nilai quantity yang baru
-                                );
+            Log::debug("nod:".$totalQuantity);
+            if($totalQuantity <= $item->quantity){
+                foreach ($locations as $location) {
+                    if (isset($location["location_id"])) {
+                        if (in_array($location['location_id'], $existingLocations) && !in_array($location['location_id'], $updatedLocationIds)) {
+                            $item->locations()->updateExistingPivot(
+                                $location['location_id'],  // ID relasi pivot
+                                [
+                                    'location_id' => $location['location_id'],
+                                    'quantity' => $location['quantity']
+                                ]
+                            );
+                            $updatedLocationIds[] = $location['location_id'];
+                        } else {
+    
+                            if (in_array($location['location_id'], $updatedLocationIds)) {
+                                if (isset($location['location_id'])) {
+                                    $currentQuantity = $item->locations()
+                                        ->wherePivot('location_id', $location['location_id'])
+                                        ->first()
+                                        ->pivot
+                                        ->quantity ?? 0; // Default ke 0 jika tidak ada nilai
+    
+                                    $newQuantity = $currentQuantity + $location['quantity'];
+                                    Log::debug("nilai :" . $currentQuantity);
+                                    // Update pivot dengan quantity yang sudah ditambahkan
+                                    $item->locations()->updateExistingPivot(
+                                        $location['location_id'], // ID relasi pivot
+                                        ['quantity' => $newQuantity] // Nilai quantity yang baru
+                                    );
+                                    $updatedLocationIds[] = $location['location_id'];
+                                }
+                            } else {
+                                $item->locations()->attach($location['location_id'], [
+                                    "quantity" => $location['quantity']
+                                ]);
                                 $updatedLocationIds[] = $location['location_id'];
                             }
-                        } else {
-                            $item->locations()->attach($location['location_id'], [
-                                "quantity" => $location['quantity']
-                            ]);
-                            $updatedLocationIds[] = $location['location_id'];
                         }
                     }
                 }
+            }else{
+                return "gagal, stock melebihi quantity";
             }
+            
 
             $locationsToDetach = array_diff($existingLocations, $updatedLocationIds);
-
             if (!empty($locationsToDetach)) {
                 $item->locations()->detach($locationsToDetach);
             }
-
-
-            return true;
+            return "berhasil, data diubah";
         }
-        return false;
+        return "gagal, terjadi kesalahan";
     }
 
 
@@ -150,6 +155,7 @@ class ItemService
     public function getAllData()
     {
         $items = Item::with('unit', 'Category')
+            ->select('id', 'name', 'category_id', 'quantity', 'price', 'unit_id', 'description')
             ->select('id', 'name', 'category_id', 'quantity', 'price', 'unit_id', 'description')
             ->get();
 
@@ -161,9 +167,9 @@ class ItemService
                 'category_name' => $item->category->name ?? 'Unknown',
                 'quantity' => $item->quantity,
                 'price' => $item->price,
-                'unit_id' => $item->unit_id,
                 'unit' => $item->unit->name ?? '',
                 'description' => $item->description,
+                'unit_id' => $item->unit_id
             ];
         });
 

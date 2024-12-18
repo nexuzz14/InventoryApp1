@@ -26,11 +26,6 @@ class RequestItem extends Model
         $serialNumber = $count + 1;
         return 'reg/' . $monthFormatted . '/' . $serialNumber;
     }
-    public function customer()
-    {
-        return $this->belongsTo(User::class, 'customer_id');
-    }
-
     public function processedBy()
     {
         return $this->belongsTo(User::class, 'processed_by');
@@ -48,5 +43,9 @@ class RequestItem extends Model
     public function transaction()
     {
         return $this->hasOne(Transaction::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'staff_id');
     }
 }
