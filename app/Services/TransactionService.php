@@ -28,6 +28,7 @@ class TransactionService
             $item->save();
             if ($item && $item->quantity > 0) {
                 if ($itemsSelected['location']) {
+                    $sessionTotalBuy = 0;
                     foreach ($itemsSelected['location'] as $dataLocation) {
                         if($dataLocation['quantity'] > 0){
                             $gudang = $item->item->locations->find($dataLocation['location_id']);
@@ -35,18 +36,20 @@ class TransactionService
                                 $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
                                 $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
                                 $totalQty += $shortage;
+                                $sessionTotalBuy += $shortage;
                                 $buyPrice += ($shortage * $item->item->price);
                                 $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
                             }
                         }
-                      
                     }
-                    
+                    $item->quantity_buy = $sessionTotalBuy;
+                    $item->save();
                 }
-                
+
             }
         }
-        if($totalQty > 0){
+
+        if($totalQty > 0 ){
             $totalApprovedItems = $requestDetails->count();
             $transaction = Transaction::create([
                 'staff_id' => $request_tabel['staff_id'],
