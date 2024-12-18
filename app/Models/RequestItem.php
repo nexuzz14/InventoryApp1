@@ -4,17 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+
 class RequestItem extends Model
 {
     protected $table = 'request_items';
     protected $fillable = [
-        'staff_id', 'status', 'processed_by', 'client_id'
+        'staff_id',
+        'status',
+        'processed_by',
+        'client_id'
     ];
 
     protected static function booted()
     {
         static::creating(function ($requestItem) {
             $requestItem->code = $requestItem->generateRequestItemCode();
+        });
+        static::deleting(function ($requestItem) {
+            $requestItem->requestDetails()->detach();
         });
     }
 
@@ -36,7 +43,8 @@ class RequestItem extends Model
         return $this->hasMany(ItemsRequestDetail::class, 'request_id');
     }
 
-    public function client(){
+    public function client()
+    {
         return $this->belongsTo(client::class, 'client_id');
     }
 
@@ -45,7 +53,8 @@ class RequestItem extends Model
         return $this->hasOne(Transaction::class);
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'staff_id');
     }
 }

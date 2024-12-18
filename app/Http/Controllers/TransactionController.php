@@ -29,14 +29,40 @@ class TransactionController extends Controller
         ], 200);
 
     }
+    public function getAllTransactions(){
+        $data = $this->transactionService->getAllTransaction();
+        return response()->json([
+            "data"=>$data
+        ]);
+    }
 
-    public function getAllRequest(Request $request)
+    public function getDetailTransactions($id){
+        $data = $this->transactionService->getDetailTransaction($id);
+        return response()->json([
+            "data"=>$data
+        ]);
+    }
+    public function getAllRequest()
     {
         $data = $this->requestItemService->getAllRequest();
-
+        
         return response()->json([
             "data" => $data
         ], 200);
+    }
+
+    public function getDetailRequest($id)
+    {
+        $data = $this->requestItemService->getDetailRequest($id);
+
+        if($data){
+            return response()->json([
+                "data" => $data
+            ], 200);
+        }
+        return response()->json([
+            "message"=>"data tidak ditemukan"
+        ], 500);
     }
 
     // public function updateItemsRequestDetail(Request $request)
@@ -46,31 +72,31 @@ class TransactionController extends Controller
     // }
 
     // old function
-    public function updateTransaction(Request $request)
+    public function pay($id)
     {
-        try {
-            $data = $request->validate([
-                'id' => "required|integer",
-                'nominal' => "required|integer|min:0",
-            ]);
-
-            $result = $this->transactionService->transactionPay($data['id'], $data['nominal']);
-            if ($result) {
-                return response()->json([
-                    "message" => "success",
-                ]);
-            }
+        $result =  $this->transactionService->pay($id);
+        if($result){
             return response()->json([
-                "message" => "failed",
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                "message" => "failed $e",
-            ]);
-        }
+                "message"=>"berhasil mengubah data"
+            ], 200);
+        };
+        return response()->json([
+            "message"=>"data tidak ditemukan"
+        ], 500);
     }
     // old function
+    public function delete($id){
+        $result =  $this->transactionService->deleteRequest($id);
+        if ($result){
+            return response()->json([
+                "message"=>"Request Berhasil Dihapus"
+            ]);
+        }
 
+        return response()->json([
+            "message"=>"Request gagal dihapus"
+        ]);
+    }
     public function storeTransaction(Request $request)
     {
         $result = $this->transactionService->storeTransaction($request->all());

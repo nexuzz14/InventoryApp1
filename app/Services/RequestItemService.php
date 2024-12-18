@@ -27,8 +27,47 @@ class RequestItemService
     }
     public function getDetailRequest($id)
     {
-        $id = Crypt::decrypt($id);
-        return RequestItem::with(['requestDetails', 'requestDetails.item'])->find($id);
+        $requestItem = RequestItem::with([
+            'requestDetails.item.category', // Relasi ke kategori item
+            'requestDetails.item.unit', // Relasi ke unit item
+            'client', 
+            'user'
+        ])->find($id);
+        if($requestItem){
+            $data = [
+                    'id' => $requestItem->id,
+                    'code' => $requestItem->code,
+                    'staff_id' => $requestItem->user_id,
+                    'staff_name' => $requestItem->user->name ?? '',
+                    'client_id' => $requestItem->client_id,
+                    'client_name' => $requestItem->client->name ?? '',
+                    'status' => $requestItem->status,
+                    'processed_by' => $requestItem->processed_by,
+                    'created_at' => $requestItem->created_at,
+                    'updated_at' => $requestItem->updated_at,
+                    'request_details' => $requestItem->requestDetails->map(function ($detail) {
+                        return [
+                            'id' => $detail->id,
+                            'quantity' => $detail->quantity,
+                            'quantity_buy' => $detail->quantity_buy,
+                            'item' => [
+                                'id' => $detail->item->id ?? null,
+                                'name' => $detail->item->name ?? '',
+                                'uniq_id' => $detail->item->uniq_id ?? '',
+                                'category' => $detail->item->category->name ?? '',
+                                'unit' => $detail->item->unit->name ?? '',
+                                'price' => $detail->item->price ?? '0.00',
+                            ],
+                        ];
+                    }),
+            ];
+            
+            return $data;
+        }
+
+        return "data tidak ditemukan";
+       
+        
     }
 
 

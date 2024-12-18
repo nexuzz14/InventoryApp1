@@ -13,25 +13,7 @@ class UnitsRequestController extends Controller
   
 
   // fungsi lama
-  public function create($idBarang)
-  {
-    if ($idBarang == null) {
-      return redirect()->route('home');
-    }
-    ;
-    try {
-      $id = Crypt::decrypt($idBarang);
-      $selectedUnit = Item::where('id', $id)->with('category', 'unit')->first();
-      if ($selectedUnit) {
-        return view('user.request', compact('selectedUnit'));
-      } else {
-        return redirect()->route('home');
-      }
-    } catch (\Exception $e) {
-      return redirect()->route('home');
-    }
-
-  }
+ 
 
   public function store(Request $request)
   {

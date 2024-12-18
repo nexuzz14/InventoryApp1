@@ -72,12 +72,15 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
 
     Route::get('/request/get', [TransactionController::class, 'getAllRequest']);
+    Route::get('/request/get/{id}', [TransactionController::class, 'getDetailRequest']);
     Route::patch('/request/update', [TransactionController::class, 'updateItemsRequestDetail']);
 
 
     Route::post('/transaction/store', [TransactionController::class, 'storeTransaction']);
-    Route::get('/transaction/get', [TransactionController::class, 'getAllInvoice']);
-    Route::patch('/transaction/pay', [TransactionController::class, 'updateTransaction']);
+    // Route::get('/transaction/get', [TransactionController::class, 'getAllInvoice']);
+    Route::get('/transaction/get', [TransactionController::class, 'getAllTransactions']);
+    Route::get('/transaction/get/{id}', [TransactionController::class, 'getDetailTransactions']);
+    Route::patch('/transaction/pay/{id}', [TransactionController::class, 'pay']);
 
 
     Route::post('/items/new', [ItemController::class, 'store']);
@@ -86,6 +89,9 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     Route::patch('/items/update', [ItemController::class, 'update']);
     Route::delete('/items/delete/{id}', [ItemController::class, 'destroy']);
     Route::get('/items/getDetail', [ItemController::class, 'getLocalData']);
+
+
+
 
 
 
