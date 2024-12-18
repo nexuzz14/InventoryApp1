@@ -18,8 +18,8 @@ class RequestItemService
                 'request_items.id',
                 'request_items.code as kode',
                 'request_items.created_at as tanggal',
-                'users.name as namaStaf',   
-                'clients.name as namaClient'  
+                'users.name as namaStaf',
+                'clients.name as namaClient'
             )
             ->join('users', 'request_items.staff_id', '=', 'users.id')
             ->join('clients', 'request_items.client_id', '=', 'clients.id')
@@ -30,21 +30,15 @@ class RequestItemService
         $requestItem = RequestItem::with([
             'requestDetails.item.category', // Relasi ke kategori item
             'requestDetails.item.unit', // Relasi ke unit item
-            'client', 
+            'client',
             'user'
         ])->find($id);
         if($requestItem){
             $data = [
                     'id' => $requestItem->id,
-                    'code' => $requestItem->code,
-                    'staff_id' => $requestItem->user_id,
-                    'staff_name' => $requestItem->user->name ?? '',
-                    'client_id' => $requestItem->client_id,
-                    'client_name' => $requestItem->client->name ?? '',
+                    'staff_id' => $requestItem->id,
+                    'client_id' => $requestItem->id,
                     'status' => $requestItem->status,
-                    'processed_by' => $requestItem->processed_by,
-                    'created_at' => $requestItem->created_at,
-                    'updated_at' => $requestItem->updated_at,
                     'request_details' => $requestItem->requestDetails->map(function ($detail) {
                         return [
                             'id' => $detail->id,
@@ -56,18 +50,19 @@ class RequestItemService
                                 'uniq_id' => $detail->item->uniq_id ?? '',
                                 'category' => $detail->item->category->name ?? '',
                                 'unit' => $detail->item->unit->name ?? '',
+                                'quantity' => $detail->item->quantity ?? '0.00',
                                 'price' => $detail->item->price ?? '0.00',
                             ],
                         ];
                     }),
             ];
-            
+
             return $data;
         }
 
         return "data tidak ditemukan";
-       
-        
+
+
     }
 
 
