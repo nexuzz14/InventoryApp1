@@ -44,6 +44,9 @@ class TransactionService
                             }
                         }
                     }
+                    if($sessionTotalBuy > 0){
+                        $itemsSelected->supplier_id = $itemsSelected->supplier;
+                    }
                     $item->quantity_buy = $sessionTotalBuy;
                     $item->save();
                 }
@@ -64,7 +67,6 @@ class TransactionService
                 'total_appoved_items' => $totalApprovedItems,
                 'status' => 'unpaid',
             ]);
-            $transaction->suppliers()->attach($data['suppliers']);
             return $transaction;
         }
     }

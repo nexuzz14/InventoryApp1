@@ -22,12 +22,7 @@ return new class extends Migration
             $table->enum("status", ["paid", "unpaid"]);
             $table->timestamps();
         });
-        Schema::create('transaction_supplier', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('transaction_id')->constrained('transactions')->onDelete('cascade');
-            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
-            $table->timestamps();
-        });
+        
     }
     
     /**
