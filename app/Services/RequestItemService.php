@@ -39,6 +39,7 @@ class RequestItemService
                     'staff_id' => $requestItem->id,
                     'client_id' => $requestItem->id,
                     'status' => $requestItem->status,
+                    'updated_at' => $requestItem->updated_at->format("Y-m-d"),
                     'request_details' => $requestItem->requestDetails->map(function ($detail) {
                         return [
                             'id' => $detail->id,

@@ -44,7 +44,7 @@ class TransactionService
                             }
                         }
                     }
-                    if($sessionTotalBuy > 0 && $itemsSelected['suppliers']){
+                    if ($sessionTotalBuy > 0 && $itemsSelected['suppliers']) {
                         foreach ($itemsSelected['suppliers'] as $supplier) {
                             $item->suppliers()->attach($supplier['supplier_id'], ['quantity' => $supplier['quantity']]);
                         }
@@ -72,15 +72,14 @@ class TransactionService
             return $transaction;
         }
     }
-    public function getDetailTransaction($id) {
+    public function getDetailTransaction($id)
+    {
         $transaction = Transaction::with([
             'requestItem.client',
             'requestItem.requestDetails.item',
             'requestItem.requestDetails.suppliers'
         ])->find($id);
-        if( $transaction){
-            
-            
+        if ($transaction) {
             $data = [
                 'created_at' => $transaction->created_at,
                 'total_price' => $transaction->total_price,
@@ -94,43 +93,39 @@ class TransactionService
                             'quantity_buy' => $detail->quantity_buy,
                             'item_name' => $detail->item->name ?? null,
                             'item_price' => $detail->item->price ?? null,
+                            'suppliers' => $detail->suppliers->map(function ($supplier) {
+                                return $supplier->name ?? null; // Ambil nama supplier
+                            }),
                         ];
                     }),
                 ],
-                'suppliers' => $transaction->requestDetails->suppliers->map(function ($supplier) {
-                    return [
-                        'id' => $supplier->id,
-                        'name' => $supplier->name ?? null,
-                    ];
-                }),
             ];
-            
+        
             return $data;
-            
         }
     }
 
-    public function pay($id){
+    public function pay($id)
+    {
         $transaction = Transaction::with('requestItem.requestDetails.item')->find($id);
 
         if ($transaction) {
             // Update dibayarkan menjadi total_price
             $transaction->dibayarkan = $transaction->total_price;
             Log::debug($transaction->requestItem);
-            
+
             // Loop untuk memperbarui quantity item
             foreach ($transaction->requestItem->requestDetails as $req) {
                 $req->item->quantity += $req->quantity_buy;
                 $req->item->save();
             }
-            
+
             $transaction->status = "paid";
-            $transaction->save();            
+            $transaction->save();
             return true;
         }
-        
+
         return false;
-        
     }
 
 
@@ -138,7 +133,7 @@ class TransactionService
     public function getAllTransaction()
     {
         // Ambil data transaksi dengan relasi suppliers
-        $transactions = Transaction::with('suppliers', 'requestItem.client')
+        $transactions = Transaction::with('requestItem.client')
             ->select('id', 'created_at', 'total_qty') // Hanya kolom dari tabel 'transactions'
             ->get();
 
@@ -150,12 +145,6 @@ class TransactionService
                 'request_item_code' => $transaction->requestItem->code ?? null,
                 'client_name' => $transaction->requestItem->client->name ?? null,
                 'quantity' => $transaction->total_qty,
-                'suppliers' => $transaction->suppliers->map(function ($supplier) {
-                    return [
-                        'id' => $supplier->id,
-                        'name' => $supplier->name ?? null,
-                    ];
-                }),
             ];
         });
 
@@ -163,18 +152,20 @@ class TransactionService
         return $data;
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $data = Transaction::find($id);
-        if($data){
+        if ($data) {
             $data->delete();
             return true;
         }
         return false;
     }
 
-    public function deleteRequest($id){
+    public function deleteRequest($id)
+    {
         $data = RequestItem::find($id);
-        if($data){
+        if ($data) {
             $data->delete();
             return true;
         }

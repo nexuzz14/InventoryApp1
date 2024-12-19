@@ -44,11 +44,11 @@ class ItemService
                 return [
                     'id' => $location->pivot->id,
                     'location_id' => $location->pivot->location_id,
+                    'name' =>$location->name,
                     'quantity' => $location->pivot->quantity
                 ];
             });
             return [
-                'data' => [
                     'id' => $item->id,
                     'name' => $item->name,
                     'category_id' => $item->category_id,
@@ -61,13 +61,14 @@ class ItemService
                     'locations' => $locations,
                     'unit_name' => $item->unit->name,
                     'unit_id' => $item->unit->id
-                ]
             ];
         }
         return response()->json([
             'message' => 'Item not found'
         ], 404);
     }
+
+
     public function update($data){
         if(isset($data['locations'])){
         $dataUpdate = Arr::except($data, ['locations']);
