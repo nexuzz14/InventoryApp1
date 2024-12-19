@@ -134,11 +134,10 @@ class TransactionService
     public function getAllTransaction()
     {
         // Ambil data transaksi dengan relasi suppliers
-        $transactions = Transaction::with('requestItem.client')
-            ->select('id', 'created_at', 'total_qty') // Hanya kolom dari tabel 'transactions'
-            ->get();
+        $transactions = Transaction::with('requestItem.client')->get();
 
         // Transformasi data
+        Log::debug($transactions);
         $data = $transactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
