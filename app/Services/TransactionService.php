@@ -45,7 +45,7 @@ class TransactionService
                         }
                     }
                     if($sessionTotalBuy > 0){
-                        $itemsSelected->supplier_id = $itemsSelected->supplier;
+                     $item->suppliers()->attach($itemsSelected['suppliers']);
                     }
                     $item->quantity_buy = $sessionTotalBuy;
                     $item->save();

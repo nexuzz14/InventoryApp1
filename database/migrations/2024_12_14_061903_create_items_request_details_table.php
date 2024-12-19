@@ -17,6 +17,13 @@ return new class extends Migration {
             $table->integer('quantity');
             $table->integer('quantity_buy')->nullable();
         });
+
+        Schema::create('items_request_supplier', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('items_request_detail_id')->constrained('items_request_details')->onDelete('cascade');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**

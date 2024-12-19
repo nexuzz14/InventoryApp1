@@ -53,9 +53,7 @@ class RequestItem extends Model
         return $this->hasOne(Transaction::class);
     }
 
-    public function supllier(){
-        return $this->belongsTo(User::class, 'supplier_id');
-    }
+    
 
     public function user()
     {
