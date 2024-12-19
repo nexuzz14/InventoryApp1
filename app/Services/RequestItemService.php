@@ -40,20 +40,18 @@ class RequestItemService
                     'client_id' => $requestItem->id,
                     'status' => $requestItem->status,
                     'updated_at' => $requestItem->updated_at->format("Y-m-d"),
-                    'request_details' => $requestItem->requestDetails->map(function ($detail) {
+                    'barang' => $requestItem->requestDetails->map(function ($detail) {
                         return [
                             'id' => $detail->id,
                             'quantity' => $detail->quantity,
-                            'quantity_buy' => $detail->quantity_buy,
-                            'item' => [
+                            // 'quantity_buy' => $detail->quantity_buy,
                                 'id' => $detail->item->id ?? null,
                                 'name' => $detail->item->name ?? '',
                                 'uniq_id' => $detail->item->uniq_id ?? '',
                                 'category' => $detail->item->category->name ?? '',
                                 'unit' => $detail->item->unit->name ?? '',
-                                'quantity' => $detail->item->quantity ?? '0.00',
+                                'barang_tersedia' => $detail->item->quantity ?? '0.00',
                                 'price' => $detail->item->price ?? '0.00',
-                            ],
                         ];
                     }),
             ];
