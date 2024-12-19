@@ -35,17 +35,16 @@ class RequestItemService
         ])->find($id);
         if($requestItem){
             $data = [
-                    'id' => $requestItem->id,
+                    'id_permintaan' => $requestItem->id,
                     'staff_id' => $requestItem->id,
                     'client_id' => $requestItem->id,
                     'status' => $requestItem->status,
                     'updated_at' => $requestItem->updated_at->format("Y-m-d"),
                     'barang' => $requestItem->requestDetails->map(function ($detail) {
                         return [
-                            'id' => $detail->id,
-                            'quantity' => $detail->quantity,
-                            // 'quantity_buy' => $detail->quantity_buy,
-                                'id' => $detail->item->id ?? null,
+                                'id_list_permintaan' => $detail->id,
+                                'quantity' => $detail->quantity,
+                                'id_barang' => $detail->item->id ?? null,
                                 'name' => $detail->item->name ?? '',
                                 'uniq_id' => $detail->item->uniq_id ?? '',
                                 'category' => $detail->item->category->name ?? '',

@@ -85,13 +85,14 @@ class TransactionService
                 'total_price' => $transaction->total_price,
                 'dibayarkan' => $transaction->dibayarkan,
                 'status' => $transaction->status,
-                'request_item' => [
+                'perminataan' => [
                     'code' => $transaction->requestItem->code ?? null,
                     'client_name' => $transaction->requestItem->client->name ?? null,
-                    'request_details' => $transaction->requestItem->requestDetails->map(function ($detail) {
+                    'list_barang' => $transaction->requestItem->requestDetails->map(function ($detail) {
                         return [
                             'quantity_buy' => $detail->quantity_buy,
                             'item_name' => $detail->item->name ?? null,
+                            'item_code' => $detail->item->uniq_id ?? null,
                             'item_price' => $detail->item->price ?? null,
                             'suppliers' => $detail->suppliers->map(function ($supplier) {
                                 return $supplier->name ?? null; // Ambil nama supplier
