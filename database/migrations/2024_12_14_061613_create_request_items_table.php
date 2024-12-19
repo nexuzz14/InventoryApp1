@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('processed_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
+        
     }
 
     public function down(): void
