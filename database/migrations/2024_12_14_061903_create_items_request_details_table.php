@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('items_request_detail_id')->constrained('items_request_details')->onDelete('cascade');
             $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
+            $table->bigInteger('quantity')->nullable();
             $table->timestamps();
         });
     }
