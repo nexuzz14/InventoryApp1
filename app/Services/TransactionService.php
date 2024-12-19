@@ -74,13 +74,14 @@ class TransactionService
     }
     public function getDetailTransaction($id) {
         $transaction = Transaction::with([
-            'suppliers', 
-            'requestItem.client', 
-            'requestItem.requestDetails.item'
+            'requestItem.client',
+            'requestItem.requestDetails.item',
+            'requestItem.requestDetails.suppliers'
+
         ])->find($id);
         if( $transaction){
-            
-            
+
+
             $data = [
                 'created_at' => $transaction->created_at,
                 'total_price' => $transaction->total_price,
@@ -97,16 +98,16 @@ class TransactionService
                         ];
                     }),
                 ],
-                'suppliers' => $transaction->suppliers->map(function ($supplier) {
+                'suppliers' => $transaction->requestDetails->suppliers->map(function ($supplier) {
                     return [
-                        'id' => $supplier->id,
-                        'name' => $supplier->name ?? null,
+                        'id' => $supplier->pivot->id,
+                        'name' => $supplier->pivot->name ?? null,
                     ];
                 }),
             ];
-            
+
             return $data;
-            
+
         }
     }
 
@@ -117,20 +118,20 @@ class TransactionService
             // Update dibayarkan menjadi total_price
             $transaction->dibayarkan = $transaction->total_price;
             Log::debug($transaction->requestItem);
-            
+
             // Loop untuk memperbarui quantity item
             foreach ($transaction->requestItem->requestDetails as $req) {
                 $req->item->quantity += $req->quantity_buy;
                 $req->item->save();
             }
-            
+
             $transaction->status = "paid";
-            $transaction->save();            
+            $transaction->save();
             return true;
         }
-        
+
         return false;
-        
+
     }
 
 
