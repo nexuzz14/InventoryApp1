@@ -43,9 +43,10 @@ class RequestItemService
                     'barang' => $requestItem->requestDetails->map(function ($detail) {
                         return [
                                 'id_list_permintaan' => $detail->id,
-                                'quantity' => $detail->quantity,
+                                'quantity_awal' => $detail->quantity,
+                                'quantity_diterima' => $detail->quantity_accepted,
                                 'id_barang' => $detail->item->id ?? null,
-                                'name' => $detail->item->name ?? '',
+                                'nama_barang' => $detail->item->name ?? '',
                                 'uniq_id' => $detail->item->uniq_id ?? '',
                                 'category' => $detail->item->category->name ?? '',
                                 'unit' => $detail->item->unit->name ?? '',
@@ -88,6 +89,7 @@ class RequestItemService
                         'request_id' => $request_items->id,
                         'item_id' => $item['item_id'],
                         'quantity' => $item['quantity'],
+                        'quantity_accepted' => $item['quantity'],
                     ];
                 },
                 $data['items']

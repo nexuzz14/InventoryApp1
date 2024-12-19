@@ -68,9 +68,13 @@ class TransactionController extends Controller
     public function updateItemsRequestDetail(Request $request)
     {
         $data = [
-            "quantity"=> $request->quantity
+            "quantity_accepted"=> $request->quantity
         ];
         $result = $this->requestItemService->updateRequestDetail($request->id, $data);
+
+        if($result){
+            return response()->json()
+        }
         return response()->json($result);
     }
 

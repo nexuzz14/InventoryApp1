@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('request_id')->constrained('request_items')->onDelete('cascade');
             $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
             $table->integer('quantity');
+            $table->integer('quantity_accepted')->nullable();
             $table->integer('quantity_buy')->nullable();
         });
 

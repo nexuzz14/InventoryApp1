@@ -26,9 +26,9 @@ class TransactionService
         foreach ($data['data'] as $itemsSelected) {
 
             $item = $requestDetails->find($itemsSelected['details_id']);
-            $item->quantity = $itemsSelected['quantity'];
+            $item->quantity_accepted = $itemsSelected['quantity'];
             $item->save();
-            if ($item && $item->quantity > 0) {
+            if ($item && $item->quantity_accepted > 0) {
                 if ($itemsSelected['location']) {
                     $sessionTotalBuy = 0;
                     foreach ($itemsSelected['location'] as $dataLocation) {
