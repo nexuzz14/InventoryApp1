@@ -74,9 +74,9 @@ class TransactionService
     }
     public function getDetailTransaction($id) {
         $transaction = Transaction::with([
-            'suppliers', 
-            'requestItem.client', 
-            'requestItem.requestDetails.item'
+            'requestItem.client',
+            'requestItem.requestDetails.item',
+            'requestItem.requestDetails.suppliers'
         ])->find($id);
         if( $transaction){
             
@@ -97,7 +97,7 @@ class TransactionService
                         ];
                     }),
                 ],
-                'suppliers' => $transaction->suppliers->map(function ($supplier) {
+                'suppliers' => $transaction->requestDetails->suppliers->map(function ($supplier) {
                     return [
                         'id' => $supplier->id,
                         'name' => $supplier->name ?? null,
