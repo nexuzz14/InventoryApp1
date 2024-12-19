@@ -79,10 +79,9 @@ class ItemController extends Controller
         $id=$request->id;
         $result = $this->itemService->getLocalData($id);
         if($result){
-            return response()->json([
-                "status"=>"success",
-                "data"=>$result
-            ],200);
+            return response()->json(
+                $result
+            ,200);
         }
         return null;
     }
