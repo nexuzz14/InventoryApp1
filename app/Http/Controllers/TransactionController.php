@@ -42,45 +42,6 @@ class TransactionController extends Controller
             "data"=>$data
         ]);
     }
-    public function getAllRequest()
-    {
-        $data = $this->requestItemService->getAllRequest();
-        
-        return response()->json([
-            "data" => $data
-        ], 200);
-    }
-
-    public function getDetailRequest($id)
-    {
-        $data = $this->requestItemService->getDetailRequest($id);
-
-        if($data){
-            return response()->json([
-                "data" => $data
-            ], 200);
-        }
-        return response()->json([
-            "message"=>"data tidak ditemukan"
-        ], 500);
-    }
-
-    public function updateItemsRequestDetail(Request $request)
-    {
-        $data = [
-            "quantity_accepted"=> $request->quantity
-        ];
-        $result = $this->requestItemService->updateRequestDetail($request->id, $data);
-
-        if($result){
-            return response()->json([
-                "message"=>"berhasil"
-            ]);
-        }
-        return response()->json([
-            "message"=>"gagal"
-        ]);
-    }
 
     // old function
     public function pay($id)
@@ -96,18 +57,7 @@ class TransactionController extends Controller
         ], 500);
     }
     // old function
-    public function delete($id){
-        $result =  $this->transactionService->deleteRequest($id);
-        if ($result){
-            return response()->json([
-                "message"=>"Request Berhasil Dihapus"
-            ]);
-        }
-
-        return response()->json([
-            "message"=>"Request gagal dihapus"
-        ]);
-    }
+ 
     public function storeTransaction(Request $request)
     {
         $result = $this->transactionService->storeTransaction($request->all());

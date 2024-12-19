@@ -72,7 +72,16 @@ class RequestItemService
         }
     }
 
-
+    public function deleteRequest($id)
+    {
+        $data = RequestItem::find($id);
+        if ($data) {
+            $data->delete();
+            return true;
+        }
+        return false;
+    }
+    
     public function storeRequest($data)
     {
         $staff_id = $data['staff_id'];
@@ -89,7 +98,7 @@ class RequestItemService
                         'request_id' => $request_items->id,
                         'item_id' => $item['item_id'],
                         'quantity' => $item['quantity'],
-                        'quantity_accepted' => $item['quantity'],
+                        'quantity_accepted  ' => $item['quantity'],
                     ];
                 },
                 $data['items']

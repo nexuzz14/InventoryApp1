@@ -162,15 +162,7 @@ class TransactionService
         return false;
     }
 
-    public function deleteRequest($id)
-    {
-        $data = RequestItem::find($id);
-        if ($data) {
-            $data->delete();
-            return true;
-        }
-        return false;
-    }
+ 
 
     // public function getAllTransaction()
     // {

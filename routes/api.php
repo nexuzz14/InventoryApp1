@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\chartController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemsRequestController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UnitController;
@@ -71,12 +72,14 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     Route::delete('/client/delete/{id}', [ClientController::class, 'destroy']);
 
 
-    Route::get('/request/get', [TransactionController::class, 'getAllRequest']);
-    Route::get('/request/get/{id}', [TransactionController::class, 'getDetailRequest']);
-    Route::patch('/request/updateDetail', [TransactionController::class, 'updateItemsRequestDetail']);
-
-
+    Route::get('/request/get', [ItemsRequestController::class, 'getAllRequest']);
+    Route::get('/request/get/{id}', [ItemsRequestController::class, 'getDetailRequest']);
+    Route::patch('/request/updateDetail', [ItemsRequestController::class, 'updateItemsRequestDetail']);
+    //storeRequest
     Route::post('/transaction/store', [TransactionController::class, 'storeTransaction']);
+    
+
+
     // Route::get('/transaction/get', [TransactionController::class, 'getAllInvoice']);
     Route::get('/transaction/get', [TransactionController::class, 'getAllTransactions']);
     Route::get('/transaction/get/{id}', [TransactionController::class, 'getDetailTransactions']);
