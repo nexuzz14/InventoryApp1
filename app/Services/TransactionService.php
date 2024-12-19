@@ -26,6 +26,8 @@ class TransactionService
         foreach ($data['data'] as $itemsSelected) {
 
             $item = $requestDetails->find($itemsSelected['details_id']);
+            $item->quantity = $itemsSelected['quantity'];
+            $item->save();
             if ($item && $item->quantity > 0) {
                 if ($itemsSelected['location']) {
                     $sessionTotalBuy = 0;
@@ -105,24 +107,25 @@ class TransactionService
     }
 
     public function pay($id){
-        // $transaction = Transaction::with('requestItem.requestDetails.item')->find($id);
+        $transaction = Transaction::with('requestItem.requestDetails.item')->find($id);
 
-        // if ($transaction) {
-        //     // Update dibayarkan menjadi total_price
-        //     $transaction->dibayarkan = $transaction->total_price;
+        if ($transaction) {
+            // Update dibayarkan menjadi total_price
+            $transaction->dibayarkan = $transaction->total_price;
+            Log::debug($transaction->requestItem);
             
-        //     // Loop untuk memperbarui quantity item
-        //     foreach ($transaction->requestItem as $req) {
-        //         Log::debug($req);
-        //     }
+            // Loop untuk memperbarui quantity item
+            foreach ($transaction->requestItem->requestDetails as $req) {
+                $req->item->quantity += $req->quantity_buy;
+                $req->item->save();
+            }
             
-        //     // Simpan perubahan pada transaksi
-        //     $transaction->save();
-            
-        //     return true;
-        // }
+            $transaction->status = "paid";
+            $transaction->save();            
+            return true;
+        }
         
-        // return false;
+        return false;
         
     }
 
