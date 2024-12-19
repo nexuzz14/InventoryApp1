@@ -73,9 +73,13 @@ class TransactionController extends Controller
         $result = $this->requestItemService->updateRequestDetail($request->id, $data);
 
         if($result){
-            return response()->json()
+            return response()->json([
+                "message"=>"berhasil"
+            ]);
         }
-        return response()->json($result);
+        return response()->json([
+            "message"=>"gagal"
+        ]);
     }
 
     // old function
