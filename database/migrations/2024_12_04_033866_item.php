@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
             $table->integer('quantity')->default(0);
+            $table->integer('quantity_gudang')->default(0);
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->timestamps();

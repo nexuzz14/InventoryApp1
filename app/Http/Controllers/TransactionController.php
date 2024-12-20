@@ -65,8 +65,7 @@ class TransactionController extends Controller
             $result = "tidak ada transaksi";
         }
         return response()->json([
-            'message' => "succes",
-            "data" => $result
+            'message' =>  $result,
         ]);
     }
 

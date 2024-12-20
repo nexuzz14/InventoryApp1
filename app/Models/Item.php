@@ -18,12 +18,12 @@ class Item extends Model
        
     }
 
-    // public function calculateQty()
-    // {
-    //     $totalQuantity = $this->locations()->sum('quantity');
-    //     $this->quantity = $totalQuantity;
-    //     $this->saveQuietly();
-    // }
+    public function calculateQty()
+    {
+        $totalQuantity = $this->locations()->sum('quantity');
+        $this->quantity_gudang = $totalQuantity;
+        $this->saveQuietly();
+    }
 
     public function category()
     {

@@ -26,6 +26,9 @@ class TransactionService
         foreach ($data['data'] as $itemsSelected) {
 
             $item = $requestDetails->find($itemsSelected['details_id']);
+            if(!$item){
+                return "id list barang pada permintaan tidak sah";
+            }
             $item->quantity_accepted = $itemsSelected['quantity'];
             $item->save();
             if ($item && $item->quantity_accepted > 0) {
@@ -70,8 +73,12 @@ class TransactionService
                 'total_appoved_items' => $totalApprovedItems,
                 'status' => 'unpaid',
             ]);
-            return $transaction;
+            return "perhasil, pembelian ditambahkan";
+
         }
+
+        return "berhasil, stok gudang telah dikurangi";
+        
     }
     public function getDetailTransaction($id)
     {

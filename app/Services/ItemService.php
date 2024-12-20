@@ -54,6 +54,7 @@ class ItemService
                     'category_id' => $item->category_id,
                     'category_name' => $item->category->name,
                     'quantity' => $item->quantity,
+                    'stok_gudang' => $item->quantity_gudang,
                     'description' => $item->description,
                     'price' => $item->price,
                     'created_at' => $item->created_at,

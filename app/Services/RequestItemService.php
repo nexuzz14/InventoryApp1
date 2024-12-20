@@ -50,7 +50,7 @@ class RequestItemService
                                 'uniq_id' => $detail->item->uniq_id ?? '',
                                 'category' => $detail->item->category->name ?? '',
                                 'unit' => $detail->item->unit->name ?? '',
-                                'barang_tersedia' => $detail->item->quantity ?? '0.00',
+                                'barang_tersedia' => $detail->item->quantity_gudang ?? '0.00',
                                 'price' => $detail->item->price ?? '0.00',
                         ];
                     }),
