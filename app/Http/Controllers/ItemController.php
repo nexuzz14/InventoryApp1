@@ -69,11 +69,11 @@ class ItemController extends Controller
         if (!$result) {
             return response()->json([
                 "message"=>"barang gagal ditambahkan"
-            ]);
+            ],422);
         }
         return response()->json([
             "message"=>"barang berhasil ditambahkan"
-        ]);
+        ],201);
     }
     public function getLocalData(Request $request){
         $id=$request->id;
@@ -146,7 +146,7 @@ class ItemController extends Controller
 
         return response()->json([
             "message"=>"Gagal Menambahkan"
-        ], 401);
+        ], 422);
     }
     public function destroy($id)
     {

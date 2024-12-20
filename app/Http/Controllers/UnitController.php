@@ -28,11 +28,11 @@ class UnitController extends Controller
         if (!$result) {
             return response()->json([
                 'message'=>'Gagal menambah satuan',
-            ]);
+            ],422);
         }
         return response()->json([
             'message' => 'berhasil menambah satuan'
-        ]);
+        ],201);
     }
 
     public function destroy(Request $request)
@@ -41,11 +41,11 @@ class UnitController extends Controller
         if (!$result) {
             return response()->json([
                 'message' => 'gagal menghapus satuan'
-            ]);
+            ],404);
         }
         return response()->json([
             'message' => 'berhasil menghapus satuan'
-        ]);
+        ],200);
     }
 
     public function update(Request $request)
@@ -54,11 +54,11 @@ class UnitController extends Controller
         if (!$result) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengubah satuan' . $request->name
-            ]);
+            ],404);
         }
         return response()->json([
             'message' => 'berhasil mengubah satuan'
-        ]);
+        ],200);
     }
 
     /**

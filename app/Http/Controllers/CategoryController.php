@@ -25,18 +25,26 @@ class CategoryController extends Controller
     }
 
 
-    public function store(StoreCategoryRequest $category)
+    public function store(StoreCategoryRequest $request)
     {
-        $result = $this->categoryServices->storeCategory($category->request->all());
+
+        $data = $request->validated();
+
+        $result = $this->categoryServices->storeCategory($data);
+
         if (!$result) {
-            return  response()->json([
-                "messages" => "Gagal menambah kategori"
-            ]);
+            return response()->json([
+                "status" => "error",
+                "message" => "Gagal menambah kategori"
+            ], 422);
         }
-        return  response()->json([
-            "messages" => "berhasil menambah kategori"
-        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Berhasil menambah kategori"
+        ], 201);
     }
+
 
 
 
@@ -68,11 +76,11 @@ class CategoryController extends Controller
         if (!$result) {
             return response()->json([
                 'messages' => 'Terjadi kesalahan saat mengubah kategori' . $request->name
-            ]);
+            ],404);
         }
         return response()->json([
-            'messages' => 'berhasil mengubah kategori'
-        ]);
+            'messages' => 'Berhasil mengubah kategori'
+        ],200);
     }
 
     public function destroy(Request $request)
@@ -80,11 +88,11 @@ class CategoryController extends Controller
         $result = $this->categoryServices->deleteCategory($request->id);
         if (!$result) {
             return response()->json([
-                'messages' => 'gagal menghapus kategori'
-            ], 200);
+                'messages' => 'Gagal menghapus kategori'
+            ], 404);
         }
         return response()->json([
-            'messages' => 'berhasil menghapus kategori'
-        ]);
+            'messages' => 'Berhasil menghapus kategori'
+        ], 204);
     }
 }

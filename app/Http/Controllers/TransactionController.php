@@ -7,6 +7,7 @@ use App\Services\RequestItemService;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
@@ -17,7 +18,7 @@ class TransactionController extends Controller
         $this->requestItemService = $requestItemService;
         $this->transactionService = $transactionService;
     }
- 
+
     public function store(Request $request)
     {
         $data = $request->all();
@@ -27,41 +28,48 @@ class TransactionController extends Controller
         return response()->json([
             "message" => "berhasil"
         ], 200);
-
     }
-    public function getAllTransactions(){
+    public function getAllTransactions()
+    {
         $data = $this->transactionService->getAllTransaction();
-        return response()->json([
-            "data"=>$data
-        ]);
+        return response()->json(
+            $data,
+            200,
+            [
+                "Content-Type" => "application/json"
+            ],
+
+        );
     }
 
-    public function getDetailTransactions($id){
+    public function getDetailTransactions($id)
+    {
         $data = $this->transactionService->getDetailTransaction($id);
         return response()->json([
-            "data"=>$data
-        ]);
+            "data" => $data
+        ], 200);
     }
 
     // old function
     public function pay($id)
     {
         $result =  $this->transactionService->pay($id);
-        if($result){
+        if ($result) {
             return response()->json([
-                "message"=>"berhasil mengubah data"
+                "message" => "berhasil mengubah data"
             ], 200);
         };
         return response()->json([
-            "message"=>"data tidak ditemukan"
+            "message" => "data tidak ditemukan"
         ], 500);
     }
     // old function
- 
+
     public function storeTransaction(Request $request)
     {
+        Log::debug($request);
         $result = $this->transactionService->storeTransaction($request->all());
-        if($result == null){
+        if ($result == null) {
             $result = "tidak ada transaksi";
         }
         return response()->json([

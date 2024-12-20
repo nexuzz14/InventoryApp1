@@ -32,7 +32,7 @@ class TransactionService
             $item->quantity_accepted = $itemsSelected['quantity'];
             $item->save();
             if ($item && $item->quantity_accepted > 0) {
-                
+
                 if ($itemsSelected['location']) {
                     $sessionTotalBuy = 0;
                     foreach ($itemsSelected['location'] as $dataLocation) {
@@ -73,12 +73,12 @@ class TransactionService
                 'total_appoved_items' => $totalApprovedItems,
                 'status' => 'unpaid',
             ]);
-            return "perhasil, pembelian ditambahkan";
+            return "Berhasil, pembelian ditambahkan";
 
         }
 
         return "berhasil, stok gudang telah dikurangi";
-        
+
     }
     public function getDetailTransaction($id)
     {
@@ -109,7 +109,7 @@ class TransactionService
                     }),
                 ],
             ];
-        
+
             return $data;
         }
     }
@@ -170,7 +170,7 @@ class TransactionService
         return false;
     }
 
- 
+
 
     // public function getAllTransaction()
     // {

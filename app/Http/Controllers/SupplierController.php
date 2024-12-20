@@ -32,12 +32,12 @@ class SupplierController extends Controller
         if (!$result) {
             return response()->json([
               'message' => 'Gagal menambah supplier'
-            ]);
+            ],422);
         }
 
         return response()->json([
            'message' => "Berhasil menambah supplier"
-        ]);
+        ],201);
     }
 
     public function update(Request $request)
@@ -49,12 +49,12 @@ class SupplierController extends Controller
     if (!$result) {
         return response()->json([
             'message' => 'Terjadi kesalahan saat mengubah supplier ' . $request->name
-        ]);
+        ],404);
     }
 
     return response()->json([
         'message' => 'Berhasil mengubah supplier'
-    ]);
+    ],200);
 }
 
 
@@ -64,12 +64,12 @@ class SupplierController extends Controller
         if (!$result) {
             return response()->json([
                 'message'=> 'gagal menghapus supplier'
-            ]);
+            ],404);
         }
 
         return response()->json([
             'message'=> 'berhasil menghapus supplier'
-        ]);
+        ],200);
     }
 
     /**

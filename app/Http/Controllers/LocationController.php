@@ -27,11 +27,11 @@ class LocationController extends Controller
         if (!$result) {
             return response()->json([
                 "message" => "gagal menambah lokasi"
-            ]);
+            ],422);
         }
         return response()->json([
             "message" => "berhasil menambah lokasi"
-        ]);
+        ],201);
     }
     public function destroy($id)
     {
@@ -39,11 +39,11 @@ class LocationController extends Controller
         if (!$result) {
             return response()->json([
                 "message" => "Gagal menghapus lokasi"
-            ]);
+            ],404);
         }
         return response()->json([
             "message" => "Berhasil menghapus lokasi"
-        ]);
+        ],200);
     }
     public function update(Request $request)
     {
@@ -51,11 +51,11 @@ class LocationController extends Controller
         if (!$result) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengubah ketegori' . $request->name
-            ]);
+            ],404);
         }
         return response()->json([
             "message" => "Berhasil mengubah lokasi"
-        ]);
+        ],200);
     }
 
     /**

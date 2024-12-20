@@ -21,10 +21,8 @@ class ItemsRequestController extends Controller
   public function getAllRequest()
   {
       $data = $this->requestService->getAllRequest();
-      
-      return response()->json([
-          "data" => $data
-      ], 200);
+
+      return response()->json($data, 200);
   }
 
   public function getDetailRequest($id)
@@ -37,8 +35,8 @@ class ItemsRequestController extends Controller
           ], 200);
       }
       return response()->json([
-          "message"=>"data tidak ditemukan"
-      ], 500);
+          "message"=>"Data tidak ditemukan"
+      ], 404);
   }
 
 
@@ -51,12 +49,12 @@ class ItemsRequestController extends Controller
 
       if($result){
           return response()->json([
-              "message"=>"berhasil"
-          ]);
+              "message"=>"Berhasil update item"
+          ],200);
       }
       return response()->json([
-          "message"=>"gagal"
-      ]);
+          "message"=>"Gagal update item"
+      ], 404);
   }
 
   public function delete($id){
@@ -64,12 +62,12 @@ class ItemsRequestController extends Controller
     if ($result){
         return response()->json([
             "message"=>"Request Berhasil Dihapus"
-        ]);
+        ],200);
     }
 
     return response()->json([
         "message"=>"Request gagal dihapus"
-    ]);
+    ],404);
 }
 
   public function store(Request $request)

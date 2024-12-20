@@ -19,7 +19,8 @@ class RequestItemService
                 'request_items.code as kode',
                 'request_items.created_at as tanggal',
                 'users.name as namaStaf',
-                'clients.name as namaClient'
+                'clients.name as namaClient',
+                'request_items.status as status'
             )
             ->join('users', 'request_items.staff_id', '=', 'users.id')
             ->join('clients', 'request_items.client_id', '=', 'clients.id')
@@ -81,7 +82,7 @@ class RequestItemService
         }
         return false;
     }
-    
+
     public function storeRequest($data)
     {
         $staff_id = $data['staff_id'];

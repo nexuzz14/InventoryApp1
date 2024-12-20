@@ -31,30 +31,30 @@ class ClientController extends Controller
         if (!$result) {
             return response()->json([
               'message' => 'Gagal menambah client'
-            ]);
+            ],422);
         }
 
         return response()->json([
            'message' => "Berhasil menambah client"
-        ]);
+        ],201);
     }
 
     public function update(Request $request)
-{
-    $data = $request->only(["name", "address", "phone"]); // Ambil data yang diizinkan
+    {
+        $data = $request->only(["name", "address", "phone"]); // Ambil data yang diizinkan
 
-    $result = $this->ClientService->update($request->id, $data);
+        $result = $this->ClientService->update($request->id, $data);
 
-    if (!$result) {
+        if (!$result) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengubah client ' . $request->name
+            ],404);
+        }
+
         return response()->json([
-            'message' => 'Terjadi kesalahan saat mengubah client ' . $request->name
-        ]);
+            'message' => 'Berhasil mengubah client'
+        ],200);
     }
-
-    return response()->json([
-        'message' => 'Berhasil mengubah client'
-    ]);
-}
 
 
     public function destroy($id)
@@ -63,12 +63,12 @@ class ClientController extends Controller
         if (!$result) {
             return response()->json([
                 'message'=> 'gagal menghapus client'
-            ]);
+            ],404);
         }
 
         return response()->json([
             'message'=> 'berhasil menghapus client'
-        ]);
+        ],200);
     }
 
     /**
