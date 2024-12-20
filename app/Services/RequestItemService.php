@@ -98,7 +98,7 @@ class RequestItemService
                         'request_id' => $request_items->id,
                         'item_id' => $item['item_id'],
                         'quantity' => $item['quantity'],
-                        'quantity_accepted  ' => $item['quantity'],
+                        'quantity_accepted' => $item['quantity'],
                     ];
                 },
                 $data['items']

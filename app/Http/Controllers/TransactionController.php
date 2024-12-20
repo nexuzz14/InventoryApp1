@@ -61,6 +61,9 @@ class TransactionController extends Controller
     public function storeTransaction(Request $request)
     {
         $result = $this->transactionService->storeTransaction($request->all());
+        if($result == null){
+            $result = "tidak ada transaksi";
+        }
         return response()->json([
             'message' => "succes",
             "data" => $result

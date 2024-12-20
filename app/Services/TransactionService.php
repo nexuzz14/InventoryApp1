@@ -29,6 +29,7 @@ class TransactionService
             $item->quantity_accepted = $itemsSelected['quantity'];
             $item->save();
             if ($item && $item->quantity_accepted > 0) {
+                
                 if ($itemsSelected['location']) {
                     $sessionTotalBuy = 0;
                     foreach ($itemsSelected['location'] as $dataLocation) {
