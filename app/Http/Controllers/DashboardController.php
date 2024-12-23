@@ -8,7 +8,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Menggabungkan query untuk mendapatkan semua data yang dibutuhkan
         $dashboardData = DB::table('categories')
             ->selectRaw('
                 COUNT(DISTINCT categories.id) as totalCategories,
@@ -17,13 +16,26 @@ class DashboardController extends Controller
                 (SELECT COUNT(*) FROM request_items) as totalRequests
             ')
             ->first();
-
-        // Mengembalikan data dalam format JSON
+        $topItems = DB::table('items_request_details')
+            ->join('items', 'items.id', '=', 'items_request_details.item_id')
+            ->select('items_request_details.item_id', 'items.name')
+            ->groupBy('items_request_details.item_id', 'items.name')
+            ->orderBy(DB::raw('SUM(items_request_details.quantity)'), 'desc')
+            ->get();
+    
+        $lowStockItems = DB::table('items')
+            ->select('id', 'name', 'quantity')
+            ->where('quantity', '<', 10)
+            ->orderBy('quantity', 'asc') 
+            ->get();
         return response()->json([
             'category' => $dashboardData->totalCategories,
             'suppliers' => $dashboardData->totalSuppliers,
             'items' => $dashboardData->totalItems,
             'totalRequest' => $dashboardData->totalRequests,
+            'topItems' => $topItems,
+            'lowStockItems' => $lowStockItems 
         ]);
     }
+    
 }

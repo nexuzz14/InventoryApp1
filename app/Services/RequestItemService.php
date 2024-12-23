@@ -73,6 +73,18 @@ class RequestItemService
         }
     }
 
+    public function getTopItems()
+    {
+        $topItems = DB::table('item_request_details')
+            ->join('items', 'items.id', '=', 'item_request_details.item_id') // Join tabel items
+            ->select('item_request_details.item_id', 'items.name', DB::raw('SUM(item_request_details.quantity) as total_quantity'))
+            ->groupBy('item_request_details.item_id', 'items.name')
+            ->orderBy('total_quantity', 'desc')
+            ->get();
+    
+        return $topItems;
+    }
+    
     public function deleteRequest($id)
     {
         $data = RequestItem::find($id);
