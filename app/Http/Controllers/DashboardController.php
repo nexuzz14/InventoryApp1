@@ -24,6 +24,7 @@ class DashboardController extends Controller
             ->where('request_items.created_at', '>=', now()->subMonth())
             ->groupBy('items_request_details.item_id', 'items.name')
             ->orderBy('total_quantity', 'desc')
+            ->limit(3) // Batas 3 item
             ->get();
     
         $topItemsLastYear = DB::table('items_request_details')
@@ -35,23 +36,15 @@ class DashboardController extends Controller
             ->orderBy('total_quantity', 'desc')
             ->get();
     
-        $mostRequestedItemsLastMonth = DB::table('items_request_details')
-            ->join('items', 'items.id', '=', 'items_request_details.item_id')
-            ->join('request_items', 'request_items.id', '=', 'items_request_details.request_id')
-            ->select('items_request_details.item_id', 'items.name', DB::raw('COUNT(items_request_details.id) as request_count'))
-            ->where('request_items.created_at', '>=', now()->subMonth())
-            ->groupBy('items_request_details.item_id', 'items.name')
-            ->orderBy('request_count', 'desc')
-            ->get();
+        $mostRequestedItemsLastMonth = DB::table('request_items')
+            ->select(DB::raw('COUNT(*) as total_requests'))
+            ->where('created_at', '>=', now()->subMonth())
+            ->first();
     
-        $mostRequestedItemsLastYear = DB::table('items_request_details')
-            ->join('items', 'items.id', '=', 'items_request_details.item_id')
-            ->join('request_items', 'request_items.id', '=', 'items_request_details.request_id')
-            ->select('items_request_details.item_id', 'items.name', DB::raw('COUNT(items_request_details.id) as request_count'))
-            ->where('request_items.created_at', '>=', now()->subYear())
-            ->groupBy('items_request_details.item_id', 'items.name')
-            ->orderBy('request_count', 'desc')
-            ->get();
+        $mostRequestedItemsLastYear = DB::table('request_items')
+            ->select(DB::raw('COUNT(*) as total_requests'))
+            ->where('created_at', '>=', now()->subYear())
+            ->first();
     
         $lowStockItems = DB::table('items')
             ->select('id', 'name', 'quantity')
@@ -66,8 +59,8 @@ class DashboardController extends Controller
             'totalRequest' => $dashboardData->totalRequests,
             'topItemsLastMonth' => $topItemsLastMonth,
             'topItemsLastYear' => $topItemsLastYear,
-            'mostRequestedItemsLastMonth' => $mostRequestedItemsLastMonth,
-            'mostRequestedItemsLastYear' => $mostRequestedItemsLastYear,
+            'mostRequestedItemsLastMonth' => $mostRequestedItemsLastMonth->total_requests,
+            'mostRequestedItemsLastYear' => $mostRequestedItemsLastYear->total_requests,
             'lowStockItems' => $lowStockItems
         ]);
     }
