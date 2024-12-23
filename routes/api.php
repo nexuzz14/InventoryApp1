@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\chartController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemsRequestController;
 use App\Http\Controllers\TransactionController;
@@ -15,6 +16,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
 
 Route::post('/user', function (Request $request) {
     return $request->user();
@@ -77,7 +84,7 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     Route::patch('/request/updateDetail', [ItemsRequestController::class, 'updateItemsRequestDetail']);
     //storeRequest
     Route::post('/transaction/store', [TransactionController::class, 'storeTransaction']);
-    
+
 
 
     // Route::get('/transaction/get', [TransactionController::class, 'getAllInvoice']);

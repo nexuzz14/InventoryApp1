@@ -2,30 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\HistoryRequestChart;
-use App\Charts\MonthlyUsersChart;
-use App\Services\CategoryService;
-use App\Services\ItemService;
-use App\Services\SupplierService;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    protected $categoryService;
-    protected $supplierService;
-    protected $itemService;
-    public function __construct(CategoryService $categoryService, SupplierService $supplierService, ItemService $itemService)
+    public function index()
     {
-        $this->categoryService = $categoryService;
-        $this->supplierService = $supplierService;
-        $this->itemService = $itemService;
-    }
-    public function index(MonthlyUsersChart $chart, HistoryRequestChart $historyRequestChart)
-    {
-        $category = $this->categoryService->getTotalCategory();
-        $suppliers = $this->supplierService->getTotalSuppliers();
-        $items = $this->itemService->getTotalItems();
-        $totalRequest = DB::table('request_items')->count();
-        return view('dashboard', ['chart' => $chart->build(), 'historyRequestChart' => $historyRequestChart->build(), 'category' => $category, 'suppliers' => $suppliers, 'items' => $items, 'totalRequest' => $totalRequest]);
+        // Menggabungkan query untuk mendapatkan semua data yang dibutuhkan
+        $dashboardData = DB::table('categories')
+            ->selectRaw('
+                COUNT(DISTINCT categories.id) as totalCategories,
+                (SELECT COUNT(*) FROM suppliers) as totalSuppliers,
+                (SELECT COUNT(*) FROM items) as totalItems,
+                (SELECT COUNT(*) FROM request_items) as totalRequests
+            ')
+            ->first();
+
+        // Mengembalikan data dalam format JSON
+        return response()->json([
+            'category' => $dashboardData->totalCategories,
+            'suppliers' => $dashboardData->totalSuppliers,
+            'items' => $dashboardData->totalItems,
+            'totalRequest' => $dashboardData->totalRequests,
+        ]);
     }
 }
