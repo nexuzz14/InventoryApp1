@@ -34,41 +34,42 @@ class RequestItemService
             'client',
             'user'
         ])->find($id);
-        if($requestItem){
+        if ($requestItem) {
             $data = [
-                    'id_permintaan' => $requestItem->id,
-                    'staff_id' => $requestItem->id,
-                    'client_id' => $requestItem->id,
-                    'status' => $requestItem->status,
-                    'updated_at' => $requestItem->updated_at->format("Y-m-d"),
-                    'barang' => $requestItem->requestDetails->map(function ($detail) {
-                        return [
-                                'id_list_permintaan' => $detail->id,
-                                'quantity_awal' => $detail->quantity,
-                                'quantity_diterima' => $detail->quantity_accepted,
-                                'id_barang' => $detail->item->id ?? null,
-                                'nama_barang' => $detail->item->name ?? '',
-                                'uniq_id' => $detail->item->uniq_id ?? '',
-                                'category' => $detail->item->category->name ?? '',
-                                'unit' => $detail->item->unit->name ?? '',
-                                'barang_tersedia' => $detail->item->quantity_gudang ?? '0.00',
-                                'price' => $detail->item->price ?? '0.00',
-                        ];
-                    }),
+                'id_permintaan' => $requestItem->id,
+                'staff_id' => $requestItem->id,
+                'client_id' => $requestItem->id,
+                'status' => $requestItem->status,
+                'total_diminta' => $requestItem->requestDetails->sum('quantity'),
+                'total_real' => $requestItem->requestDetails->sum('quantity_accepted'),
+                'updated_at' => $requestItem->updated_at->format("Y-m-d"),
+                'barang' => $requestItem->requestDetails->map(function ($detail) {
+                    return [
+                        'id_list_permintaan' => $detail->id,
+                        'id_barang' => $detail->item->id ?? null,
+                        'nama_barang' => $detail->item->name ?? '',
+                        'quantity_awal' => $detail->quantity,
+                        'quantity_diterima' => $detail->quantity_accepted,
+                        'uniq_id' => $detail->item->uniq_id ?? '',
+                        'category' => $detail->item->category->name ?? '',
+                        'unit' => $detail->item->unit->name ?? '',
+                        'barang_tersedia' => $detail->item->quantity_gudang ?? '0.00',
+                        'price' => $detail->item->price ?? '0.00',
+                    ];
+                }),
             ];
 
             return $data;
         }
 
         return "data tidak ditemukan";
-
-
     }
-    public function updateRequestDetail($id, $data){
-        try{
+    public function updateRequestDetail($id, $data)
+    {
+        try {
             ItemsRequestDetail::find($id)->update($data);
             return true;
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -81,10 +82,10 @@ class RequestItemService
             ->groupBy('item_request_details.item_id', 'items.name')
             ->orderBy('total_quantity', 'desc')
             ->get();
-    
+
         return $topItems;
     }
-    
+
     public function deleteRequest($id)
     {
         $data = RequestItem::find($id);
