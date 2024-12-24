@@ -40,8 +40,10 @@ class RequestItemService
                 'staff_id' => $requestItem->id,
                 'client_id' => $requestItem->id,
                 'status' => $requestItem->status,
-                'total_diminta' => $requestItem->requestDetails->sum('quantity'),
-                'total_real' => $requestItem->requestDetails->sum('quantity_accepted'),
+                'total_diminta' => $requestItem->requestDetails->count(),
+                'total_real' => $requestItem->requestDetails->filter(function ($detail) {
+                    return $detail->quantity_accepted != 0; 
+                })->count(),
                 'updated_at' => $requestItem->updated_at->format("Y-m-d"),
                 'barang' => $requestItem->requestDetails->map(function ($detail) {
                     return [
