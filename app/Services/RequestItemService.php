@@ -98,6 +98,8 @@ class RequestItemService
         return false;
     }
 
+   
+
     public function storeRequest($data)
     {
         $staff_id = $data['staff_id'];
@@ -120,7 +122,7 @@ class RequestItemService
                 $data['items']
             )
         );
-
-        return $result;
+        
+        return $request_items;
     }
 }

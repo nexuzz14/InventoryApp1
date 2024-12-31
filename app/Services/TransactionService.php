@@ -2,18 +2,22 @@
 
 namespace App\Services;
 
-use App\Models\Item;
 use App\Models\RequestItem;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\ItemService;
+use App\Services\RequestItemService;
 
 class TransactionService
 {
     protected $itemService;
-    public function __construct(ItemService $ItemService)
+    protected $requestItemService;
+
+  
+    public function __construct(ItemService $ItemService, RequestItemService $requestItemService)
     {
+        $this->requestItemService = $requestItemService;
         $this->itemService = $ItemService;
     }
     public function storeTransaction($data)
@@ -74,12 +78,54 @@ class TransactionService
                 'status' => 'unpaid',
             ]);
             return "Berhasil, pembelian ditambahkan";
-
         }
 
         return "berhasil, stok gudang telah dikurangi";
 
     }
+
+
+    public function new($data)
+    {
+        DB::beginTransaction();
+    
+        try {
+            $request = $this->requestItemService->storeRequest($data);
+            $details = RequestItem::with('requestDetails.item')->find($request->id);
+            Log::debug($details);
+            $subTotal = 0;
+            $totalQty = 0;
+    
+            foreach ($details->requestDetails as $detail) {
+            Log::debug($detail);
+
+                $detail->quantity_buy = $detail->quantity;
+                $subTotal += ($detail->quantity * $detail->item->price);
+                $totalQty += $detail->quantity;
+                $detail->save();
+            }
+    
+            $totalApprovedItems = $details->count();
+    
+            $transaction = Transaction::create([
+                'staff_id' => $request['staff_id'],
+                'request_id' => $request->id,
+                'total_qty' => $totalQty,
+                'total_price' => $subTotal,
+                'total_appoved_items' => $totalApprovedItems,
+                'status' => 'unpaid',
+            ]);
+    
+            DB::commit();
+    
+            return $transaction;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e;
+
+        }
+    }
+    
     public function getDetailTransaction($id)
     {
         $transaction = Transaction::with([

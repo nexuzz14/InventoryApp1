@@ -50,6 +50,22 @@ class TransactionController extends Controller
         ], 200);
     }
 
+    public function create(Request $request){
+        $data = $request->all();
+        $data['staff_id'] = $request->user()->id;
+        $result =   $this->transactionService->new($data);
+
+        if($result){
+            return response()->json([
+                "message"=>"berhasil menambah data"
+            ]);
+        }else{
+            return response()->json([
+                "message"=>"terjadi kesalahan",
+                "error"=>$result
+            ]); 
+        }
+    }
     // old function
     public function pay($id)
     {

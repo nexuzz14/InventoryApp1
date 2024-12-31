@@ -84,6 +84,7 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     Route::patch('/request/updateDetail', [ItemsRequestController::class, 'updateItemsRequestDetail']);
     //storeRequest
     Route::post('/transaction/store', [TransactionController::class, 'storeTransaction']);
+    Route::post('/transaction/create', [TransactionController::class, 'create']);
 
 
 
