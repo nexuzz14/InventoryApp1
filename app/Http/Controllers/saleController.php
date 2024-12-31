@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Services\SaleService;
 use Illuminate\Http\Request;
 
+use function Illuminate\Log\log;
+
+
+
 class saleController extends Controller
 {
     protected $saleService;
@@ -19,12 +23,12 @@ class saleController extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Sale accepted and status updated to "bayar".'
-                ], 200); 
+                ], 200);
             } else {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'There was an error during the accept process.'
-                ], 400); 
+                ], 400);
             }
         }
 
@@ -50,5 +54,43 @@ class saleController extends Controller
             "error"=>$result
         ],200);
 
+    }
+
+    public function getAllSales()
+    {
+        try {
+            $result = $this->saleService->getAllSales();
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Sales data retrieved successfully",
+                "data" => $result,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => "error",
+                "message" => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+    public function getItemLocations($itemId)
+    {
+        try {
+            // Gunakan SaleService untuk mendapatkan data gudang
+            $result = $this->saleService->getItemLocations($itemId);
+
+                return response()->json([
+                "status" => "success",
+                "data" => $result
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => "error",
+                "message" => $e->getMessage()
+            ], 500);
+        }
     }
 }
