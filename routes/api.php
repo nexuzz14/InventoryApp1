@@ -9,6 +9,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemsRequestController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\saleController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -85,6 +86,9 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
     //storeRequest
     Route::post('/transaction/store', [TransactionController::class, 'storeTransaction']);
     Route::post('/transaction/create', [TransactionController::class, 'create']);
+
+
+    Route::post('/sale/store', [saleController::class, 'create']);
 
 
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->string("code_invoice", 255);
+            $table->string("code_invoice", 255)->nullable();
             $table->string("code_proyek", 255);
             $table->foreignId('client_id')->constrained("clients")->onDelete('cascade');
             $table->decimal('total', 15, 2)->nullable();

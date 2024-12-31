@@ -35,7 +35,12 @@ class Item extends Model
         return $this->belongsTo(Unit::class);
     }
 
-
+    public function sales()
+    {
+        return $this->belongsToMany(Sale::class, 'item_sale')
+                    ->withPivot('quantity', 'total')
+                    ->withTimestamps();
+    }
 
     public function locations()
     {
