@@ -9,47 +9,63 @@ use Illuminate\Support\Facades\Log;
 
 class SaleService
 {
-  public function create($data)
-  {
+    public function create($data)
+    {
+        DB::beginTransaction();
 
-    DB::beginTransaction();
+        try {
+            // Buat entri untuk Sale
+            $sale = Sale::create([
+                'code_proyek' => $data['code_proyek'],
+                'client_id' => $data['client_id'],
+            ]);
 
-    try {
-      $sale = Sale::create([
-        'code_proyek' => $data['code_proyek'],
-        'client_id' => $data['client_id'],
-      ]);
+            // Iterasi melalui items
+            if (isset($data['items']) && is_array($data['items'])) {
+                foreach ($data['items'] as $item) {
+                    if (isset($item['location']) && is_array($item['location'])) {
+                        foreach ($item['location'] as $location) {
+                            // Ambil harga dari database
+                            $itemData = \App\Models\Item::find($item['item_id']);
+                            if (!$itemData) {
+                                throw new \Exception("Item dengan ID {$item['item_id']} tidak ditemukan.");
+                            }
 
-      if (isset($data['items']) && is_array($data['items'])) {
-        foreach ($data['items'] as $item) {
-          $itemSale = new ItemSale([
-            'sale_id' => $sale->id,
-            'item_id' => $item['item_id'],
-            'quantity' => $item['quantity'],
-          ]);
+                            $total = $location['quantity'] * $itemData->price; // Hitung total berdasarkan harga item
 
-          $itemSale->total = $itemSale->calculateTotal();
-          $itemSale->save();
+                            // Tambahkan item ke ItemSale
+                            ItemSale::create([
+                                'sale_id' => $sale->id,
+                                'item_id' => $item['item_id'],
+                                'quantity' => $location['quantity'],
+                                'total' => $total,
+                            ]);
+                        }
+                    }
+                }
+            }
 
-          $sale->total = $sale->calculateTotal();
-          $sale->save();
+            // Hitung dan simpan total untuk Sale
+            $sale->total = $sale->calculateTotal();
+            $sale->save();
+
+            DB::commit();
+            return $sale;
+        } catch (\Exception $e) {
+            Log::error('Error in Sale creation:', [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            DB::rollBack();
+            return false;
         }
-      }
-      DB::commit();
-      return true;
-    } catch (\Exception $e) {
-      Log::error('Error in Sale creation:', [
-        'message' => $e->getMessage(),
-        'code' => $e->getCode(),
-        'trace' => $e->getTraceAsString(),
-    ]);
-    DB::rollBack(); // Rollback all changes if any exception occurs
-    return false; // Return false or handle as needed
     }
-  }
+
 
 
   public function accept($data){
-    
+
   }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('total', 15, 2)->nullable();
             $table->timestamps();
         });
+
     }
 
     /**
