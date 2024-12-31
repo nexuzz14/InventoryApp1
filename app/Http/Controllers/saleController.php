@@ -12,9 +12,21 @@ class saleController extends Controller
     public function __construct(SaleService $saleService) {
         $this->saleService = $saleService;
     }
-    public function new(){
-
-    }
+        public function accepted(Request $request){
+            $data = $request->all();
+            $result = $this->saleService->accept($data);
+            if ($result) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Sale accepted and status updated to "bayar".'
+                ], 200); 
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'There was an error during the accept process.'
+                ], 400); 
+            }
+        }
 
     public function create(Request $request){
         $data = $request->all();

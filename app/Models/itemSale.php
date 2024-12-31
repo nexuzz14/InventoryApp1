@@ -19,5 +19,10 @@ class itemSale extends Model
     {
         return $this->quantity * $this->item->price;
     }   
-    
+    // ItemSale Model
+    public function locations()
+    {
+    return $this->hasMany(ItemSalesLocation::class, 'item_sales_id');
+    }
+
 }

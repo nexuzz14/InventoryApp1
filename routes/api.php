@@ -89,6 +89,7 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
 
     Route::post('/sale/store', [saleController::class, 'create']);
+    Route::post('/sale/pay', [saleController::class, 'accepted']);
 
 
 
