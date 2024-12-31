@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('items_sales', function (Blueprint $table) {
             $table->id();
-            $table->string("code_invoice", 255);
-            $table->string("code_proyek", 255);
-            $table->foreignId('client_id')->constrained("clients")->onDelete('cascade');
+            $table->foreignId('sales_id')->constrained('sales')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
+            $table->integer('quantity');
             $table->decimal('total', 15, 2)->nullable();
-            $table->enum('status', ['belum', 'dibayar'])->default('belum');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('items_sales');
     }
 };
