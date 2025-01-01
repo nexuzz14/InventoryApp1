@@ -93,6 +93,6 @@ class CategoryController extends Controller
         }
         return response()->json([
             'messages' => 'Berhasil menghapus kategori'
-        ], 204);
+        ], 200);
     }
 }
