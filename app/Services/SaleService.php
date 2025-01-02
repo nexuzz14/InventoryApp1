@@ -177,10 +177,14 @@ class SaleService
         return $sales->map(function ($sale) {
             return [
                 'id' => $sale->id,
+                'code_invoice' => $sale->code_invoice,
                 'code_proyek' => $sale->code_proyek,
                 'client_id' => $sale->client_id,
+                'client_name' => $sale->client->name,
                 'total' => $sale->total,
                 'status' => $sale->status,
+                'created_at' => $sale->created_at->format('Y-m-d H:i:s'),
+                'updated_at' => $sale->updated_at->format('Y-m-d H:i:s'),
                 'items' => $sale->items->map(function ($item) {
                     return [
                         'item_id' => $item->item_id,

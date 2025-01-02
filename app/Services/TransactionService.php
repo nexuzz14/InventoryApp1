@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ItemsRequestDetail;
 use App\Models\RequestItem;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
@@ -118,10 +119,15 @@ class TransactionService
 
             DB::commit();
 
-            return $transaction;
+            return [
+                'message' => 'Berhasil, pembelian ditambahkan',
+                'code' => 201,
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
-            return $e;
+            return [
+                'message' => $e->getMessage(),
+                'code' => 500];
 
         }
     }
@@ -188,16 +194,20 @@ class TransactionService
     public function getAllTransaction()
     {
         // Ambil data transaksi dengan relasi suppliers
-        $transactions = Transaction::with('requestItem.client')->get();
+        $transactions = Transaction::with(
+            'requestItem.client',
+            'requestItem.requestDetails.item',
+            'requestItem.requestDetails.suppliers'
+        )->get();
 
-        // Transformasi data
+        // Transform data
         Log::debug($transactions);
         $data = $transactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
                 'created_at' => $transaction->created_at,
-                'request_item_code' => $transaction->requestItem->code ?? null,
-                'client_name' => $transaction->requestItem->client->name ?? null,
+                'request_item_code' => $transaction->requestItem?->code,
+                'client_name' => $transaction->requestItem?->client?->name ?? null,
                 'quantity' => $transaction->total_qty,
             ];
         });
