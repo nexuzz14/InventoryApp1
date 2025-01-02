@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('client_id')->constrained("clients")->onDelete('cascade');
             $table->decimal('total', 15, 2)->nullable();
             $table->enum('status', ['belum', 'dibayar'])->default('belum');
+            $table->date("date_payment")->nullable();
             $table->timestamps();
         });
     }

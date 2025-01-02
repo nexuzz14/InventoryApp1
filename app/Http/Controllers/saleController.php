@@ -74,7 +74,10 @@ class saleController extends Controller
         }
     }
 
-
+    public function getDetail($id){
+        $result =  $this->saleService->getDetail($id);
+        return $result;
+    }
 
     public function getItemLocations($itemId)
     {

@@ -66,7 +66,6 @@ class SaleService
     public function getItemLocations($itemId)
     {
         try {
-            // Cari item berdasarkan ID dan load relasi dengan lokasi (gudang) hanya jika quantity > 0
             $item = Item::where('id', $itemId)->with(['locations'])->first();
 
             if (!$item) {
@@ -203,6 +202,51 @@ class SaleService
         throw $e;
     }
 }
+public function getDetail($id)
+{
+    try {
+        $sale = Sale::with(['client', 'itemSale.item.unit'])->find($id);
+        Log::debug($sale);
+
+        if ($sale) {
+            $client = $sale->client ? $sale->client->name : "client dihapus";
+            $dp = $sale->date_payment ? $sale->date_payment->format("Ymd") : "belum dibayar";
+            $items = $sale->itemSale->map(function ($itemSale) {
+                return [
+                    "name" => $itemSale->item->name ?? "Item tidak ditemukan",
+                    "quantity" => $itemSale->quantity,
+                    "unit_name" => $itemSale->item->unit->name ?? "Unit Dihapus",
+                    "price" => $itemSale->item->price,
+                    "total" => $itemSale->total,
+                ];
+            });
+
+            return [
+                
+                    "code_invoice" => $sale->code_invoice,
+                    "code_proyek" => $sale->code_proyek,
+                    "client" => $client,
+                    "total" => $sale->total,
+                    "status" => $sale->status,
+                    "created_at" => $sale->created_at->format("Ymd"),
+                    "date_payment" => $dp,
+                    "items" => $items,
+                
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "message" => "Data tidak ditemukan",
+            ];
+        }
+    } catch (\Exception $e) {
+        return [
+            "status" => "error",
+            "message" => "Terjadi kesalahan: " . $e->getMessage(),
+        ];
+    }
+}
+
 
 
 }

@@ -11,6 +11,8 @@ class sale extends Model
         'status',
         'code_invoice',
         'code_proyek',
+        'date_payment',
+
         'client_id',
         'total',
     ];
