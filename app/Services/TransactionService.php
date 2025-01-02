@@ -14,7 +14,7 @@ class TransactionService
     protected $itemService;
     protected $requestItemService;
 
-  
+
     public function __construct(ItemService $ItemService, RequestItemService $requestItemService)
     {
         $this->requestItemService = $requestItemService;
@@ -88,14 +88,14 @@ class TransactionService
     public function new($data)
     {
         DB::beginTransaction();
-    
+
         try {
             $request = $this->requestItemService->storeRequest($data);
             $details = RequestItem::with('requestDetails.item')->find($request->id);
             Log::debug($details);
             $subTotal = 0;
             $totalQty = 0;
-    
+
             foreach ($details->requestDetails as $detail) {
             Log::debug($detail);
 
@@ -104,9 +104,9 @@ class TransactionService
                 $totalQty += $detail->quantity;
                 $detail->save();
             }
-    
+
             $totalApprovedItems = $details->count();
-    
+
             $transaction = Transaction::create([
                 'staff_id' => $request['staff_id'],
                 'request_id' => $request->id,
@@ -115,9 +115,9 @@ class TransactionService
                 'total_appoved_items' => $totalApprovedItems,
                 'status' => 'unpaid',
             ]);
-    
+
             DB::commit();
-    
+
             return $transaction;
         } catch (\Exception $e) {
             DB::rollBack();
@@ -125,7 +125,7 @@ class TransactionService
 
         }
     }
-    
+
     public function getDetailTransaction($id)
     {
         $transaction = Transaction::with([

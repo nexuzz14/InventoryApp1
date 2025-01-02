@@ -175,9 +175,13 @@ class SaleService
             return [
                 'id' => $sale->id,
                 'code_proyek' => $sale->code_proyek,
+                'code_invoice' => $sale->code_invoice,
                 'client_id' => $sale->client_id,
+                'client_name' => $sale->client->name,
                 'total' => $sale->total,
                 'status' => $sale->status,
+                'created_at' => $sale->created_at->format('Y-m-d'),
+                'updated_at'=> $sale->updated_at->format('Y-m-d'),
                 'items' => $sale->items->map(function ($item) {
                     return [
                         'item_id' => $item->item_id,
@@ -222,7 +226,7 @@ public function getDetail($id)
             });
 
             return [
-                
+
                     "code_invoice" => $sale->code_invoice,
                     "code_proyek" => $sale->code_proyek,
                     "client" => $client,
@@ -231,7 +235,7 @@ public function getDetail($id)
                     "created_at" => $sale->created_at->format("Ymd"),
                     "date_payment" => $dp,
                     "items" => $items,
-                
+
             ];
         } else {
             return [
