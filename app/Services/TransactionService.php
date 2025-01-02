@@ -39,7 +39,7 @@ class TransactionService
             if ($item && $item->quantity_accepted > 0) {
 
                     $sessionTotalBuy = 0;   
-                    if($itemsSelected['location']){
+                    if(!empty($itemsSelected['location'])){
                         foreach ($itemsSelected['location'] as $dataLocation) {
                             if ($dataLocation['quantity'] > 0) {
                                 $gudang = $item->item->locations->find($dataLocation['location_id']);
