@@ -31,28 +31,32 @@ class TransactionService
         foreach ($data['data'] as $itemsSelected) {
 
             $item = $requestDetails->find($itemsSelected['details_id']);
-            if(!$item){
+            if (!$item) {
                 return "id list barang pada permintaan tidak sah";
             }
             $item->quantity_accepted = $itemsSelected['quantity'];
             $item->save();
             if ($item && $item->quantity_accepted > 0) {
 
-                if ($itemsSelected['location']) {
-                    $sessionTotalBuy = 0;
-                    foreach ($itemsSelected['location'] as $dataLocation) {
-                        if ($dataLocation['quantity'] > 0) {
-                            $gudang = $item->item->locations->find($dataLocation['location_id']);
-                            if ($gudang) {
-                                $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
-                                $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
-                                $totalQty += $shortage;
-                                $sessionTotalBuy += $shortage;
-                                $buyPrice += ($shortage * $item->item->price);
-                                $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
+                    $sessionTotalBuy = 0;   
+                    if($itemsSelected['location']){
+                        foreach ($itemsSelected['location'] as $dataLocation) {
+                            if ($dataLocation['quantity'] > 0) {
+                                $gudang = $item->item->locations->find($dataLocation['location_id']);
+                                if ($gudang) {
+                                    $newQuantity = max(0, $gudang->pivot->quantity - $dataLocation['quantity']);
+                                    $shortage = max(0, $dataLocation['quantity'] - $gudang->pivot->quantity);
+                                    $totalQty += $shortage;
+                                    $sessionTotalBuy += $shortage;
+                                    $buyPrice += ($shortage * $item->item->price);
+                                    $item->item->locations()->updateExistingPivot($dataLocation['location_id'], ['quantity' => $newQuantity]);
+                                }
                             }
                         }
+                    }else{
+                        $sessionTotalBuy = $data['quantity'];
                     }
+                    
                     if ($sessionTotalBuy > 0 && $itemsSelected['suppliers']) {
                         foreach ($itemsSelected['suppliers'] as $supplier) {
                             $item->suppliers()->attach($supplier['supplier_id'], ['quantity' => $supplier['quantity']]);
@@ -60,7 +64,6 @@ class TransactionService
                     }
                     $item->quantity_buy = $sessionTotalBuy;
                     $item->save();
-                }
             }
         }
 
@@ -82,7 +85,6 @@ class TransactionService
         }
 
         return "berhasil, stok gudang telah dikurangi";
-
     }
 
 
@@ -136,8 +138,8 @@ class TransactionService
             DB::rollBack();
             return [
                 'message' => $e->getMessage(),
-                'code' => 500];
-
+                'code' => 500
+            ];
         }
     }
 
