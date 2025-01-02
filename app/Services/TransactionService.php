@@ -92,18 +92,28 @@ class TransactionService
         try {
             $request = $this->requestItemService->storeRequest($data);
             $details = RequestItem::with('requestDetails.item')->find($request->id);
+            $details->status = 'selesai';
+            $details->save();
             Log::debug($details);
             $subTotal = 0;
             $totalQty = 0;
     
             foreach ($details->requestDetails as $detail) {
-            Log::debug($detail);
-
-                $detail->quantity_buy = $detail->quantity;
-                $subTotal += ($detail->quantity * $detail->item->price);
-                $totalQty += $detail->quantity;
-                $detail->save();
+                $itemData = collect($data['items'])->firstWhere('item_id', $detail->item_id);
+            
+                if ($itemData) {
+                    foreach ($itemData['suppliers'] as $supplier) {
+                        $detail->suppliers()->attach($supplier['supplier_id'], ['quantity' => $supplier['quantity']]);
+                    }
+                    $detail->quantity_buy = $detail->quantity;
+                    $subTotal += ($detail->quantity * $detail->item->price);
+                    $totalQty += $detail->quantity;
+                    $detail->save();
+                } else {
+                    Log::warning("Item ID {$detail->item_id} tidak ditemukan dalam data yang dikirim.");
+                }
             }
+            
     
             $totalApprovedItems = $details->count();
     

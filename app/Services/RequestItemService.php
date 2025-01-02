@@ -108,7 +108,7 @@ class RequestItemService
             'status' => 'pending',
             'client_id' => $data['client_id'],
         ]);
-
+        
         $result = DB::table('items_request_details')->insert(
             array_map(
                 function ($item) use ($request_items) {
