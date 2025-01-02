@@ -55,6 +55,7 @@ class TransactionService
                         }
                     }else{
                         $sessionTotalBuy = $itemsSelected['quantity'];
+                        $totalQty = $itemsSelected['quantity'];
                     }
                     
                     if ($sessionTotalBuy > 0 && $itemsSelected['suppliers']) {
