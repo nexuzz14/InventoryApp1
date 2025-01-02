@@ -8,6 +8,9 @@ use App\Models\itemSale;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\ItemSalesLocation;
+use Carbon\Carbon;
+
+
 
 class SaleService
 {
@@ -89,7 +92,7 @@ class SaleService
                 'code' => $e->getCode(),
                 'trace' => $e->getTraceAsString(),
             ]);
-             response()->json([
+            response()->json([
                 'message' => 'Error retrieving warehouse data',
                 'error' => $e->getMessage(),
             ], 500);
@@ -157,31 +160,27 @@ class SaleService
     }
 
     public function getAllSales($saleId = null)
-{
-    try {
-        if ($saleId) {
-            $sale = Sale::with(['items', 'items.locations'])->find($saleId);
+    {
+        try {
+            if ($saleId) {
+                $sale = Sale::with(['items', 'items.locations'])->find($saleId);
 
-            if (!$sale) {
-                throw new \Exception('Sale not found');
+                if (!$sale) {
+                    throw new \Exception('Sale not found');
+                }
+
+                $sales = collect([$sale]); // Bungkus dalam collection
+            } else {
+                $sales = Sale::with(['items', 'items.locations'])->get();
             }
-
-            $sales = collect([$sale]); // Bungkus dalam collection
-        } else {
-            $sales = Sale::with(['items', 'items.locations'])->get();
-        }
 
         return $sales->map(function ($sale) {
             return [
                 'id' => $sale->id,
                 'code_proyek' => $sale->code_proyek,
-                'code_invoice' => $sale->code_invoice,
                 'client_id' => $sale->client_id,
-                'client_name' => $sale->client->name,
                 'total' => $sale->total,
                 'status' => $sale->status,
-                'created_at' => $sale->created_at->format('Y-m-d'),
-                'updated_at'=> $sale->updated_at->format('Y-m-d'),
                 'items' => $sale->items->map(function ($item) {
                     return [
                         'item_id' => $item->item_id,
@@ -203,27 +202,27 @@ class SaleService
             'trace' => $e->getTraceAsString(),
         ]);
 
-        throw $e;
+            throw $e;
+        }
     }
-}
-public function getDetail($id)
-{
-    try {
-        $sale = Sale::with(['client', 'itemSale.item.unit'])->find($id);
-        Log::debug($sale);
+    public function getDetail($id)
+    {
+        try {
+            $sale = Sale::with(['client', 'itemSale.item.unit'])->find($id);
+            Log::debug($sale);
 
-        if ($sale) {
-            $client = $sale->client ? $sale->client->name : "client dihapus";
-            $dp = $sale->date_payment ? $sale->date_payment->format("Ymd") : "belum dibayar";
-            $items = $sale->itemSale->map(function ($itemSale) {
-                return [
-                    "name" => $itemSale->item->name ?? "Item tidak ditemukan",
-                    "quantity" => $itemSale->quantity,
-                    "unit_name" => $itemSale->item->unit->name ?? "Unit Dihapus",
-                    "price" => $itemSale->item->price,
-                    "total" => $itemSale->total,
-                ];
-            });
+            if ($sale) {
+                $client = $sale->client ? $sale->client->name : "client dihapus";
+                $dp = $sale->date_payment ? $sale->date_payment : "belum dibayar";
+                $items = $sale->itemSale->map(function ($itemSale) {
+                    return [
+                        "name" => $itemSale->item->name ?? "Item tidak ditemukan",
+                        "quantity" => $itemSale->quantity,
+                        "unit_name" => $itemSale->item->unit->name ?? "Unit Dihapus",
+                        "price" => $itemSale->item->price,
+                        "total" => $itemSale->total,
+                    ];
+                });
 
             return [
 
@@ -232,7 +231,7 @@ public function getDetail($id)
                     "client" => $client,
                     "total" => $sale->total,
                     "status" => $sale->status,
-                    "created_at" => $sale->created_at->format("Ymd"),
+                    "created_at" => $sale->created_at->format("Y-m-d"),
                     "date_payment" => $dp,
                     "items" => $items,
 
@@ -251,6 +250,20 @@ public function getDetail($id)
     }
 }
 
-
-
+    public function update($id,$updateData){
+        try{
+            $data = sale::find($id);
+            if($data){
+                $data->update($updateData);
+                return "berhasil diperbarui";
+            }
+            return "data tidak ditemukan";
+        }catch(\Exception $e){
+            return [
+                "message" => "Terjadi kesalahan: " . $e->getMessage(),
+            ];
+        }
+    }
 }
+
+

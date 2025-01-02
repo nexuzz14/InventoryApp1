@@ -96,4 +96,18 @@ class saleController extends Controller
             ], 500);
         }
     }
+
+    public function updatePayDate(Request $request){
+        $date = $request->date;
+        $id = $request->id;
+        $data = [
+            "status"=>"dibayar",
+            "date_payment"=>$date
+        ];
+
+        $result =   $this->saleService->update($id, $data);
+        return response()->json([
+            "message"=>$result
+        ]);
+    }
 }
