@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ItemsRequestDetail;
 use App\Models\RequestItem;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class TransactionService
     protected $itemService;
     protected $requestItemService;
 
-  
+
     public function __construct(ItemService $ItemService, RequestItemService $requestItemService)
     {
         $this->requestItemService = $requestItemService;
@@ -88,7 +89,7 @@ class TransactionService
     public function new($data)
     {
         DB::beginTransaction();
-    
+
         try {
             $request = $this->requestItemService->storeRequest($data);
             $details = RequestItem::with('requestDetails.item')->find($request->id);
@@ -97,7 +98,7 @@ class TransactionService
             Log::debug($details);
             $subTotal = 0;
             $totalQty = 0;
-    
+
             foreach ($details->requestDetails as $detail) {
                 $itemData = collect($data['items'])->firstWhere('item_id', $detail->item_id);
             
@@ -113,10 +114,9 @@ class TransactionService
                     Log::warning("Item ID {$detail->item_id} tidak ditemukan dalam data yang dikirim.");
                 }
             }
-            
-    
+
             $totalApprovedItems = $details->count();
-    
+
             $transaction = Transaction::create([
                 'staff_id' => $request['staff_id'],
                 'request_id' => $request->id,
@@ -125,17 +125,22 @@ class TransactionService
                 'total_appoved_items' => $totalApprovedItems,
                 'status' => 'unpaid',
             ]);
-    
+
             DB::commit();
-    
-            return $transaction;
+
+            return [
+                'message' => 'Berhasil, pembelian ditambahkan',
+                'code' => 201,
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
-            return $e;
+            return [
+                'message' => $e->getMessage(),
+                'code' => 500];
 
         }
     }
-    
+
     public function getDetailTransaction($id)
     {
         $transaction = Transaction::with([
@@ -198,16 +203,20 @@ class TransactionService
     public function getAllTransaction()
     {
         // Ambil data transaksi dengan relasi suppliers
-        $transactions = Transaction::with('requestItem.client')->get();
+        $transactions = Transaction::with(
+            'requestItem.client',
+            'requestItem.requestDetails.item',
+            'requestItem.requestDetails.suppliers'
+        )->get();
 
-        // Transformasi data
+        // Transform data
         Log::debug($transactions);
         $data = $transactions->map(function ($transaction) {
             return [
                 'id' => $transaction->id,
                 'created_at' => $transaction->created_at,
-                'request_item_code' => $transaction->requestItem->code ?? null,
-                'client_name' => $transaction->requestItem->client->name ?? null,
+                'request_item_code' => $transaction->requestItem?->code,
+                'client_name' => $transaction->requestItem?->client?->name ?? null,
                 'quantity' => $transaction->total_qty,
             ];
         });

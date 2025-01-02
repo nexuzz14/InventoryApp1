@@ -174,33 +174,37 @@ class SaleService
                 $sales = Sale::with(['items', 'items.locations'])->get();
             }
 
-            return $sales->map(function ($sale) {
-                return [
-                    'id' => $sale->id,
-                    'code_proyek' => $sale->code_proyek,
-                    'client_id' => $sale->client_id,
-                    'total' => $sale->total,
-                    'status' => $sale->status,
-                    'items' => $sale->items->map(function ($item) {
-                        return [
-                            'item_id' => $item->item_id,
-                            'quantity' => $item->pivot->quantity,
-                            'total' => $item->pivot->total,
-                            'locations' => $item->locations->map(function ($location) {
-                                return [
-                                    'location_id' => $location->pivot->location_id,
-                                    'quantity' => $location->pivot->quantity,
-                                ];
-                            }),
-                        ];
-                    }),
-                ];
-            });
-        } catch (\Exception $e) {
-            Log::error('Error retrieving sales data:', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
+        return $sales->map(function ($sale) {
+            return [
+                'id' => $sale->id,
+                'code_invoice' => $sale->code_invoice,
+                'code_proyek' => $sale->code_proyek,
+                'client_id' => $sale->client_id,
+                'client_name' => $sale->client->name,
+                'total' => $sale->total,
+                'status' => $sale->status,
+                'created_at' => $sale->created_at->format('Y-m-d H:i:s'),
+                'updated_at' => $sale->updated_at->format('Y-m-d H:i:s'),
+                'items' => $sale->items->map(function ($item) {
+                    return [
+                        'item_id' => $item->item_id,
+                        'quantity' => $item->pivot->quantity,
+                        'total' => $item->pivot->total,
+                        'locations' => $item->locations->map(function ($location) {
+                            return [
+                                'location_id' => $location->pivot->location_id,
+                                'quantity' => $location->pivot->quantity,
+                            ];
+                        }),
+                    ];
+                }),
+            ];
+        });
+    } catch (\Exception $e) {
+        Log::error('Error retrieving sales data:', [
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ]);
 
             throw $e;
         }
@@ -224,7 +228,8 @@ class SaleService
                     ];
                 });
 
-                return [
+            return [
+
                     "code_invoice" => $sale->code_invoice,
                     "code_proyek" => $sale->code_proyek,
                     "client" => $client,
@@ -233,20 +238,21 @@ class SaleService
                     "created_at" => $sale->created_at->format("Y-m-d"),
                     "date_payment" => $dp,
                     "items" => $items,
-                ];
-            } else {
-                return [
-                    "status" => "error",
-                    "message" => "Data tidak ditemukan",
-                ];
-            }
-        } catch (\Exception $e) {
+
+            ];
+        } else {
             return [
-              
-                "message" => "Terjadi kesalahan: " . $e->getMessage(),
+                "status" => "error",
+                "message" => "Data tidak ditemukan",
             ];
         }
+    } catch (\Exception $e) {
+        return [
+            "status" => "error",
+            "message" => "Terjadi kesalahan: " . $e->getMessage(),
+        ];
     }
+}
 
     public function update($id,$updateData){
         try{

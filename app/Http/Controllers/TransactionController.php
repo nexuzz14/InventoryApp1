@@ -50,20 +50,19 @@ class TransactionController extends Controller
         ], 200);
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         $data = $request->all();
         $data['staff_id'] = $request->user()->id;
         $result =   $this->transactionService->new($data);
-
-        if($result){
+        if ($result['code'] == 500) {
             return response()->json([
-                "message"=>"berhasil menambah data"
-            ]);
-        }else{
+                "message" => $result
+            ], 500);
+        } else if ($result["code"] == 201) {
             return response()->json([
-                "message"=>"terjadi kesalahan",
-                "error"=>$result
-            ]); 
+                "message" => $result
+            ], 201);
         }
     }
     // old function
