@@ -49,6 +49,13 @@ class TransactionController extends Controller
             "data" => $data
         ], 200);
     }
+    public function getDetailPurchase($id)
+    {
+        $data = $this->transactionService->getDetailPurchase($id);
+        return response()->json([
+            "data" => $data
+        ], 200);
+    }
 
     public function create(Request $request)
     {

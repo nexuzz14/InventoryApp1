@@ -101,7 +101,7 @@ class TransactionService
 
             foreach ($details->requestDetails as $detail) {
                 $itemData = collect($data['items'])->firstWhere('item_id', $detail->item_id);
-            
+
                 if ($itemData) {
                     foreach ($itemData['suppliers'] as $supplier) {
                         $detail->suppliers()->attach($supplier['supplier_id'], ['quantity' => $supplier['quantity']]);
@@ -154,6 +154,36 @@ class TransactionService
                 'total_price' => $transaction->total_price,
                 'dibayarkan' => $transaction->dibayarkan,
                 'status' => $transaction->status,
+                'perminataan' => [
+                    'code' => $transaction->requestItem->code ?? null,
+                    'client_name' => $transaction->requestItem->client->name ?? null,
+                    'list_barang' => $transaction->requestItem->requestDetails->map(function ($detail) {
+                        return [
+                            'quantity_buy' => $detail->quantity_buy,
+                            'item_name' => $detail->item->name ?? null,
+                            'item_code' => $detail->item->uniq_id ?? null,
+                            'item_price' => $detail->item->price ?? null,
+                            'suppliers' => $detail->suppliers->map(function ($supplier) {
+                                return $supplier->name ?? null; // Ambil nama supplier
+                            }),
+                        ];
+                    }),
+                ],
+            ];
+
+            return $data;
+        }
+    }
+    public function getDetailPurchase($id)
+    {
+        $transaction = Transaction::with([
+            'requestItem.client',
+            'requestItem.requestDetails.item',
+            'requestItem.requestDetails.suppliers'
+        ])->find($id);
+        if ($transaction) {
+            $data = [
+                'created_at' => $transaction->created_at,
                 'perminataan' => [
                     'code' => $transaction->requestItem->code ?? null,
                     'client_name' => $transaction->requestItem->client->name ?? null,
