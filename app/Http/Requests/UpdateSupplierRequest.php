@@ -3,17 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
+use App\Models\Supplier;
 
 class UpdateSupplierRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
+   
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,7 +22,31 @@ class UpdateSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "id" => "required",
+            "id" => "required|integer", // ID wajib ada dan bertipe integer
+            "name" => [
+                "required",
+                "string",
+                Rule::unique(Supplier::class)->ignore($this->id), // Pengecualian ID untuk pembaruan
+            ],
+            "address" => "required|string",
+            "phone" => "required|string",
         ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        $response = response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'errors' => $validator->errors(),
+        ], 422);
+
+        throw new ValidationException($validator, $response);
     }
 }

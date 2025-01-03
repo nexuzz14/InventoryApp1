@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreItemRequest;
+use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;
 use App\Services\ImageService;
 use App\Services\ItemService;
@@ -36,34 +37,34 @@ class ItemController extends Controller
 
 
 
-    public function store(Request $request)
+    public function store(StoreItemRequest $request)
     {
-        try {
-            $data = $request->validate([
-                "name" => "required|string|max:255",
-                "category_id" => "required|integer|exists:categories,id",
-                "unit_id" => "required|integer|exists:units,id",
-                "quantity" => "required|integer|min:1",
-                "description" => "nullable|string|max:500",
-                "price" => "required|numeric|min:0",
-                "uniq_id" => "required|string|unique:items,uniq_id", // Validasi uniq_id
-            ]);
-        } catch (ValidationException $e) {
-            $errors = $e->errors();
+        // try {
+        //     $data = $request->validate([
+        //         "name" => "required|string|max:255",
+        //         "category_id" => "required|integer|exists:categories,id",
+        //         "unit_id" => "required|integer|exists:units,id",
+        //         "quantity" => "required|integer|min:1",
+        //         "description" => "nullable|string|max:500",
+        //         "price" => "required|numeric|min:0",
+        //         "uniq_id" => "required|string|unique:items,uniq_id", // Validasi uniq_id
+        //     ]);
+        // } catch (ValidationException $e) {
+        //     $errors = $e->errors();
 
-            if (isset($errors['uniq_id'])) {
-                return response()->json([
-                    'message' => 'ID unik sudah digunakan. Silakan gunakan ID lain.',
-                    'errors' => $errors['uniq_id']
-                ], 422);
-            }
+        //     if (isset($errors['uniq_id'])) {
+        //         return response()->json([
+        //             'message' => 'ID unik sudah digunakan. Silakan gunakan ID lain.',
+        //             'errors' => $errors['uniq_id']
+        //         ], 422);
+        //     }
 
-            return response()->json([
-                'message' => 'Validasi gagal.',
-                'errors' => $errors
-            ], 422);
-        }
-
+        //     return response()->json([
+        //         'message' => 'Validasi gagal.',
+        //         'errors' => $errors
+        //     ], 422);
+        // }
+        $data = $request->all();
         $result = $this->itemService->store($data);
 
         if (!$result) {
@@ -85,35 +86,35 @@ class ItemController extends Controller
         }
         return null;
     }
-    public function update(Request $request){
+    public function update(UpdateItemRequest $request){
         $data = $request->all();
-        try {
-            $data = $request->validate([
-                "id" => "integer|required",
-                "name" => "required|string|max:255",
-                "category_id" => "required|integer|exists:categories,id",
-                "unit_id" => "required|integer|exists:units,id",
-                "quantity" => "required|integer|min:1",
-                "description" => "nullable|string|max:500",
-                "price" => "required|numeric|min:0",
-                "uniq_id" => "required|string|unique:items,uniq_id," . $request->id,
-                "locations" => "array"
-            ]);
-        } catch (ValidationException $e) {
-            $errors = $e->errors();
+        // try {
+        //     $data = $request->validate([
+        //         "id" => "integer|required",
+        //         "name" => "required|string|max:255",
+        //         "category_id" => "required|integer|exists:categories,id",
+        //         "unit_id" => "required|integer|exists:units,id",
+        //         "quantity" => "required|integer|min:1",
+        //         "description" => "nullable|string|max:500",
+        //         "price" => "required|numeric|min:0",
+        //         "uniq_id" => "required|string|unique:items,uniq_id," . $request->id,
+        //         "locations" => "array"
+        //     ]);
+        // } catch (ValidationException $e) {
+        //     $errors = $e->errors();
 
-            if (isset($errors['uniq_id'])) {
-                return response()->json([
-                    'message' => 'ID unik sudah digunakan. Silakan gunakan ID lain.',
-                    'errors' => $errors['uniq_id']
-                ], 422);
-            }
+        //     if (isset($errors['uniq_id'])) {
+        //         return response()->json([
+        //             'message' => 'ID unik sudah digunakan. Silakan gunakan ID lain.',
+        //             'errors' => $errors['uniq_id']
+        //         ], 422);
+        //     }
 
-            return response()->json([
-                'message' => 'Validasi gagal.',
-                'errors' => $errors
-            ], 422);
-        }
+        //     return response()->json([
+        //         'message' => 'Validasi gagal.',
+        //         'errors' => $errors
+        //     ], 422);
+        // }
 
         if($data['locations']){
             $totalQtyGudang = collect($data['locations'])->sum("quantity");

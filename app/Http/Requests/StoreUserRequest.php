@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUserRequest extends FormRequest
@@ -9,10 +10,7 @@ class StoreUserRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        return true;
-    }
+   
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,8 +21,8 @@ class StoreUserRequest extends FormRequest
     {
         return [
             "name" => "required|string",
-            "username" => "required|string",
-            "email" => "required|string",
+            "username" => "required|string|unique:" . User::class,
+            "email" => "required|string|unique:" . User::class,
             "password" => "required|string",
             "image" => "required|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
             "role" => "required|in:superadmin, admin, user",

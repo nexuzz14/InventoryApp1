@@ -238,7 +238,6 @@ class SaleService
                     "created_at" => $sale->created_at->format("Y-m-d"),
                     "date_payment" => $dp,
                     "items" => $items,
-
             ];
         } else {
             return [

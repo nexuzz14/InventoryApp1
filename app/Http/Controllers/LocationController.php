@@ -45,7 +45,7 @@ class LocationController extends Controller
             "message" => "Berhasil menghapus lokasi"
         ],200);
     }
-    public function update(Request $request)
+    public function update(UpdateLocationRequest $request)
     {
         $result = $this->locationService->updateLocation($request->id, $request->all(["name"]));
         if (!$result) {
