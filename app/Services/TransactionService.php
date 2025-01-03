@@ -38,7 +38,7 @@ class TransactionService
             $item->save();
             if ($item && $item->quantity_accepted > 0) {
 
-                    $sessionTotalBuy = 0;   
+                    $sessionTotalBuy = 0;
                     if(!empty($itemsSelected['location'])){
                         foreach ($itemsSelected['location'] as $dataLocation) {
                             if ($dataLocation['quantity'] > 0) {
@@ -57,7 +57,7 @@ class TransactionService
                         $sessionTotalBuy = $itemsSelected['quantity'];
                         $totalQty = $itemsSelected['quantity'];
                     }
-                    
+
                     if ($sessionTotalBuy > 0 && $itemsSelected['suppliers']) {
                         foreach ($itemsSelected['suppliers'] as $supplier) {
                             $item->suppliers()->attach($supplier['supplier_id'], ['quantity' => $supplier['quantity']]);
@@ -187,7 +187,7 @@ class TransactionService
         if ($transaction) {
             $data = [
                 'created_at' => $transaction->created_at,
-                'perminataan' => [
+                
                     'code' => $transaction->requestItem->code ?? null,
                     'client_name' => $transaction->requestItem->client->name ?? null,
                     'list_barang' => $transaction->requestItem->requestDetails->map(function ($detail) {
@@ -201,7 +201,7 @@ class TransactionService
                             }),
                         ];
                     }),
-                ],
+
             ];
 
             return $data;

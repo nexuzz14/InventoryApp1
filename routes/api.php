@@ -89,7 +89,7 @@ Route::middleware(['auth:sanctum', 'RoleGuard:superadmin'])->group(function () {
 
 
     Route::post('/sale/store', [saleController::class, 'create']);
-    Route::patch('/sale/update', [saleController::class, 'updatePayDate']);
+    Route::patch('/sale/update/{id}', [saleController::class, 'updatePayDate']);
     Route::get('/sale/get/{id}', [saleController::class, 'getDetail']);
     Route::get('/sale/get', [saleController::class, 'getAllSales']);
     Route::get('/item/{id}/warehouse', [SaleController::class, 'getItemLocations']);
