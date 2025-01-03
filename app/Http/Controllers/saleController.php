@@ -52,7 +52,7 @@ class saleController extends Controller
         return response()->json([
             "message"=>"gagal membuat request",
             "error"=>$result
-        ],200);
+        ],500);
 
     }
 
