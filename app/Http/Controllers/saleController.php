@@ -43,16 +43,9 @@ class saleController extends Controller
         $result = $this->saleService->create($data);
 
         if($result){
-            return response()->json([
-                "message"=>"berhasil membuat request",
-            "error"=>$result
-
-            ]);
+            return response()->json($result, 200);
         }
-        return response()->json([
-            "message"=>"gagal membuat request",
-            "error"=>$result
-        ],500);
+        return response()->json($result,500);
 
     }
 

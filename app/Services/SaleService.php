@@ -54,15 +54,18 @@ class SaleService
             }
 
             DB::commit();
-            return true;
+            return [
+                "status"=>"succes",
+                "message"=>"berhasil membuat permintaan",
+            ];
         } catch (\Exception $e) {
-            Log::error('Error in Sale creation:', [
-                'message' => $e->getMessage(),
-                'code' => $e->getCode(),
-                'trace' => $e->getTraceAsString(),
-            ]);
+           
             DB::rollBack();
-            return false;
+            return [
+                "status"=>"error",
+                "message"=>"gagal membuat request",
+                "error"=>$e->getMessage(),
+            ];
         }
     }
 
